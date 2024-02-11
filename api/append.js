@@ -3,17 +3,36 @@ module.exports = async (req, res) => {
   const axios = require("axios");
 
   try {
-    // const response = await axios({
-    //   method: "post",
-    //   url: "https://sheets.googleapis.com/v4/spreadsheets/YOUR_SHEET_ID/values/A:A:append?valueInputOption=RAW",
-    //   headers: {
-    //     Authorization: `Bearer YOUR_ACCESS_TOKEN`, // Ensure this is securely managed
-    //     "Content-Type": "application/json",
-    //   },
-    //   data: req.body,
-    // });
+    const body = await req.body;
+    const { accessToken, sheetId, apiKey, values } = body;
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/A:A:append?valueInputOption=RAW&key=${apiKey}`;
 
-    res.status(200).json({ message: "Data appended to Google Sheets" });
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + accessToken,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        valueInputOption: "RAW",
+      },
+      body: JSON.stringify({
+        majorDimension: "ROWS",
+        range: "A:A",
+        values: values,
+      }),
+      compress: true,
+    };
+
+    try {
+      // Fetch data from external API
+      const response = await fetch(url, options);
+      const data = await response.json();
+
+      res.status(200).json({ data: data });
+      // Handle the response data
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+    }
   } catch (error) {
     console.error(error);
     res.status(500).send("Error communicating with Google Sheets API");

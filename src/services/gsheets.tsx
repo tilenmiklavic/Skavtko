@@ -1,41 +1,34 @@
-export const POST = async (req: any, res: any) => {
-  const body = await req.json();
-  const { accessToken, sheetId, apiKey, data } = body;
+export async function writeToSheets(values: string[][]) {
+  // Assuming `formData` is the data you want to append, structured as needed for your Google Sheet
 
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/A:A:append?valueInputOption=RAW&key=${apiKey}`;
+  const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
+  const sheet_id = JSON.parse(localStorage.getItem("sheetLink")!).id;
 
-  const options = {
-    method: "POST",
-    headers: {
-      Authorization: "Bearer " + accessToken,
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      valueInputOption: "RAW",
-    },
-    body: JSON.stringify({
-      majorDimension: "ROWS",
-      range: "A:A",
-      values: [data],
-    }),
-    compress: true,
+  const formData = {
+    accessToken: access_token,
+    sheetId: sheet_id,
+    apiKey: process.env.REACT_APP_API_KEY,
+    values: values,
   };
 
   try {
-    // Fetch data from external API
-    const response = await fetch(url, options);
-    const data = await response.json();
+    const response = await fetch("/api/append", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-    return data.json();
-    // Handle the response data
+    if (response.ok) {
+      const result = await response.json();
+      return result;
+    } else {
+      console.error("Error from server", response);
+      // Handle server errors or non-OK responses
+    }
   } catch (error) {
-    console.error("There was a problem with the fetch operation:", error);
+    console.error("Network error:", error);
+    // Handle network errors
   }
-};
-
-export const GET = async (req: any) => {
-  // Get JSON payload
-  const data = await req.json();
-
-  // Return Response
-  return data.json();
-};
+}

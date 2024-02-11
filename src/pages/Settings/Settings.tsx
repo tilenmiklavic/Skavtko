@@ -20,32 +20,6 @@ export default function FinanceSettings() {
     toast.success("Link saved!");
   };
 
-  const writeToSheets = async () => {
-    const url = new URL("/api/sheets", window.location.origin);
-    const accessToken = JSON.parse(localStorage.getItem("auth")!).access_token;
-    const sheetId = "1iW1Qcw90klr16LWz9FTunWf778l8xHKFxqC0lNtqb0Y";
-    const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-    const sheetData = ["test", "test2"];
-
-    const response = await fetch("/api/sheets", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        sheetId: sheetId,
-        apiKey: apiKey,
-        accessToken: accessToken,
-        data: sheetData,
-      }),
-    });
-
-    // const response = await fetch(`/api/sheets`);
-    const data = await response.json();
-
-    console.log(data);
-  };
-
   return (
     <>
       <div>

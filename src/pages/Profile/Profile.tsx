@@ -1,5 +1,6 @@
 import PrimaryButton from "../../components/Buttons/primaryButton";
 import Header from "../../components/Header/header";
+import { writeToSheets } from "../../services/gsheets";
 import "./Profile.css";
 
 export default function Profile() {
@@ -37,38 +38,6 @@ export default function Profile() {
     client.requestAccessToken();
   };
 
-  const writeToSheets = async () => {
-    // Assuming `formData` is the data you want to append, structured as needed for your Google Sheet
-    const formData = {
-      values: [
-        // Array of values to append; structure depends on your specific needs
-        ["Value 1", "Value 2", "Value 3"], // Example row
-      ],
-    };
-
-    try {
-      const response = await fetch("/api/append", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Success:", result);
-        // Handle success, e.g., showing a success message
-      } else {
-        console.error("Error from server", response);
-        // Handle server errors or non-OK responses
-      }
-    } catch (error) {
-      console.error("Network error:", error);
-      // Handle network errors
-    }
-  };
-
   return (
     <>
       <Header title="Profile" />
@@ -95,10 +64,6 @@ export default function Profile() {
           </svg>
           Sign in with Google
         </button>
-      </div>
-
-      <div className="card">
-        <PrimaryButton label={"Click me"} onClick={writeToSheets} />
       </div>
     </>
   );
