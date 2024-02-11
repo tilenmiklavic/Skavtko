@@ -7,6 +7,8 @@ import toast from "react-hot-toast";
 import Header from "../../components/Header/header";
 import PrimaryButton from "../../components/Buttons/primaryButton";
 import SecondaryButton from "../../components/Buttons/secondaryButton";
+import TextInput from "../../components/Inputs/textInput";
+import { writeToSheets } from "../../services/gsheets";
 
 export default function Finance() {
   // set state
@@ -27,8 +29,6 @@ export default function Finance() {
 
     let reciept = await getReciptDataMock(hex);
 
-    console.log(reciept);
-
     if (reciept.status === 60) {
       toast.error(reciept.text);
       reciept.valid = false;
@@ -43,33 +43,27 @@ export default function Finance() {
     return reciept;
   };
 
-  const writeToSheets = async () => {
-    const accessToken = JSON.parse(localStorage.getItem("auth")!).access_token;
-    const sheetId = JSON.parse(localStorage.getItem("sheetInfo")!).id;
-    const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+  const saveRecipet = async () => {
     const sheetData = [
-      reciept.Date,
-      reciept.Time,
-      reciept.Name,
-      reciept.InvoiceAmount,
-      reciept.InvoiceNumber,
+      [
+        reciept.Date,
+        reciept.Time,
+        reciept.Name,
+        reciept.InvoiceAmount,
+        reciept.InvoiceNumber,
+      ],
     ];
 
-    const response = await fetch("/api/sheets", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        sheetId: sheetId,
-        apiKey: apiKey,
-        accessToken: accessToken,
-        data: sheetData,
-      }),
-    });
+    console.log("writing");
 
-    const data = await response.json();
-    console.log(data);
+    toast.promise(
+      writeToSheets(sheetData), // The promise you are awaiting
+      {
+        loading: "Writing to sheets...", // Message shown during loading
+        success: "Data written successfully!", // Message shown on success
+        error: "Failed to write data.", // Message shown on error
+      }
+    );
   };
 
   return (
@@ -96,7 +90,7 @@ export default function Finance() {
           <PrimaryButton
             label={"Shrani račun"}
             disabled={reciept.valid ? false : true}
-            onClick={reciept.valid ? writeToSheets : undefined}
+            onClick={reciept.valid ? saveRecipet : undefined}
           />
 
           <SecondaryButton
