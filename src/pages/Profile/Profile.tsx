@@ -1,6 +1,4 @@
-import PrimaryButton from "../../components/Buttons/primaryButton";
 import Header from "../../components/Header/header";
-import { writeToSheets } from "../../services/gsheets";
 import "./Profile.css";
 
 export default function Profile() {

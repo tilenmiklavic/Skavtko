@@ -1,7 +1,7 @@
 import { QrScanner } from "@yudiel/react-qr-scanner";
 import { useState } from "react";
 import { qrDecToZoi } from "../../services/zoi";
-import { getReciptData } from "../../services/furs";
+import { getReciptData, getReciptDataMock } from "../../services/furs";
 import formatTime from "../../services/dateTime";
 import toast from "react-hot-toast";
 import Header from "../../components/Header/header";
@@ -25,7 +25,7 @@ export default function Finance() {
     let hex = qrDecToZoi(result);
     setDecoded(hex);
 
-    let reciept = await getReciptData(hex);
+    let reciept = await getReciptDataMock(hex);
 
     console.log(reciept);
 
