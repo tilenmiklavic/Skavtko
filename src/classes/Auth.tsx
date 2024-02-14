@@ -6,6 +6,7 @@ interface Auth {
   prompt: string;
   scope: string;
   token_type: string;
+  is_valid: boolean;
 }
 
 export default Auth;

@@ -21,9 +21,12 @@ export default function Profile() {
   const setProfileInfo = () => {
     let profile = JSON.parse(localStorage.getItem("profile") || "{}");
     let auth = JSON.parse(localStorage.getItem("auth") || "{}");
+    auth.is_valid = moment() < moment(auth.expiration_timestamp);
+
     auth.expiration_timestamp = moment(auth.expiration_timestamp).format(
       "HH:mm:ss, MM. DD. YYYY"
     );
+
     setProfile(profile);
     setAuth(auth);
     setLoggedId(true);
@@ -57,8 +60,9 @@ export default function Profile() {
         console.log(response);
         // @ts-ignore
         getProfileInfo(response.access_token);
-        response.expiration_timestamp =
-          new Date().getTime() + 1000 * response.expires_in;
+        response.expiration_timestamp = moment()
+          .add(response.expires_in, "s")
+          .toISOString();
         localStorage.setItem("auth", JSON.stringify(response));
       },
     });
@@ -100,9 +104,15 @@ export default function Profile() {
             </h5>
             <div>
               <span>Status</span>{" "}
-              <span className="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                Active
-              </span>
+              {auth.is_valid ? (
+                <span className="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                  Active
+                </span>
+              ) : (
+                <span className="bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+                  Invalid
+                </span>
+              )}
             </div>
             <div>
               <span>Validity</span>{" "}
