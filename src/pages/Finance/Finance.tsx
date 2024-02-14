@@ -54,8 +54,6 @@ export default function Finance() {
       ],
     ];
 
-    console.log("writing");
-
     toast.promise(
       writeToSheets(sheetData), // The promise you are awaiting
       {
