@@ -11,7 +11,6 @@ export default function Profile() {
   const [profile, setProfile] = useState({} as UserProfile);
   const [auth, setAuth] = useState({} as Auth);
   const [loggedId, setLoggedId] = useState(false);
-  const [date, setDate] = useState("");
 
   const visibleTodos = useEffect(() => {
     if (Object.keys(profile).length == 0) {
@@ -20,10 +19,14 @@ export default function Profile() {
   }, []);
 
   const setProfileInfo = () => {
-    setProfile(JSON.parse(localStorage.getItem("profile") || "{}"));
-    setAuth(JSON.parse(localStorage.getItem("auth") || "{}"));
+    let profile = JSON.parse(localStorage.getItem("profile") || "{}");
+    let auth = JSON.parse(localStorage.getItem("auth") || "{}");
+    auth.expiration_timestamp = moment(auth.expiration_timestamp).format(
+      "HH:mm:ss, MM. DD. YYYY"
+    );
+    setProfile(profile);
+    setAuth(auth);
     setLoggedId(true);
-    setDate(moment(auth.expiration_timestamp).format("HH:mm - DD. MM. YYYY"));
   };
 
   const getProfileInfo = async (access_token: string) => {
@@ -104,7 +107,7 @@ export default function Profile() {
             <div>
               <span>Validity</span>{" "}
               <span className="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-                {date}
+                {auth.expiration_timestamp}
               </span>
             </div>
             <div className="mt-5">
