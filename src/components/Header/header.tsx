@@ -11,7 +11,7 @@ interface NavItemProps {
 
 const Header = (props: NavItemProps) => {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between ms-5 mt-3">
       <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
         {props.title}
       </h1>
