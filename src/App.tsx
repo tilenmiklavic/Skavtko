@@ -31,13 +31,13 @@ function App() {
       <div>
         <Toaster />
       </div>
-      <Navigation />
       <Routes>
         <Route path="/" Component={Home} />
         <Route path="/finance" Component={Finance} />
         <Route path="/settings" Component={FinanceSettings} />
         <Route path="/profile" Component={Profile} />
       </Routes>
+      <Navigation />
     </Router>
   );
 }
