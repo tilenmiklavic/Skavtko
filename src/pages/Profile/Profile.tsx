@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Header from "../../components/Header/header";
 import "./Profile.css";
 import UserProfile from "../../classes/Profile";
@@ -12,16 +12,17 @@ export default function Profile() {
   const [auth, setAuth] = useState({} as Auth);
   const [loggedId, setLoggedId] = useState(false);
 
-  const visibleTodos = useEffect(() => {
-    if (Object.keys(profile).length == 0) {
+  useEffect(() => {
+    if (Object.keys(profile).length === 0) {
       setProfileInfo();
     }
-  }, []);
+  }, [profile]);
 
   const setProfileInfo = () => {
     let profile = JSON.parse(localStorage.getItem("profile") || "{}");
     let auth = JSON.parse(localStorage.getItem("auth") || "{}");
     auth.is_valid = moment() < moment(auth.expiration_timestamp);
+    setLoggedId(moment() < moment(auth.expiration_timestamp));
 
     auth.expiration_timestamp = moment(auth.expiration_timestamp).format(
       "HH:mm:ss, MM. DD. YYYY"
@@ -29,7 +30,6 @@ export default function Profile() {
 
     setProfile(profile);
     setAuth(auth);
-    setLoggedId(true);
   };
 
   const getProfileInfo = async (access_token: string) => {
@@ -88,7 +88,6 @@ export default function Profile() {
               <img
                 className="w-24 h-24 mb-3 rounded-full shadow-lg"
                 src={profile.picture}
-                alt="Bonnie image"
               />
               <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
                 {profile.name}
@@ -99,7 +98,7 @@ export default function Profile() {
             </div>
           </Card>
           <Card>
-            <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+            <h5 className="mb-1 text-xl font-bold text-gray-900 dark:text-white">
               Login
             </h5>
             <div>
@@ -114,7 +113,7 @@ export default function Profile() {
                 </span>
               )}
             </div>
-            <div>
+            <div className="mt-2">
               <span>Validity</span>{" "}
               <span className="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
                 {auth.expiration_timestamp}
@@ -126,7 +125,7 @@ export default function Profile() {
           </Card>
         </>
       ) : (
-        <Card>
+        <div className="h-screen flex items-center justify-center">
           <button
             type="button"
             onClick={initLogin}
@@ -147,7 +146,7 @@ export default function Profile() {
             </svg>
             Sign in with Google
           </button>
-        </Card>
+        </div>
       )}
     </>
   );
