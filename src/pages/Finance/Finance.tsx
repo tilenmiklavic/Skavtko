@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 import Header from "../../components/Header/header";
 import PrimaryButton from "../../components/Buttons/primaryButton";
 import SecondaryButton from "../../components/Buttons/secondaryButton";
-import TextInput from "../../components/Inputs/textInput";
 import { writeToSheets } from "../../services/gsheets";
 
 export default function Finance() {

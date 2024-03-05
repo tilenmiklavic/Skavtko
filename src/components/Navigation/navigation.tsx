@@ -8,7 +8,7 @@ const Navigation = () => {
   const [tab] = useState(0);
 
   return (
-    <nav className="border-b border-gray-200 dark:border-gray-600">
+    <nav className="fixed bottom-0 w-full border-b border-gray-200 dark:border-gray-600">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-around mx-auto p-4">
         <NavItem title={"Home"} path={"/"} icon={faHome} enabled={tab === 0} />
         <NavItem
