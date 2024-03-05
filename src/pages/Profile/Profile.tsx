@@ -6,6 +6,7 @@ import Card from "../../components/Card/Cards";
 import Auth from "../../classes/Auth";
 import SecondaryButton from "../../components/Buttons/secondaryButton";
 import moment from "moment";
+import { isEmpty } from "../../services/stringUtils";
 
 export default function Profile() {
   const [profile, setProfile] = useState({} as UserProfile);
@@ -13,14 +14,16 @@ export default function Profile() {
   const [loggedId, setLoggedId] = useState(false);
 
   useEffect(() => {
-    if (Object.keys(profile).length === 0) {
+    if (isEmpty(profile)) {
       setProfileInfo();
     }
-  }, [profile]);
+  }, []);
 
   const setProfileInfo = () => {
     let profile = JSON.parse(localStorage.getItem("profile") || "{}");
     let auth = JSON.parse(localStorage.getItem("auth") || "{}");
+    if (isEmpty(profile)) getProfileInfo(auth.access_token);
+
     auth.is_valid = moment() < moment(auth.expiration_timestamp);
     setLoggedId(moment() < moment(auth.expiration_timestamp));
 
@@ -45,6 +48,7 @@ export default function Profile() {
     });
 
     const data = await response.json();
+    console.log(data);
     setProfileInfo();
 
     localStorage.setItem("profile", JSON.stringify(data.data));
