@@ -8,6 +8,8 @@ import { Toaster } from "react-hot-toast";
 import FinanceSettings from "./pages/Settings/Settings";
 import Login from "./pages/Login/Login";
 import { ProtectedRoute } from "./components/Routes/ProtectedRoute";
+import Prisotnost from "./pages/Prisotnost/Prisotnost";
+import Container from "./components/Common/Container";
 
 function App() {
   return (
@@ -15,41 +17,51 @@ function App() {
       <div>
         <Toaster />
       </div>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/finance"
-          element={
-            <ProtectedRoute>
-              <Finance />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <FinanceSettings />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      <Container>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/finance"
+            element={
+              <ProtectedRoute>
+                <Finance />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/prisotnost"
+            element={
+              <ProtectedRoute>
+                <Prisotnost />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <FinanceSettings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Container>
       <Navigation />
     </Router>
   );

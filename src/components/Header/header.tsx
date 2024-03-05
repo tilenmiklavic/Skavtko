@@ -3,6 +3,7 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import Title from "../Text/Title";
 
 interface NavItemProps {
   title: string;
@@ -11,10 +12,8 @@ interface NavItemProps {
 
 const Header = (props: NavItemProps) => {
   return (
-    <div className="flex items-center justify-between ms-5 mt-3">
-      <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-        {props.title}
-      </h1>
+    <div className="flex items-center justify-between ms-3 mt-3">
+      <Title title={props.title} />
 
       {props.settings ? (
         <button
