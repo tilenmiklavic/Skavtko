@@ -3,17 +3,19 @@ import Header from "../../components/Header/header";
 import UserProfile from "../../classes/Profile";
 import Auth from "../../classes/Auth";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [profile, setProfile] = useState({} as UserProfile);
   const [auth, setAuth] = useState({} as Auth);
   const [loggedId, setLoggedId] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (Object.keys(profile).length === 0) {
       setProfileInfo();
     }
-  }, [profile]);
+  }, []);
 
   const setProfileInfo = () => {
     let profile = JSON.parse(localStorage.getItem("profile") || "{}");
@@ -54,13 +56,13 @@ export default function Login() {
       scope:
         "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/userinfo.profile",
       callback: (response: any) => {
-        console.log(response);
         // @ts-ignore
         getProfileInfo(response.access_token);
         response.expiration_timestamp = moment()
           .add(response.expires_in, "s")
           .toISOString();
         localStorage.setItem("auth", JSON.stringify(response));
+        navigate("/");
       },
     });
 
