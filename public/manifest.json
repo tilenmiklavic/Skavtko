@@ -1,25 +1,81 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Skavtko",
+  "name": "Skavtko za skavte",
+  "description": "Skavtska aplikacija za skavtske voditelje.",
+  "lang": "sl",
+  "id": "/",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
+      "src": "icon-192x192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "icon-96x96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "icon-72x72.png",
+      "type": "image/png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "icon-48x48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "icon-128x128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "icon-144x144.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "icon-152x152.png",
+      "type": "image/png",
+      "sizes": "152x152"
+    },
+    {
+      "src": "icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-384x384.png",
+      "type": "image/png",
+      "sizes": "384x384"
+    },
+    {
+      "src": "icon-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
+  "screenshots": [
+    {
+      "src": "screenshot-desktop.png",
+      "sizes": "2880x1430",
+      "type": "image/png",
+      "platform": "wide",
+      "form_factor": "wide"
+    },
+    {
+      "src": "screenshot-mobile.png",
+      "sizes": "584x1250",
+      "type": "image/png",
+      "platform": "narrow",
+      "form_factor": "narrow"
+    }
+  ],
   "start_url": ".",
   "display": "standalone",
+  "display-override": ["fullscreen", "minimal-ui"],
+  "display_override": ["fullscreen", "minimal-ui"],
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
