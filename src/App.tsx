@@ -65,7 +65,6 @@ function App() {
             </Routes>
           </Container>
         </div>
-
         <div className="flex-none">
           <Navigation />
         </div>

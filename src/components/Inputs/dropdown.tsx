@@ -15,7 +15,7 @@ const Dropdown = (props: DropdownProps) => {
         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         type="button"
       >
-        {props.label}
+        Dropdown button{" "}
         <svg
           className="w-2.5 h-2.5 ms-3"
           aria-hidden="true"
@@ -32,6 +32,7 @@ const Dropdown = (props: DropdownProps) => {
           />
         </svg>
       </button>
+
       <div
         id="dropdown"
         className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"

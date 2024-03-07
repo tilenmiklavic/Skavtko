@@ -3,10 +3,12 @@ interface SheetDetails {
   link: string;
 }
 
-interface SheetInfo {
+interface SettingsInterface {
+  steg: string;
+  veja: string;
   racuni: SheetDetails;
   potni: SheetDetails;
   prisotnost: SheetDetails;
 }
 
-export default SheetInfo;
+export default SettingsInterface;
