@@ -5,11 +5,11 @@ import Finance from "./pages/Finance/Finance";
 import Navigation from "./components/Navigation/navigation";
 import Profile from "./pages/Profile/Profile";
 import { Toaster } from "react-hot-toast";
-import FinanceSettings from "./pages/Settings/Settings";
 import Login from "./pages/Login/Login";
 import { ProtectedRoute } from "./components/Routes/ProtectedRoute";
 import Prisotnost from "./pages/Prisotnost/Prisotnost";
 import Container from "./components/Common/Container";
+import Settings from "./pages/Settings/Settings";
 
 function App() {
   return (
@@ -48,7 +48,7 @@ function App() {
             path="/settings"
             element={
               <ProtectedRoute>
-                <FinanceSettings />
+                <Settings />
               </ProtectedRoute>
             }
           />

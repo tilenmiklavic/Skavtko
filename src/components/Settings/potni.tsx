@@ -5,7 +5,7 @@ const PotniSettings = () => {
   return (
     <div>
       <Subtitle title="Potni stroški" />
-      <TextInput label="Spreadsheet link" placeholder="link" id="link" />
+      <TextInput label="Spreadsheet link" placeholder="link" id="potni_input" />
     </div>
   );
 };

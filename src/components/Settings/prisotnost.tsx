@@ -5,7 +5,11 @@ const PrisotnostSettings = () => {
   return (
     <div>
       <Subtitle title="Prisotnost" />
-      <TextInput label="Spreadsheet link" placeholder="link" id="link" />
+      <TextInput
+        label="Spreadsheet link"
+        placeholder="link"
+        id="prisotnost_input"
+      />
     </div>
   );
 };

@@ -5,7 +5,11 @@ const RacuniSettings = () => {
   return (
     <div>
       <Subtitle title="Računi" />
-      <TextInput label="Spreadsheet link" placeholder="link" id="link" />
+      <TextInput
+        label="Spreadsheet link"
+        placeholder="link"
+        id="racuni_input"
+      />
     </div>
   );
 };

@@ -7,20 +7,51 @@ import GeneralSettings from "../../components/Settings/general";
 import RacuniSettings from "../../components/Settings/racuni";
 import PotniSettings from "../../components/Settings/potni";
 import PrisotnostSettings from "../../components/Settings/prisotnost";
+import SheetInfo from "../../classes/SheetInfo";
 
-export default function FinanceSettings() {
+export default function Settings() {
   const [link, setLink] = useState("");
   const [page, setPage] = useState(0);
 
   const saveLink = async (event: any) => {
     event.preventDefault();
 
-    setLink(event.target.link.value);
+    switch (page) {
+      case 1:
+        setLink(event.target.racuni_input.value);
+        break;
+      case 2:
+        setLink(event.target.potni_input.value);
+        break;
+      case 3:
+        setLink(event.target.prisotnost_input.value);
+        break;
+      default:
+        break;
+    }
 
-    const sheetInfo = {
+    const sheetInfo: SheetInfo = JSON.parse(
+      localStorage.getItem("sheetInfo") || "{}"
+    );
+
+    const sheetDetails = {
       link: link,
       id: link.toString().split("/")[5],
     };
+
+    switch (page) {
+      case 1:
+        sheetInfo.racuni = sheetDetails;
+        break;
+      case 2:
+        sheetInfo.potni = sheetDetails;
+        break;
+      case 3:
+        sheetInfo.prisotnost = sheetDetails;
+        break;
+      default:
+        break;
+    }
 
     localStorage.setItem("sheetInfo", JSON.stringify(sheetInfo));
     toast.success("Link saved!");
