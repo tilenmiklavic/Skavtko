@@ -1,3 +1,4 @@
+import Dropdown from "../Inputs/dropdown";
 import TextInput from "../Inputs/textInput";
 import Subtitle from "../Text/Subtitle";
 
@@ -6,8 +7,7 @@ const GeneralSettings = () => {
     <div>
       <Subtitle title="General" />
 
-      <TextInput label="Ime" placeholder="ime" id="ime" />
-      <TextInput label="Priimek" placeholder="priimek" id="priimek" />
+      <Dropdown label={"Veja"} id={"veja_dropdown"} />
     </div>
   );
 };

@@ -20,7 +20,7 @@ const Navigation = () => {
   const [tab] = useState(0);
 
   return (
-    <nav className="fixed bottom-0 w-full border-b border-gray-200 dark:border-gray-600">
+    <nav className=" w-full border-b border-gray-200 dark:border-gray-600">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-around mx-auto p-4">
         <NavItem path={"/"} icon={faCheckCircle} enabled={tab === 0} />
         <NavItem path={"/finance"} icon={faBitcoin} enabled={tab === 1} />

@@ -17,52 +17,59 @@ function App() {
       <div>
         <Toaster />
       </div>
-      <Container>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/finance"
-            element={
-              <ProtectedRoute>
-                <Finance />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/prisotnost"
-            element={
-              <ProtectedRoute>
-                <Prisotnost />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </Container>
-      <Navigation />
+      <div className="flex flex-col h-screen">
+        <div className="flex-1 flex flex-col">
+          <Container>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <Home />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/finance"
+                element={
+                  <ProtectedRoute>
+                    <Finance />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/prisotnost"
+                element={
+                  <ProtectedRoute>
+                    <Prisotnost />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  <ProtectedRoute>
+                    <Settings />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </Container>
+        </div>
+
+        <div className="flex-none">
+          <Navigation />
+        </div>
+      </div>
     </Router>
   );
 }

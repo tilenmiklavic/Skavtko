@@ -1,7 +1,11 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 interface NavItemProps {
   label: string;
   disabled?: boolean;
   onClick?: () => void;
+  icon?: IconProp;
 }
 
 const PrimaryButton = (props: NavItemProps) => {
@@ -17,6 +21,7 @@ const PrimaryButton = (props: NavItemProps) => {
       className={props.disabled ? classnameDisabled : classnameEnabled}
     >
       {props.label}
+      {props.icon && <FontAwesomeIcon className="ms-3" icon={props.icon} />}
     </button>
   );
 };
