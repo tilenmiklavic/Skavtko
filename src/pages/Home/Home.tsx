@@ -4,6 +4,7 @@ import { getSheet } from "../../services/gsheets";
 function Home() {
   const getData = async () => {
     console.log("Getting sheet");
+    const sheetId = JSON.parse(localStorage.getItem("settings")!).prisotnost.id;
     const result = await getSheet();
     console.log(result);
   };
