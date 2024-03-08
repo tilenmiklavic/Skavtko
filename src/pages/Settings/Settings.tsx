@@ -7,6 +7,7 @@ import RacuniSettings from "../../components/Settings/racuni";
 import PotniSettings from "../../components/Settings/potni";
 import PrisotnostSettings from "../../components/Settings/prisotnost";
 import SettingsInterface from "../../classes/SettingsInterface";
+import { Tabs, TabsHeader } from "@material-tailwind/react";
 
 export default function Settings() {
   const [link, setLink] = useState("");

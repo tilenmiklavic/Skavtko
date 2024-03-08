@@ -33,11 +33,11 @@ export async function writeToSheets(values: string[][]) {
   }
 }
 
-export async function getSheet() {
+export async function getSheet(sheet_id: string) {
   // Assuming `formData` is the data you want to append, structured as needed for your Google Sheet
 
   const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
-  const sheet_id = JSON.parse(localStorage.getItem("sheetLink")!).id;
+  // const sheet_id = JSON.parse(localStorage.getItem("sheetLink")!).id;
 
   const formData = {
     accessToken: access_token,
@@ -99,4 +99,19 @@ export async function getSheetInfo(sheet_id: string) {
     console.error("Network error:", error);
     // Handle network errors
   }
+}
+
+export function sheet2Object(sheet: string[][]) {
+  const headers = sheet[0];
+  const data = sheet.slice(1);
+
+  const result = data.map((row) => {
+    const obj = {} as any;
+    row.forEach((cell, i) => {
+      obj[headers[i]] = cell;
+    });
+    return obj;
+  });
+
+  return result;
 }

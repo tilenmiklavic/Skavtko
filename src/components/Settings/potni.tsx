@@ -44,7 +44,7 @@ const PotniSettings = () => {
           )}
         </div>
       ) : (
-        <Chip color="amber" value={"No sheet"} />
+        <Chip color="amber" value={"No spreadsheet"} />
       )}
     </div>
   );
