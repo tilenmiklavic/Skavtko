@@ -1,5 +1,5 @@
 import { QrScanner } from "@yudiel/react-qr-scanner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { qrDecToZoi } from "../../services/zoi";
 import { getReciptData, getReciptDataMock } from "../../services/furs";
 import formatTime from "../../services/dateTime";
@@ -7,13 +7,14 @@ import toast from "react-hot-toast";
 import Header from "../../components/Header/header";
 import PrimaryButton from "../../components/Buttons/primaryButton";
 import SecondaryButton from "../../components/Buttons/secondaryButton";
-import { writeToSheets } from "../../services/gsheets";
+import { appendToSheet } from "../../services/gsheets";
 
 export default function Finance() {
   // set state
   const [decoded, setDecoded] = useState("");
   const [deconding, setDecoding] = useState(true);
   const [reciept, setReciept] = useState({} as any);
+  const [sheetId, setSheetId] = useState("");
 
   const handleSubmit = async (result: string) => {
     const reciept = await handleDecode(result);
@@ -54,7 +55,7 @@ export default function Finance() {
     ];
 
     toast.promise(
-      writeToSheets(sheetData), // The promise you are awaiting
+      appendToSheet(sheetData, sheetId), // The promise you are awaiting
       {
         loading: "Writing to sheets...", // Message shown during loading
         success: "Data written successfully!", // Message shown on success
@@ -62,6 +63,11 @@ export default function Finance() {
       }
     );
   };
+
+  useEffect(() => {
+    const sheetId = JSON.parse(localStorage.getItem("settings")!).racuni.id;
+    setSheetId(sheetId);
+  }, []);
 
   return (
     <>
