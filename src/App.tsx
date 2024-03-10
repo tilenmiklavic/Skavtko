@@ -18,7 +18,7 @@ function App() {
         <Toaster />
       </div>
       <div className="flex flex-col h-screen">
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col overflow-auto">
           <Container>
             <Routes>
               <Route path="/login" element={<Login />} />
@@ -65,7 +65,7 @@ function App() {
             </Routes>
           </Container>
         </div>
-        <div className="flex-none">
+        <div className="flex">
           <Navigation />
         </div>
       </div>
