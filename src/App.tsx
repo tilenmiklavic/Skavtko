@@ -12,6 +12,7 @@ import Container from "./components/Common/Container";
 import Settings from "./pages/Settings/Settings";
 import Statistics from "./pages/Statistics/Statistics";
 import FinanceManual from "./pages/Finance/FinanceManual";
+import Napredovanje from "./pages/Napredovanje/Napredovanje";
 
 function App() {
   return (
@@ -77,6 +78,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Statistics />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/on"
+                element={
+                  <ProtectedRoute>
+                    <Napredovanje />
                   </ProtectedRoute>
                 }
               />
