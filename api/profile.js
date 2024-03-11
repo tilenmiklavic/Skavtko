@@ -1,6 +1,5 @@
 // /api/append.js
 module.exports = async (req, res) => {
-  console.log("Here");
   try {
     const body = await req.body;
     const { apiKey, accessToken } = body;
@@ -17,8 +16,6 @@ module.exports = async (req, res) => {
       throw new Error("Failed to fetch user info");
     }
     const data = await response.json();
-
-    console.log("User info:", data);
 
     res.status(200).json({ data: data });
   } catch (error) {

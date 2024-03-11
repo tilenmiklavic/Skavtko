@@ -1,19 +1,21 @@
 import { QrScanner } from "@yudiel/react-qr-scanner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { qrDecToZoi } from "../../services/zoi";
 import { getReciptData, getReciptDataMock } from "../../services/furs";
 import formatTime from "../../services/dateTime";
 import toast from "react-hot-toast";
 import Header from "../../components/Header/header";
-import PrimaryButton from "../../components/Buttons/primaryButton";
-import SecondaryButton from "../../components/Buttons/secondaryButton";
-import { writeToSheets } from "../../services/gsheets";
+import { appendToSheet } from "../../services/gsheets";
+import { Button, Card } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
+import LabelValue from "../../components/Common/LabelValue";
 
 export default function Finance() {
   // set state
   const [decoded, setDecoded] = useState("");
   const [deconding, setDecoding] = useState(true);
   const [reciept, setReciept] = useState({} as any);
+  const [sheetId, setSheetId] = useState("");
 
   const handleSubmit = async (result: string) => {
     const reciept = await handleDecode(result);
@@ -54,7 +56,7 @@ export default function Finance() {
     ];
 
     toast.promise(
-      writeToSheets(sheetData), // The promise you are awaiting
+      appendToSheet(sheetData, sheetId), // The promise you are awaiting
       {
         loading: "Writing to sheets...", // Message shown during loading
         success: "Data written successfully!", // Message shown on success
@@ -63,9 +65,14 @@ export default function Finance() {
     );
   };
 
+  useEffect(() => {
+    const sheetId = JSON.parse(localStorage.getItem("settings")!).racuni.id;
+    setSheetId(sheetId);
+  }, []);
+
   return (
     <>
-      <Header title="Finance" settings="/settings" />
+      <Header title="Finance" />
 
       <QrScanner
         onDecode={(result) => handleSubmit(result)}
@@ -74,28 +81,44 @@ export default function Finance() {
         stopDecoding={!deconding}
       />
 
-      <div className="card">
-        <div>ZOI: {decoded}</div>
-        <div>
-          Datum: {reciept.Date} {reciept.Time}
+      {deconding && (
+        <div className="w-full flex justify-center mt-3">
+          <Link to={"/finance/manual"} className="w-full">
+            <Button placeholder={undefined} fullWidth={true}>
+              Vnesi Ročno
+            </Button>
+          </Link>
         </div>
-        <div>Trgovina: {reciept.Name}</div>
-        <div>Znesek: {reciept.InvoiceAmount}</div>
-        <div>Stevilka racuna: {reciept.InvoiceNumber}</div>
+      )}
 
-        <div className="grid grid-cols-2 gap-4 place-content-around mt-5">
-          <PrimaryButton
-            label={"Shrani račun"}
-            disabled={reciept.valid ? false : true}
-            onClick={reciept.valid ? saveRecipet : undefined}
-          />
+      {!deconding && (
+        <>
+          <Card placeholder={undefined} className="mt-4 p-3">
+            <LabelValue
+              label="Datum"
+              value={`${reciept.Date} ${reciept.Time}`}
+            />
+            <LabelValue label="Trgovina" value={reciept.Name} />
+            <LabelValue label="Znesek" value={`${reciept.InvoiceAmount}€`} />
+            <LabelValue label="Številka računa" value={reciept.InvoiceNumber} />
+            <LabelValue label="ZOI" value={decoded} />
+          </Card>
 
-          <SecondaryButton
-            label={"Nov račun"}
-            onClick={() => setDecoding(true)}
-          />
-        </div>
-      </div>
+          <div className="grid grid-cols-2 gap-4 place-content-around mt-5">
+            <Button
+              placeholder={undefined}
+              disabled={reciept.valid ? false : true}
+              onClick={reciept.valid ? saveRecipet : undefined}
+              color="blue"
+            >
+              Shrani račun
+            </Button>
+            <Button placeholder={undefined} onClick={() => setDecoding(true)}>
+              Nov račun
+            </Button>
+          </div>
+        </>
+      )}
     </>
   );
 }

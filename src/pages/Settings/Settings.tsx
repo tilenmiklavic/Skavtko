@@ -1,43 +1,162 @@
 import toast from "react-hot-toast";
 import Header from "../../components/Header/header";
-import TextInput from "../../components/Inputs/textInput";
 import { useState } from "react";
+import SettingsButtonGroup from "../../components/Buttons/settingsButtonGroup";
+import GeneralSettings from "../../components/Settings/general";
+import RacuniSettings from "../../components/Settings/racuni";
+import PotniSettings from "../../components/Settings/potni";
+import PrisotnostSettings from "../../components/Settings/prisotnost";
+import SettingsInterface from "../../classes/SettingsInterface";
+import {
+  Button,
+  Tab,
+  TabPanel,
+  Tabs,
+  TabsBody,
+  TabsHeader,
+} from "@material-tailwind/react";
 
-export default function FinanceSettings() {
+export default function Settings() {
   const [link, setLink] = useState("");
+  const [page, setPage] = useState(0);
 
   const saveLink = async (event: any) => {
     event.preventDefault();
 
-    setLink(event.target.link.value);
+    switch (page) {
+      case 1:
+        setLink(event.target.racuni_input.value);
+        break;
+      case 2:
+        setLink(event.target.potni_input.value);
+        break;
+      case 3:
+        setLink(event.target.prisotnost_input.value);
+        break;
+      default:
+        break;
+    }
 
-    const sheetInfo = {
+    const sheetInfo: SettingsInterface = JSON.parse(
+      localStorage.getItem("sheetInfo") || "{}"
+    );
+
+    const sheetDetails = {
       link: link,
       id: link.toString().split("/")[5],
     };
 
-    localStorage.setItem("sheetInfo", JSON.stringify(sheetInfo));
+    switch (page) {
+      case 1:
+        sheetInfo.racuni = sheetDetails;
+        break;
+      case 2:
+        sheetInfo.potni = sheetDetails;
+        break;
+      case 3:
+        sheetInfo.prisotnost = sheetDetails;
+        break;
+      default:
+        break;
+    }
+
+    localStorage.setItem("settings", JSON.stringify(sheetInfo));
     toast.success("Link saved!");
   };
 
+  const changePage = (page: number) => {
+    setPage(page);
+  };
+
+  const saveSettings = async (event: any) => {
+    event.preventDefault();
+
+    if (page === 0) {
+      const sheetInfo: SettingsInterface = JSON.parse(
+        localStorage.getItem("sheetInfo") || "{}"
+      );
+
+      sheetInfo.steg = event.target.steg_input.value;
+      sheetInfo.veja = event.target.veja_select.value;
+
+      localStorage.setItem("settings", JSON.stringify(sheetInfo));
+
+      toast.success("Settings saved!");
+    } else {
+      saveLink(event);
+    }
+  };
+
+  const data = [
+    {
+      label: "General",
+      value: "general",
+      index: 0,
+      desc: <GeneralSettings />,
+    },
+    {
+      label: "Računi",
+      value: "racuni",
+      index: 1,
+      desc: <RacuniSettings />,
+    },
+    {
+      label: "Potni",
+      value: "potni",
+      index: 2,
+      desc: <PotniSettings />,
+    },
+    {
+      label: "Prisotnost",
+      value: "prisotnost",
+      index: 3,
+      desc: <PrisotnostSettings />,
+    },
+  ];
+
   return (
-    <>
+    <div className="bg-blue flex flex-col flex-1" id="demo">
       <div>
         <Header title={"Nastavitve"} />
       </div>
-      <form onSubmit={saveLink}>
-        <div className="grid gap-6 mb-6 md:grid-cols-2">
-          <TextInput label="Ime" placeholder="ime" id="ime" />
-          <TextInput label="Priimek" placeholder="priimek" id="priimek" />
-          <TextInput label="Spreadsheet link" placeholder="link" id="link" />
+      <form onSubmit={saveSettings} className="mb-4 flex flex-col flex-1">
+        <div className=" flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col mt-6">
+            <Tabs value="general">
+              <TabsHeader placeholder={undefined}>
+                {data.map(({ label, value, index }) => (
+                  <Tab
+                    key={value}
+                    value={value}
+                    placeholder={undefined}
+                    onClick={() => changePage(index)}
+                  >
+                    {label}
+                  </Tab>
+                ))}
+              </TabsHeader>
+              <TabsBody placeholder={undefined} className="mt-6">
+                {data.map(({ value, desc }) => (
+                  <TabPanel key={value} value={value} className="p-0">
+                    {desc}
+                  </TabPanel>
+                ))}
+              </TabsBody>
+            </Tabs>
+          </div>
+          <div className="flex">
+            {/* <button
+              type="submit"
+              className="mt-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Shrani
+            </button> */}
+            <Button color="blue" className="w-full" placeholder={undefined}>
+              Shrani
+            </Button>
+          </div>
         </div>
-        <button
-          type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Submit
-        </button>
       </form>
-    </>
+    </div>
   );
 }

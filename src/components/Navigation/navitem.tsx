@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import "./navigation.css";
 
 interface NavItemProps {
-  title: string;
+  title?: string;
   path: string;
   icon: IconProp;
   enabled?: boolean;

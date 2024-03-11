@@ -6,8 +6,8 @@ interface NavItemProps {
 
 const TextInput = (props: NavItemProps) => {
   return (
-    <div>
-      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+    <div className="mb-3">
+      <label className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">
         {props.label}
       </label>
       <input

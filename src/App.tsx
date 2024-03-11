@@ -5,9 +5,13 @@ import Finance from "./pages/Finance/Finance";
 import Navigation from "./components/Navigation/navigation";
 import Profile from "./pages/Profile/Profile";
 import { Toaster } from "react-hot-toast";
-import FinanceSettings from "./pages/Settings/Settings";
 import Login from "./pages/Login/Login";
 import { ProtectedRoute } from "./components/Routes/ProtectedRoute";
+import Prisotnost from "./pages/Prisotnost/Prisotnost";
+import Container from "./components/Common/Container";
+import Settings from "./pages/Settings/Settings";
+import Statistics from "./pages/Statistics/Statistics";
+import FinanceManual from "./pages/Finance/FinanceManual";
 
 function App() {
   return (
@@ -15,42 +19,74 @@ function App() {
       <div>
         <Toaster />
       </div>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/finance"
-          element={
-            <ProtectedRoute>
-              <Finance />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <FinanceSettings />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-      <Navigation />
+      <div className="flex flex-col h-screen">
+        <div className="flex-1 flex flex-col overflow-auto">
+          <Container>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <Home />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/finance"
+                element={
+                  <ProtectedRoute>
+                    <Finance />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/finance/manual"
+                element={
+                  <ProtectedRoute>
+                    <FinanceManual />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/prisotnost"
+                element={
+                  <ProtectedRoute>
+                    <Prisotnost />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  <ProtectedRoute>
+                    <Settings />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/statistics"
+                element={
+                  <ProtectedRoute>
+                    <Statistics />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </Container>
+        </div>
+        <div className="flex">
+          <Navigation />
+        </div>
+      </div>
     </Router>
   );
 }
