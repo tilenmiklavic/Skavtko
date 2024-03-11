@@ -179,3 +179,29 @@ export function date2Col(data: string[][], date: string) {
   const col = data[row].findIndex((cell) => cell === date);
   return colNumber2ColLetter(col);
 }
+
+export function name2ColIndex(data: string[][]): number {
+  const possibleValues = ["ime", "name"];
+  let foundIndex = -1;
+
+  data[0]?.forEach((value, index) => {
+    if (possibleValues.includes(value.toLowerCase())) {
+      foundIndex = index;
+    }
+  });
+
+  return foundIndex;
+}
+
+export function group2ColIndex(data: string[][]): number {
+  const possibleValues = ["vod", "skupina", "group", "gruča"];
+  let foundIndex = -1;
+
+  data[0]?.forEach((value, index) => {
+    if (possibleValues.includes(value.toLowerCase())) {
+      foundIndex = index;
+    }
+  });
+
+  return foundIndex;
+}

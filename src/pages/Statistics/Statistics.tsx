@@ -10,6 +10,7 @@ import Chart from "react-apexcharts";
 import { useEffect, useState } from "react";
 import { getSheet, sheet2Object } from "../../services/gsheets";
 import {
+  calculateMeetingAttendanceByUser,
   calculateMeetingAttendanceSum,
   meetingLabels,
 } from "../../services/stats";
@@ -40,7 +41,7 @@ export default function Statistics() {
     getData();
   }, [sheetId]);
 
-  const chartConfig = {
+  const meetingsChartConfig = {
     type: "line" as "line",
     height: 200,
     series: [
@@ -116,6 +117,10 @@ export default function Statistics() {
     },
   };
 
+  const TABLE_HEAD = ["Ime", "Vod", "Priden", ""];
+
+  const TABLE_ROWS = calculateMeetingAttendanceByUser(rawData);
+
   if (loading) {
     return <Chip color="amber" size="lg" value={"Loading..."} />;
   }
@@ -139,8 +144,93 @@ export default function Statistics() {
             </div>
           </CardHeader>
           <CardBody className="px-2 pb-0" placeholder={undefined}>
-            <Chart {...chartConfig} />
+            <Chart {...meetingsChartConfig} />
           </CardBody>
+        </Card>
+
+        <Card className=" w-full overflow-scroll mt-3" placeholder={undefined}>
+          <table className="w-full min-w-max table-auto text-left">
+            <thead>
+              <tr>
+                {TABLE_HEAD.map((head) => (
+                  <th
+                    key={head}
+                    className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+                  >
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal leading-none opacity-70"
+                      placeholder={undefined}
+                    >
+                      {head}
+                    </Typography>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {TABLE_ROWS.map(
+                ({ name, group, attendance, percentage }, index) => (
+                  <tr key={name} className="even:bg-blue-gray-50/50">
+                    <td className="p-4">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                        placeholder={undefined}
+                      >
+                        {name}
+                      </Typography>
+                    </td>
+                    <td className="p-4">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                        placeholder={undefined}
+                      >
+                        {group}
+                      </Typography>
+                    </td>
+                    <td className="p-4">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                        placeholder={undefined}
+                      >
+                        {attendance}
+                      </Typography>
+                    </td>
+                    <td className="p-4">
+                      <Typography
+                        as="a"
+                        href="#"
+                        variant="small"
+                        color="blue-gray"
+                        className="font-medium"
+                        placeholder={undefined}
+                      >
+                        <Chip
+                          variant="ghost"
+                          color={
+                            percentage > 80
+                              ? "green"
+                              : percentage >= 50
+                              ? "amber"
+                              : "red"
+                          }
+                          size="sm"
+                          value={percentage + "%"}
+                        />
+                      </Typography>
+                    </td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
         </Card>
       </div>
     </div>
