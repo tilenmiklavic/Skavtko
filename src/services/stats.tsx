@@ -2,7 +2,6 @@ import moment from "moment";
 import { isDateString } from "./dateTime";
 import Attendance from "../classes/Attendance";
 import { group2ColIndex, name2ColIndex } from "./gsheets";
-import { group } from "console";
 
 export function calculateMeetingAttendanceSum(values: string[][]) {
   let sums: number[] = [];

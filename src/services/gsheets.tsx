@@ -139,7 +139,7 @@ export async function getSheetInfo(sheet_id: string) {
   }
 }
 
-export function sheet2Object(sheet: string[][]) {
+export function sheet2Object(sheet: string[][]): any[] {
   const headers = sheet[0];
   const data = sheet.slice(1);
 
