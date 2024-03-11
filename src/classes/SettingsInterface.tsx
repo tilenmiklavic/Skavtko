@@ -9,6 +9,8 @@ interface SettingsInterface {
   racuni: SheetDetails;
   potni: SheetDetails;
   prisotnost: SheetDetails;
+  napredovanje: SheetDetails;
+  group: SheetDetails;
 }
 
 export default SettingsInterface;
