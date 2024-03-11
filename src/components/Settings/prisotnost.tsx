@@ -36,7 +36,7 @@ const PrisotnostSettings = () => {
         id="prisotnost_input"
       />
 
-      {settings?.potni?.link ? (
+      {settings?.prisotnost?.link ? (
         // <span>Current: {sheetInfoData?.properties?.title}</span>
         <div className="flex gap-2 items-center">
           {loading && <Chip color="amber" value={"Loading..."} />}

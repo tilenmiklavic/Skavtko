@@ -15,6 +15,9 @@ import {
   TabsBody,
   TabsHeader,
 } from "@material-tailwind/react";
+import NapredovanjeSettings from "../../components/Settings/napredovanje";
+import FinanceSettings from "../../components/Settings/finance";
+import { getSettings } from "../../services/settings";
 
 export default function Settings() {
   const [link, setLink] = useState("");
@@ -23,45 +26,51 @@ export default function Settings() {
   const saveLink = async (event: any) => {
     event.preventDefault();
 
-    switch (page) {
-      case 1:
-        setLink(event.target.racuni_input.value);
-        break;
-      case 2:
-        setLink(event.target.potni_input.value);
-        break;
-      case 3:
-        setLink(event.target.prisotnost_input.value);
-        break;
-      default:
-        break;
-    }
+    const racuniLink = event.target?.racuni_input?.value;
+    const potniLink = event.target?.potni_input?.value;
+    const prisotnostLink = event.target?.prisotnost_input?.value;
+    const napredovanjeLink = event.target?.napredovanje_input?.value;
+    const skupineLink = event.target?.group_input?.value;
 
-    const sheetInfo: SettingsInterface = JSON.parse(
-      localStorage.getItem("sheetInfo") || "{}"
-    );
+    const settings = getSettings();
 
-    const sheetDetails = {
-      link: link,
-      id: link.toString().split("/")[5],
-    };
+    settings.racuni = racuniLink
+      ? {
+          link: racuniLink,
+          id: racuniLink.toString().split("/")[5],
+        }
+      : settings.racuni;
 
-    switch (page) {
-      case 1:
-        sheetInfo.racuni = sheetDetails;
-        break;
-      case 2:
-        sheetInfo.potni = sheetDetails;
-        break;
-      case 3:
-        sheetInfo.prisotnost = sheetDetails;
-        break;
-      default:
-        break;
-    }
+    settings.potni = potniLink
+      ? {
+          link: potniLink,
+          id: potniLink.toString().split("/")[5],
+        }
+      : settings.potni;
 
-    localStorage.setItem("settings", JSON.stringify(sheetInfo));
-    toast.success("Link saved!");
+    settings.prisotnost = prisotnostLink
+      ? {
+          link: prisotnostLink,
+          id: prisotnostLink.toString().split("/")[5],
+        }
+      : settings.prisotnost;
+
+    settings.napredovanje = napredovanjeLink
+      ? {
+          link: napredovanjeLink,
+          id: napredovanjeLink.toString().split("/")[5],
+        }
+      : settings.napredovanje;
+
+    settings.group = skupineLink
+      ? {
+          link: skupineLink,
+          id: skupineLink.toString().split("/")[5],
+        }
+      : settings.group;
+
+    localStorage.setItem("settings", JSON.stringify(settings));
+    toast.success("Settings saved!");
   };
 
   const changePage = (page: number) => {
@@ -72,14 +81,12 @@ export default function Settings() {
     event.preventDefault();
 
     if (page === 0) {
-      const sheetInfo: SettingsInterface = JSON.parse(
-        localStorage.getItem("sheetInfo") || "{}"
-      );
+      let settings = getSettings();
 
-      sheetInfo.steg = event.target.steg_input.value;
-      sheetInfo.veja = event.target.veja_select.value;
+      settings.steg = event.target.steg_input.value;
+      settings.veja = event.target.veja_select.value;
 
-      localStorage.setItem("settings", JSON.stringify(sheetInfo));
+      localStorage.setItem("settings", JSON.stringify(settings));
 
       toast.success("Settings saved!");
     } else {
@@ -95,16 +102,16 @@ export default function Settings() {
       desc: <GeneralSettings />,
     },
     {
-      label: "Računi",
-      value: "racuni",
+      label: "Finance",
+      value: "finance",
       index: 1,
-      desc: <RacuniSettings />,
+      desc: <FinanceSettings />,
     },
     {
-      label: "Potni",
-      value: "potni",
-      index: 2,
-      desc: <PotniSettings />,
+      label: "Napredovanje",
+      value: "napredovanje",
+      index: 1,
+      desc: <NapredovanjeSettings />,
     },
     {
       label: "Prisotnost",
@@ -119,7 +126,11 @@ export default function Settings() {
       <div>
         <Header title={"Nastavitve"} />
       </div>
-      <form onSubmit={saveSettings} className="mb-4 flex flex-col flex-1">
+      <form
+        method="post"
+        onSubmit={saveSettings}
+        className="mb-4 flex flex-col flex-1"
+      >
         <div className=" flex-1 flex flex-col">
           <div className="flex-1 flex flex-col mt-6">
             <Tabs value="general">
@@ -151,7 +162,12 @@ export default function Settings() {
             >
               Shrani
             </button> */}
-            <Button color="blue" className="w-full" placeholder={undefined}>
+            <Button
+              color="blue"
+              className="w-full"
+              type="submit"
+              placeholder={undefined}
+            >
               Shrani
             </Button>
           </div>

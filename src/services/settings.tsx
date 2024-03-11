@@ -11,6 +11,8 @@ export default function createSettingsObject(): SheetInfo {
     racuni: { ...emptySheetDetails },
     potni: { ...emptySheetDetails },
     prisotnost: { ...emptySheetDetails },
+    napredovanje: { ...emptySheetDetails },
+    group: { ...emptySheetDetails },
   };
 }
 
