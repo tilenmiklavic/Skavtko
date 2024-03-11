@@ -13,3 +13,18 @@ export default function createSettingsObject(): SheetInfo {
     prisotnost: { ...emptySheetDetails },
   };
 }
+
+export function getSettings(): SheetInfo {
+  // Get the settings from local storage
+  const settings = localStorage.getItem("settings");
+
+  // If the settings are not found, create a new settings object
+  if (!settings) {
+    const newSettings = createSettingsObject();
+    localStorage.setItem("settings", JSON.stringify(newSettings));
+    return newSettings;
+  }
+
+  // Return the settings object
+  return JSON.parse(settings);
+}

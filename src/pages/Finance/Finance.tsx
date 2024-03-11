@@ -5,9 +5,10 @@ import { getReciptData, getReciptDataMock } from "../../services/furs";
 import formatTime from "../../services/dateTime";
 import toast from "react-hot-toast";
 import Header from "../../components/Header/header";
-import PrimaryButton from "../../components/Buttons/primaryButton";
-import SecondaryButton from "../../components/Buttons/secondaryButton";
 import { appendToSheet } from "../../services/gsheets";
+import { Button, Card } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
+import LabelValue from "../../components/Common/LabelValue";
 
 export default function Finance() {
   // set state
@@ -71,7 +72,7 @@ export default function Finance() {
 
   return (
     <>
-      <Header title="Finance" settings="/settings" />
+      <Header title="Finance" />
 
       <QrScanner
         onDecode={(result) => handleSubmit(result)}
@@ -80,28 +81,44 @@ export default function Finance() {
         stopDecoding={!deconding}
       />
 
-      <div className="card">
-        <div>ZOI: {decoded}</div>
-        <div>
-          Datum: {reciept.Date} {reciept.Time}
+      {deconding && (
+        <div className="w-full flex justify-center mt-3">
+          <Link to={"/finance/manual"} className="w-full">
+            <Button placeholder={undefined} fullWidth={true}>
+              Vnesi Ročno
+            </Button>
+          </Link>
         </div>
-        <div>Trgovina: {reciept.Name}</div>
-        <div>Znesek: {reciept.InvoiceAmount}</div>
-        <div>Stevilka racuna: {reciept.InvoiceNumber}</div>
+      )}
 
-        <div className="grid grid-cols-2 gap-4 place-content-around mt-5">
-          <PrimaryButton
-            label={"Shrani račun"}
-            disabled={reciept.valid ? false : true}
-            onClick={reciept.valid ? saveRecipet : undefined}
-          />
+      {!deconding && (
+        <>
+          <Card placeholder={undefined} className="mt-4 p-3">
+            <LabelValue
+              label="Datum"
+              value={`${reciept.Date} ${reciept.Time}`}
+            />
+            <LabelValue label="Trgovina" value={reciept.Name} />
+            <LabelValue label="Znesek" value={`${reciept.InvoiceAmount}€`} />
+            <LabelValue label="Številka računa" value={reciept.InvoiceNumber} />
+            <LabelValue label="ZOI" value={decoded} />
+          </Card>
 
-          <SecondaryButton
-            label={"Nov račun"}
-            onClick={() => setDecoding(true)}
-          />
-        </div>
-      </div>
+          <div className="grid grid-cols-2 gap-4 place-content-around mt-5">
+            <Button
+              placeholder={undefined}
+              disabled={reciept.valid ? false : true}
+              onClick={reciept.valid ? saveRecipet : undefined}
+              color="blue"
+            >
+              Shrani račun
+            </Button>
+            <Button placeholder={undefined} onClick={() => setDecoding(true)}>
+              Nov račun
+            </Button>
+          </div>
+        </>
+      )}
     </>
   );
 }

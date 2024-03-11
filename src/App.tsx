@@ -11,6 +11,7 @@ import Prisotnost from "./pages/Prisotnost/Prisotnost";
 import Container from "./components/Common/Container";
 import Settings from "./pages/Settings/Settings";
 import Statistics from "./pages/Statistics/Statistics";
+import FinanceManual from "./pages/Finance/FinanceManual";
 
 function App() {
   return (
@@ -36,6 +37,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Finance />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/finance/manual"
+                element={
+                  <ProtectedRoute>
+                    <FinanceManual />
                   </ProtectedRoute>
                 }
               />
