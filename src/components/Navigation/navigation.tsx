@@ -25,7 +25,7 @@ const Navigation = () => {
         <NavItem path={"/"} icon={faCheckCircle} enabled={tab === 0} />
         <NavItem path={"/finance"} icon={faBitcoin} enabled={tab === 1} />
         <NavItem path={"/on"} icon={faDumbbell} enabled={tab === 2} />
-        <NavItem path={"/profile"} icon={faChartPie} enabled={tab === 2} />
+        <NavItem path={"/statistics"} icon={faChartPie} enabled={tab === 2} />
         <NavItem path={"/settings"} icon={faGear} enabled={tab === 2} />
       </div>
     </nav>

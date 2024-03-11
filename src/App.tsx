@@ -10,6 +10,7 @@ import { ProtectedRoute } from "./components/Routes/ProtectedRoute";
 import Prisotnost from "./pages/Prisotnost/Prisotnost";
 import Container from "./components/Common/Container";
 import Settings from "./pages/Settings/Settings";
+import Statistics from "./pages/Statistics/Statistics";
 
 function App() {
   return (
@@ -59,6 +60,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/statistics"
+                element={
+                  <ProtectedRoute>
+                    <Statistics />
                   </ProtectedRoute>
                 }
               />

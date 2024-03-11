@@ -58,68 +58,68 @@ function Home() {
     getData();
   }, [sheetId]);
 
+  if (loading) {
+    return <Chip color="amber" size="lg" value={"Loading..."} />;
+  }
+
   return (
     <div>
       <div>
         <Header title={"Prisotnost"} />
       </div>
-      {loading ? (
-        <Chip color="amber" size="lg" value={"Loading..."} />
-      ) : (
-        <div className="flex flex-col gap-2">
-          {data.map((user: any) => {
-            return (
-              <Card
-                placeholder={undefined}
-                key={user.Ime}
-                className="shadow-xl border"
-              >
-                <div className="p-5 flex flex-row justify-between">
-                  <div>
-                    <h5 className="text-2xl font-semibold">{user.Ime}</h5>
-                    <p className="mt-2 text-gray-500">{user.Vod}</p>
-                  </div>
-                  <div className="flex gap-2 items-center">
-                    <IconButton
-                      placeholder={undefined}
-                      size="lg"
-                      onClick={() => markPresent(Present.present, user.Ime)}
-                    >
-                      <FontAwesomeIcon
-                        className="icon"
-                        size="xl"
-                        icon={faCircleCheck}
-                      />
-                    </IconButton>
-                    <IconButton
-                      placeholder={undefined}
-                      size="lg"
-                      onClick={() => markPresent(Present.unknown, user.Ime)}
-                    >
-                      <FontAwesomeIcon
-                        className="icon"
-                        size="xl"
-                        icon={faCircle}
-                      />
-                    </IconButton>
-                    <IconButton
-                      placeholder={undefined}
-                      size="lg"
-                      onClick={() => markPresent(Present.absent, user.Ime)}
-                    >
-                      <FontAwesomeIcon
-                        className="icon"
-                        size="xl"
-                        icon={faCircleXmark}
-                      />
-                    </IconButton>
-                  </div>
+      <div className="flex flex-col gap-2">
+        {data.map((user: any) => {
+          return (
+            <Card
+              placeholder={undefined}
+              key={user.Ime}
+              className="shadow-xl border"
+            >
+              <div className="p-5 flex flex-row justify-between">
+                <div>
+                  <h5 className="text-2xl font-semibold">{user.Ime}</h5>
+                  <p className="mt-2 text-gray-500">{user.Vod}</p>
                 </div>
-              </Card>
-            );
-          })}
-        </div>
-      )}
+                <div className="flex gap-2 items-center">
+                  <IconButton
+                    placeholder={undefined}
+                    size="lg"
+                    onClick={() => markPresent(Present.present, user.Ime)}
+                  >
+                    <FontAwesomeIcon
+                      className="icon"
+                      size="xl"
+                      icon={faCircleCheck}
+                    />
+                  </IconButton>
+                  <IconButton
+                    placeholder={undefined}
+                    size="lg"
+                    onClick={() => markPresent(Present.unknown, user.Ime)}
+                  >
+                    <FontAwesomeIcon
+                      className="icon"
+                      size="xl"
+                      icon={faCircle}
+                    />
+                  </IconButton>
+                  <IconButton
+                    placeholder={undefined}
+                    size="lg"
+                    onClick={() => markPresent(Present.absent, user.Ime)}
+                  >
+                    <FontAwesomeIcon
+                      className="icon"
+                      size="xl"
+                      icon={faCircleXmark}
+                    />
+                  </IconButton>
+                </div>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
     </div>
   );
 }
