@@ -7,7 +7,14 @@ import RacuniSettings from "../../components/Settings/racuni";
 import PotniSettings from "../../components/Settings/potni";
 import PrisotnostSettings from "../../components/Settings/prisotnost";
 import SettingsInterface from "../../classes/SettingsInterface";
-import { Tabs, TabsHeader } from "@material-tailwind/react";
+import {
+  Button,
+  Tab,
+  TabPanel,
+  Tabs,
+  TabsBody,
+  TabsHeader,
+} from "@material-tailwind/react";
 
 export default function Settings() {
   const [link, setLink] = useState("");
@@ -57,6 +64,10 @@ export default function Settings() {
     toast.success("Link saved!");
   };
 
+  const changePage = (page: number) => {
+    setPage(page);
+  };
+
   const saveSettings = async (event: any) => {
     event.preventDefault();
 
@@ -76,9 +87,32 @@ export default function Settings() {
     }
   };
 
-  const changePage = (page: number) => {
-    setPage(page);
-  };
+  const data = [
+    {
+      label: "General",
+      value: "general",
+      index: 0,
+      desc: <GeneralSettings />,
+    },
+    {
+      label: "Računi",
+      value: "racuni",
+      index: 1,
+      desc: <RacuniSettings />,
+    },
+    {
+      label: "Potni",
+      value: "potni",
+      index: 2,
+      desc: <PotniSettings />,
+    },
+    {
+      label: "Prisotnost",
+      value: "prisotnost",
+      index: 3,
+      desc: <PrisotnostSettings />,
+    },
+  ];
 
   return (
     <div className="bg-blue flex flex-col flex-1" id="demo">
@@ -87,21 +121,39 @@ export default function Settings() {
       </div>
       <form onSubmit={saveSettings} className="mb-4 flex flex-col flex-1">
         <div className=" flex-1 flex flex-col">
-          <SettingsButtonGroup changePage={changePage} />
-
           <div className="flex-1 flex flex-col mt-6">
-            {page === 0 && <GeneralSettings />}
-            {page === 1 && <RacuniSettings />}
-            {page === 2 && <PotniSettings />}
-            {page === 3 && <PrisotnostSettings />}
+            <Tabs value="general">
+              <TabsHeader placeholder={undefined}>
+                {data.map(({ label, value, index }) => (
+                  <Tab
+                    key={value}
+                    value={value}
+                    placeholder={undefined}
+                    onClick={() => changePage(index)}
+                  >
+                    {label}
+                  </Tab>
+                ))}
+              </TabsHeader>
+              <TabsBody placeholder={undefined} className="mt-6">
+                {data.map(({ value, desc }) => (
+                  <TabPanel key={value} value={value} className="p-0">
+                    {desc}
+                  </TabPanel>
+                ))}
+              </TabsBody>
+            </Tabs>
           </div>
           <div className="flex">
-            <button
+            {/* <button
               type="submit"
               className="mt-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               Shrani
-            </button>
+            </button> */}
+            <Button color="blue" className="w-full" placeholder={undefined}>
+              Shrani
+            </Button>
           </div>
         </div>
       </form>
