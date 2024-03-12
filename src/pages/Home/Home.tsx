@@ -16,18 +16,19 @@ import {
 import Header from "../../components/Header/header";
 import Present from "../../classes/Present";
 import moment from "moment";
+import { getSettings } from "../../services/settings";
 
 function Home() {
   const [data, setData] = useState([1, 1, 2]);
   const [rawData, setRawData] = useState([] as any[]);
   const [loading, setLoading] = useState(true);
-  const [sheetId, setSheetId] = useState("");
+  const [settings, setSettings] = useState(getSettings());
   const [date, setDate] = useState(moment().format("D.M.YYYY"));
 
   const getData = async () => {
-    if (sheetId === "") return;
+    if (settings.prisotnost.id === "") return;
 
-    const result = await getSheet(sheetId);
+    const result = await getSheet(settings.prisotnost.id);
     const obj = sheet2Object(result.data.values);
     setData(obj);
     setRawData(result.data.values);
@@ -44,18 +45,13 @@ function Home() {
     const response = await writeToSheet(
       symbol,
       date2Col(rawData, date) + name2RowNumber(rawData, user),
-      sheetId
+      settings.prisotnost.id
     );
   };
 
   useEffect(() => {
-    const sheetId = JSON.parse(localStorage.getItem("settings")!).prisotnost.id;
-    setSheetId(sheetId);
-  }, []);
-
-  useEffect(() => {
     getData();
-  }, [sheetId]);
+  }, [settings]);
 
   if (loading) {
     return <Chip color="amber" size="lg" value={"Loading..."} />;
