@@ -1,101 +1,260 @@
-import { Input } from "@material-tailwind/react";
-import { useLoadScript } from "@react-google-maps/api";
-import { useEffect, useState } from "react";
+import { Input, Select, Option } from "@material-tailwind/react";
+import { useEffect, useRef, useState } from "react";
 import { getSettings } from "../../services/settings";
 import {
-  APIProvider,
-  Map,
-  useMap,
-  useMapsLibrary,
-} from "@vis.gl/react-google-maps";
+  coordinateValid,
+  getDirections,
+  getPlaces,
+} from "../../services/directions";
+import "mapbox-gl/dist/mapbox-gl.css";
+import mapboxgl from "mapbox-gl";
+import "./potni.css";
+import Coordinate from "../../classes/Coordinates";
+import LabelValue from "../Common/LabelValue";
+
+mapboxgl.accessToken = process.env.REACT_APP_DIRECTIONS_ACCESS_TOKEN as string;
+
+const useDebounce = (value: string, delay: number) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    // Set debouncedValue to value (passed in) after the specified delay
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    // Cancel the timeout if value changes (also on component unmount)
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+};
 
 const Potni = () => {
   const [settings, setSettings] = useState(getSettings());
+  const [options, setOptions] = useState([] as any[]);
+  const [placeInputValue, setPlaceInputValue] = useState("");
+  const [start, setStart] = useState({ lat: 0, lng: 0 } as Coordinate);
+  const [end, setEnd] = useState({ lat: 0, lng: 0 } as Coordinate);
+  const [distance, setDistance] = useState(0);
+  const [time, setTime] = useState(0);
+  const debouncedSearchTerm = useDebounce(placeInputValue, 500); // 500ms delay
+
+  const directions = async () => {
+    let response = await getDirections(start.lat, start.lng, end.lat, end.lng);
+    console.log(start, end);
+    setDistance(response.data.routes[0].distance / 2);
+    setTime(response.data.routes[0].duration);
+    console.log(response);
+  };
+
+  const places = async (query: string) => {
+    let response = await getPlaces(14.5058, 46.0569, query);
+    setOptions(response.data.features);
+  };
+
+  const mapContainer = useRef<HTMLDivElement | null>(null);
+  const map = useRef<mapboxgl.Map | null>(null);
+  const [lat, setLat] = useState(46.0569);
+  const [lng, setLng] = useState(14.5058);
+  const [zoom, setZoom] = useState(9);
+
+  useEffect(() => {
+    if (!map.current && mapContainer.current) {
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: "mapbox://styles/mapbox/streets-v12",
+        center: [lng, lat],
+        zoom: zoom,
+      });
+
+      // map.current.addSource("route", {
+      //   type: "geojson",
+      //   data: {
+      //     type: "Feature",
+      //     properties: {},
+      //     geometry: {
+      //       type: "LineString",
+      //       coordinates: [
+      //         [46.167827, 14.46301],
+      //         [46.167826, 14.462955],
+      //         [46.167826, 14.462641],
+      //         [46.167823, 14.462292],
+      //         [46.167818, 14.461851],
+      //         [46.16782, 14.461599],
+      //         [46.167783, 14.461479],
+      //         [46.167678, 14.461357],
+      //         [46.167567, 14.461305],
+      //         [46.167488, 14.461254],
+      //         [46.167343, 14.460828],
+      //         [46.167338, 14.460706],
+      //         [46.167378, 14.460667],
+      //         [46.167493, 14.460641],
+      //         [46.167689, 14.460558],
+      //         [46.167745, 14.460464],
+      //         [46.167681, 14.460205],
+      //         [46.167536, 14.459789],
+      //         [46.167563, 14.459558],
+      //         [46.16771, 14.459394],
+      //         [40.1, 17.0],
+      //       ],
+      //     },
+      //   },
+      // });
+      // map.current.addLayer({
+      //   id: "route",
+      //   type: "line",
+      //   source: "route",
+      //   layout: {
+      //     "line-join": "round",
+      //     "line-cap": "round",
+      //   },
+      //   paint: {
+      //     "line-color": "#fff",
+      //     "line-width": 20,
+      //   },
+      // });
+
+      map.current?.on("move", () => {
+        if (!map.current) return;
+        setLng(parseFloat(map.current.getCenter().lng.toFixed(4)));
+        setLat(parseFloat(map.current.getCenter().lat.toFixed(4)));
+        setZoom(parseFloat(map.current.getZoom().toFixed(2)));
+      });
+
+      map.current.on("load", () => {
+        if (!map.current) return;
+
+        // map.current.addSource("route", {
+        //   type: "geojson",
+        //   data: {
+        //     type: "Feature",
+        //     properties: {},
+        //     geometry: {
+        //       type: "LineString",
+        //       coordinates: [
+        //         [46.167827, 14.46301],
+        //         [46.167826, 14.462955],
+        //         [46.167826, 14.462641],
+        //         [46.167823, 14.462292],
+        //         [46.167818, 14.461851],
+        //         [46.16782, 14.461599],
+        //         [46.167783, 14.461479],
+        //         [46.167678, 14.461357],
+        //         [46.167567, 14.461305],
+        //         [46.167488, 14.461254],
+        //         [46.167343, 14.460828],
+        //         [46.167338, 14.460706],
+        //         [46.167378, 14.460667],
+        //         [46.167493, 14.460641],
+        //         [46.167689, 14.460558],
+        //         [46.167745, 14.460464],
+        //         [46.167681, 14.460205],
+        //         [46.167536, 14.459789],
+        //         [46.167563, 14.459558],
+        //         [46.16771, 14.459394],
+        //         [40.1, 17.0],
+        //       ],
+        //     },
+        //   },
+        // });
+        // map.current.addLayer({
+        //   id: "route",
+        //   type: "line",
+        //   source: "route",
+        //   layout: {
+        //     "line-join": "round",
+        //     "line-cap": "round",
+        //   },
+        //   paint: {
+        //     "line-color": "#fff",
+        //     "line-width": 20,
+        //   },
+        // });
+      });
+    }
+  });
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      places(debouncedSearchTerm);
+    }
+  }, [debouncedSearchTerm]);
+
+  useEffect(() => {
+    if (coordinateValid(start) && coordinateValid(end)) {
+      directions();
+    }
+  });
 
   return (
     <div className="flex flex-col gap-3 mt-6">
-      <Input label="Start" crossOrigin={undefined} />
-      <Input label="Cilj" crossOrigin={undefined} />
-      <APIProvider apiKey={"AIzaSyBQMq4G6OWwtTmSPmIb14Fo1R6mlrIxoMw"}>
-        <Map
-          defaultCenter={{ lat: 43.65, lng: -79.38 }}
-          defaultZoom={10}
-          gestureHandling={"greedy"}
-          className="w-[400px] h-[400px]"
+      <Select label="Start" placeholder={undefined} value={start.name}>
+        <Input
+          label="Start"
+          crossOrigin={undefined}
+          id="search"
+          onChange={(e) => setPlaceInputValue(e.target.value)}
         />
-        <Directions />
-      </APIProvider>
+        {options.map((option) => (
+          <Option
+            key={option.id}
+            value={option.place_name}
+            onClick={() =>
+              setStart({
+                lat: option.center[1],
+                lng: option.center[0],
+                name: option.place_name,
+              })
+            }
+          >
+            {option.place_name}
+          </Option>
+        ))}
+      </Select>
+      <Select label="Cilj" placeholder={undefined} value={end.name}>
+        <Input
+          label="Cilj"
+          crossOrigin={undefined}
+          id="search"
+          onChange={(e) => setPlaceInputValue(e.target.value)}
+        />
+        {options.map((option) => (
+          <Option
+            key={option.id}
+            value={option.place_name}
+            onClick={() =>
+              setEnd({
+                lat: option.center[1],
+                lng: option.center[0],
+                name: option.place_name,
+              })
+            }
+          >
+            {option.place_name}
+          </Option>
+        ))}
+      </Select>
+
+      <div>
+        <div className="sidebar">
+          Lng: {lng.toFixed(2)} | Lat: {lat.toFixed(2)} | Zoom:{" "}
+          {zoom.toFixed(0)}
+        </div>
+        <div ref={mapContainer} className="map-container" />
+
+        <div>
+          <LabelValue
+            label={"Distance"}
+            value={`${(distance / 1000).toFixed(1).toString()}km`}
+          />
+          <LabelValue label={"Time"} value={`${(time / 60).toString()}min`} />
+        </div>
+      </div>
     </div>
   );
 };
 
 export default Potni;
-
-function Directions() {
-  const map = useMap();
-  const routesLibrary = useMapsLibrary("routes");
-  const [directionsService, setDirectionsService] =
-    useState<google.maps.DirectionsService>();
-  const [directionsRenderer, setDirectionsRenderer] =
-    useState<google.maps.DirectionsRenderer>();
-  const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
-  const [routeIndex, setRouteIndex] = useState(0);
-  const selected = routes[routeIndex];
-  const leg = selected?.legs[0];
-
-  // Initialize directions service and renderer
-  useEffect(() => {
-    if (!routesLibrary || !map) return;
-    setDirectionsService(new routesLibrary.DirectionsService());
-    setDirectionsRenderer(new routesLibrary.DirectionsRenderer({ map }));
-  }, [routesLibrary, map]);
-
-  // Use directions service
-  useEffect(() => {
-    if (!directionsService || !directionsRenderer) return;
-
-    directionsService
-      .route({
-        origin: "100 Front St, Toronto ON",
-        destination: "500 College St, Toronto ON",
-        travelMode: google.maps.TravelMode.DRIVING,
-        provideRouteAlternatives: true,
-      })
-      .then((response) => {
-        directionsRenderer.setDirections(response);
-        setRoutes(response.routes);
-      });
-
-    return () => directionsRenderer.setMap(null);
-  }, [directionsService, directionsRenderer]);
-
-  // Update direction route
-  useEffect(() => {
-    if (!directionsRenderer) return;
-    directionsRenderer.setRouteIndex(routeIndex);
-  }, [routeIndex, directionsRenderer]);
-
-  if (!leg) return null;
-
-  return (
-    <div className="directions">
-      <h2>{selected.summary}</h2>
-      <p>
-        {leg.start_address.split(",")[0]} to {leg.end_address.split(",")[0]}
-      </p>
-      <p>Distance: {leg.distance?.text}</p>
-      <p>Duration: {leg.duration?.text}</p>
-
-      <h2>Other Routes</h2>
-      <ul>
-        {routes.map((route, index) => (
-          <li key={route.summary}>
-            <button onClick={() => setRouteIndex(index)}>
-              {route.summary}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}

@@ -13,17 +13,18 @@ import {
 } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 
 const TekmovanjeSkupine = () => {
   const [settings, setSettings] = useState(getSettings());
-  const [data, setData] = useState<any[]>([]);
+  const [groupPoints, setGroupPoints] = useState<any[]>([]);
   const [rawData, setRawData] = useState([[]] as string[][]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
 
   const getData = async () => {
     let response = await getSheet(settings.group.id);
-    setData(sheet2Object(response.data.values));
+    setGroupPoints(sheet2Object(response.data.values));
     setRawData(response.data.values);
     setLoading(false);
   };
@@ -39,25 +40,57 @@ const TekmovanjeSkupine = () => {
   };
 
   const labels = () => {
-    return data.map((team) => team?.Ime);
+    return groupPoints.map((team) => team?.Ime);
   };
 
   const values = () => {
-    return data.map((team) => team?.Točke);
+    return groupPoints.map((team) => team?.Točke);
   };
 
   const updatePoints = async (team: string, increase: boolean) => {
+    let temp = [...groupPoints];
+    temp.forEach((row) => {
+      if (row.Ime === team) {
+        row.Točke = increase
+          ? parseInt(row.Točke) + 1
+          : parseInt(row.Točke) - 1;
+      }
+    });
+
+    setGroupPoints(temp);
+  };
+
+  const saveData = async () => {
     setUpdating(true);
 
-    let index = rawData.findIndex((row) => row[0] === team);
-    let pointsValue = points(team) + (increase ? 1 : -1);
-    let response = await writeToSheet(
-      pointsValue.toString(),
-      `B${index + 1}`,
-      settings.group.id
-    );
+    toast
+      .promise(
+        saveSheet(), // The promise you are awaiting
+        {
+          loading: "Writing to sheets...", // Message shown during loading
+          success: "Data written successfully!", // Message shown on success
+          error: "Failed to write data.", // Message shown on error
+        }
+      )
+      .then(() => {
+        setUpdating(false);
+      });
+  };
 
-    setUpdating(false);
+  const saveSheet = async () => {
+    // Use map to transform each team into a promise by calling writeToSheet
+    const promises = groupPoints.map(async (team) => {
+      let index = rawData.findIndex((row) => row[0] === team.Ime);
+      // Await is not necessary here; just return the promise
+      return writeToSheet(
+        team.Točke.toString(),
+        `B${index + 1}`,
+        settings.group.id
+      );
+    });
+
+    // Use Promise.all to wait for all promises to resolve
+    await Promise.all(promises);
   };
 
   useEffect(() => {
@@ -155,7 +188,7 @@ const TekmovanjeSkupine = () => {
         >
           <div>
             <Typography variant="h6" color="blue-gray" placeholder={undefined}>
-              Bar Chart
+              Ognjena zastavica
             </Typography>
           </div>
         </CardHeader>
@@ -164,37 +197,53 @@ const TekmovanjeSkupine = () => {
         </CardBody>
       </Card>
 
-      {labels().map((user: any) => {
+      {groupPoints?.map((user: any) => {
         return (
-          <Card placeholder={undefined} className="mt-3" key={user}>
-            <div className="p-5 flex flex-row justify-between content-center">
-              <div>
-                <h5 className="text-2xl font-semibold">{user}</h5>
+          <>
+            <Card placeholder={undefined} className="mt-3" key={user.Ime}>
+              <div className="p-5 flex flex-row justify-between content-center">
+                <div>
+                  <h5 className="text-2xl font-semibold">{user.Ime}</h5>
+                </div>
+                <div className="flex gap-2 items-center">
+                  <IconButton
+                    placeholder={undefined}
+                    size="lg"
+                    onClick={() => updatePoints(user.Ime, true)}
+                  >
+                    {" "}
+                    <FontAwesomeIcon className="icon" size="xl" icon={faPlus} />
+                  </IconButton>
+                  <p className="text-2xl font-bold">{user.Točke}</p>
+                  <IconButton
+                    placeholder={undefined}
+                    size="lg"
+                    onClick={() => updatePoints(user.Ime, false)}
+                  >
+                    {" "}
+                    <FontAwesomeIcon
+                      className="icon"
+                      size="xl"
+                      icon={faMinus}
+                    />
+                  </IconButton>
+                </div>
               </div>
-              <div className="flex gap-2 items-center">
-                <Button
-                  placeholder={undefined}
-                  loading={updating}
-                  size="lg"
-                  onClick={() => updatePoints(user, true)}
-                >
-                  {" "}
-                  <FontAwesomeIcon className="icon" size="xl" icon={faPlus} />
-                </Button>
-                <Button
-                  placeholder={undefined}
-                  loading={updating}
-                  size="lg"
-                  onClick={() => updatePoints(user, false)}
-                >
-                  {" "}
-                  <FontAwesomeIcon className="icon" size="xl" icon={faMinus} />
-                </Button>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          </>
         );
       })}
+
+      <div className="mt-6 flex">
+        <Button
+          placeholder={undefined}
+          onClick={saveData}
+          className="w-full"
+          loading={updating}
+        >
+          Shrani
+        </Button>
+      </div>
     </div>
   );
 };
