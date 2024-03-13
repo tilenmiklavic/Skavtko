@@ -15,17 +15,19 @@ import {
   meetingLabels,
 } from "../../services/stats";
 import Subtitle from "../../components/Text/Subtitle";
+import LoadingEmpty from "../../components/Common/LoadingEmpty";
+import { getSettings } from "../../services/settings";
 
 export default function Statistics() {
-  const [sheetId, setSheetId] = useState("");
   const [data, setData] = useState([["1"]]);
   const [rawData, setRawData] = useState([] as any[]);
   const [loading, setLoading] = useState(true);
+  const [settings, setSettings] = useState(getSettings());
 
   const getData = async () => {
-    if (sheetId === "") return;
+    if (settings.prisotnost.id === "") return;
 
-    const result = await getSheet(sheetId);
+    const result = await getSheet(settings.prisotnost.id);
     const obj = sheet2Object(result.data.values);
     setData(obj);
     setRawData(result.data.values);
@@ -33,13 +35,8 @@ export default function Statistics() {
   };
 
   useEffect(() => {
-    const sheetId = JSON.parse(localStorage.getItem("settings")!).prisotnost.id;
-    setSheetId(sheetId);
-  }, []);
-
-  useEffect(() => {
     getData();
-  }, [sheetId]);
+  }, [settings]);
 
   const meetingsChartConfig = {
     type: "line" as "line",
@@ -122,6 +119,7 @@ export default function Statistics() {
   const TABLE_ROWS = calculateMeetingAttendanceByUser(rawData);
 
   if (loading) {
+    return <LoadingEmpty settings={settings.prisotnost.id} />;
     return <Chip color="amber" size="lg" value={"Loading..."} />;
   }
 

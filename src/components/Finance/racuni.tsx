@@ -10,6 +10,7 @@ import { Button, Card } from "@material-tailwind/react";
 import LabelValue from "../Common/LabelValue";
 import { appendToSheet } from "../../services/gsheets";
 import { getSettings } from "../../services/settings";
+import LoadingEmpty from "../Common/LoadingEmpty";
 
 const Racuni = () => {
   const [decoded, setDecoded] = useState("");
@@ -65,10 +66,13 @@ const Racuni = () => {
     );
   };
 
+  if (settings.racuni.id === "") {
+    return <LoadingEmpty settings={settings.racuni.id} />;
+  }
+
   return (
     <>
-      {/* <Header title="Finance" /> */}
-
+      {settings.racuni.id}
       <QrScanner
         onDecode={(result) => handleSubmit(result)}
         onError={(error) => console.log(error?.message)}
