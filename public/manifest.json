@@ -56,22 +56,6 @@
       "sizes": "512x512"
     }
   ],
-  "screenshots": [
-    {
-      "src": "screenshot-desktop.png",
-      "sizes": "2880x1430",
-      "type": "image/png",
-      "platform": "wide",
-      "form_factor": "wide"
-    },
-    {
-      "src": "screenshot-mobile.png",
-      "sizes": "584x1250",
-      "type": "image/png",
-      "platform": "narrow",
-      "form_factor": "narrow"
-    }
-  ],
   "start_url": ".",
   "display": "standalone",
   "display-override": ["fullscreen", "minimal-ui"],
