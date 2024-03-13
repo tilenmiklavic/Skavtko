@@ -1,11 +1,11 @@
-// /api/append.js
+// /api/sheets/appendHeader.js
 module.exports = async (req, res) => {
   const axios = require("axios");
 
   try {
     const body = await req.body;
-    const { accessToken, sheetId, apiKey, values } = body;
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/A:A:append?includeValuesInResponse=true&valueInputOption=RAW&key=${apiKey}`;
+    const { accessToken, sheetId, apiKey, values, range } = body;
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}:append?includeValuesInResponse=true&valueInputOption=RAW&key=${apiKey}`;
 
     const options = {
       method: "POST",
@@ -17,7 +17,6 @@ module.exports = async (req, res) => {
       },
       body: JSON.stringify({
         majorDimension: "ROWS",
-        range: "A:A",
         values: values,
       }),
       compress: true,
