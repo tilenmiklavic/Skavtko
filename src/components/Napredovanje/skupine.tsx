@@ -14,15 +14,18 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
+import LoadingEmpty from "../Common/LoadingEmpty";
 
 const TekmovanjeSkupine = () => {
-  const [settings, setSettings] = useState(getSettings());
+  const [settings] = useState(getSettings());
   const [groupPoints, setGroupPoints] = useState<any[]>([]);
   const [rawData, setRawData] = useState([[]] as string[][]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
 
   const getData = async () => {
+    if (settings.group.id === "") return;
+
     let response = await getSheet(settings.group.id);
     setGroupPoints(sheet2Object(response.data.values));
     setRawData(response.data.values);
@@ -173,6 +176,7 @@ const TekmovanjeSkupine = () => {
   };
 
   if (loading) {
+    return <LoadingEmpty settings={settings.group.id} />;
     return <Chip color="amber" size="lg" value={"Loading..."} />;
   }
 

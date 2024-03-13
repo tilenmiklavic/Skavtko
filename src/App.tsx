@@ -20,7 +20,7 @@ function App() {
       <div>
         <Toaster />
       </div>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col h-dvh	">
         <div className="flex-1 flex flex-col overflow-auto">
           <Container>
             <Routes>

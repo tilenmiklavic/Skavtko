@@ -8,6 +8,7 @@ import {
 } from "@material-tailwind/react";
 import Racuni from "../../components/Finance/racuni";
 import Potni from "../../components/Finance/potni";
+import Header from "../../components/Header/header";
 
 export default function Finance() {
   const data = [
@@ -27,6 +28,9 @@ export default function Finance() {
 
   return (
     <>
+      <div>
+        <Header title={"Finance"} />
+      </div>
       <div className="bg-blue flex flex-col flex-1" id="demo">
         <div className=" flex-1 flex flex-col">
           <div className="flex-1 flex flex-col mt-6">

@@ -11,6 +11,7 @@ import mapboxgl from "mapbox-gl";
 import "./potni.css";
 import Coordinate from "../../classes/Coordinates";
 import LabelValue from "../Common/LabelValue";
+import LoadingEmpty from "../Common/LoadingEmpty";
 
 mapboxgl.accessToken = process.env.REACT_APP_DIRECTIONS_ACCESS_TOKEN as string;
 
@@ -188,6 +189,10 @@ const Potni = () => {
       directions();
     }
   });
+
+  if (settings.potni.id === "") {
+    return <LoadingEmpty settings={settings.potni.id} />;
+  }
 
   return (
     <div className="flex flex-col gap-3 mt-6">

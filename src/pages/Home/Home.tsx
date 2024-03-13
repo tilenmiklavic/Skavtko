@@ -17,6 +17,7 @@ import Header from "../../components/Header/header";
 import Present from "../../classes/Present";
 import moment from "moment";
 import { getSettings } from "../../services/settings";
+import LoadingEmpty from "../../components/Common/LoadingEmpty";
 
 function Home() {
   const [data, setData] = useState([1, 1, 2]);
@@ -54,7 +55,11 @@ function Home() {
   }, [settings]);
 
   if (loading) {
-    return <Chip color="amber" size="lg" value={"Loading..."} />;
+    return (
+      <>
+        <LoadingEmpty settings={settings.prisotnost.id} />
+      </>
+    );
   }
 
   return (

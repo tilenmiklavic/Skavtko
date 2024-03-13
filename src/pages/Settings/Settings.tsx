@@ -1,12 +1,8 @@
 import toast from "react-hot-toast";
 import Header from "../../components/Header/header";
 import { useState } from "react";
-import SettingsButtonGroup from "../../components/Buttons/settingsButtonGroup";
 import GeneralSettings from "../../components/Settings/general";
-import RacuniSettings from "../../components/Settings/racuni";
-import PotniSettings from "../../components/Settings/potni";
 import PrisotnostSettings from "../../components/Settings/prisotnost";
-import SettingsInterface from "../../classes/SettingsInterface";
 import {
   Button,
   Tab,
@@ -18,6 +14,8 @@ import {
 import NapredovanjeSettings from "../../components/Settings/napredovanje";
 import FinanceSettings from "../../components/Settings/finance";
 import { getSettings } from "../../services/settings";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSave } from "@fortawesome/free-solid-svg-icons";
 
 export default function Settings() {
   const [link, setLink] = useState("");
@@ -163,12 +161,12 @@ export default function Settings() {
               Shrani
             </button> */}
             <Button
-              color="blue"
+              color="black"
               className="w-full"
               type="submit"
               placeholder={undefined}
             >
-              Shrani
+              <span>Shrani</span>
             </Button>
           </div>
         </div>
