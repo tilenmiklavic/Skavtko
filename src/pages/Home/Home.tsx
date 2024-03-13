@@ -62,6 +62,11 @@ function Home() {
       date2Col(rawData, date) + name2RowNumber(rawData, user),
       settings.prisotnost.id
     );
+
+    console.log(response);
+    const obj = sheet2Object(response.data.values);
+    setData(obj);
+    setRawData(response.data.values);
   };
 
   const checkPresent = () => {

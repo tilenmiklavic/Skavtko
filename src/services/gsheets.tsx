@@ -1,3 +1,5 @@
+import { get } from "http";
+
 export async function appendToSheet(values: string[][], sheet_id: string) {
   // Assuming `formData` is the data you want to append, structured as needed for your Google Sheet
 
@@ -60,7 +62,8 @@ export async function writeToSheet(
 
     if (response.ok) {
       const result = await response.json();
-      return result;
+      const updatedSheet = await getSheet(sheet_id);
+      return updatedSheet;
     } else {
       console.error("Error from server", response);
       // Handle server errors or non-OK responses
