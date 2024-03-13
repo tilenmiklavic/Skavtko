@@ -5,7 +5,7 @@ module.exports = async (req, res) => {
   try {
     const body = await req.body;
     const { accessToken, sheetId, apiKey, values } = body;
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/A:A:append?valueInputOption=RAW&key=${apiKey}`;
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/A:A:append?includeValuesInResponse=true&valueInputOption=RAW&key=${apiKey}`;
 
     const options = {
       method: "POST",

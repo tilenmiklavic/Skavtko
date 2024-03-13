@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
     const { accessToken, sheetId, apiKey, value, position } = body;
     const range = `${position}:${position}`;
 
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?valueInputOption=RAW&key=${apiKey}`;
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?includeValuesInResponse=true&valueInputOption=RAW&key=${apiKey}`;
 
     const options = {
       method: "PUT",
