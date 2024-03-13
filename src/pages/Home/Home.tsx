@@ -7,7 +7,13 @@ import {
   sheet2Object,
   writeToSheet,
 } from "../../services/gsheets";
-import { Alert, Button, Card, IconButton } from "@material-tailwind/react";
+import {
+  Alert,
+  Button,
+  Card,
+  IconButton,
+  Input,
+} from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendarPlus,
@@ -26,7 +32,7 @@ function Home() {
   const [data, setData] = useState([1, 1, 2]);
   const [rawData, setRawData] = useState([] as any[]);
   const [loading, setLoading] = useState(true);
-  const [settings, setSettings] = useState(getSettings());
+  const [settings] = useState(getSettings());
   const [date, setDate] = useState(moment().format("D.M.YYYY"));
   const [today, setToday] = useState(false);
 
@@ -68,9 +74,20 @@ function Home() {
       .then(() => getData());
   };
 
+  const changeDate = (e: any) => {
+    const newDate = moment(e.target.value).format("D.M.YYYY");
+    setDate(newDate);
+  };
+
   useEffect(() => {
     getData();
   }, [settings]);
+
+  useEffect(() => {
+    if (rawData.length === 0) return;
+
+    setToday(rawData[0].includes(date));
+  }, [date]);
 
   if (loading) {
     return (
@@ -109,7 +126,14 @@ function Home() {
         </Alert>
       )}
 
-      <div className="flex flex-col gap-2">
+      <Input
+        type="date"
+        size="md"
+        crossOrigin={undefined}
+        onChange={(e) => changeDate(e)}
+      />
+
+      <div className="flex flex-col gap-2 mt-5">
         {data.map((user: any) => {
           return (
             <Card
