@@ -63,7 +63,6 @@ function Home() {
       settings.prisotnost.id
     );
 
-    console.log(response);
     const obj = sheet2Object(response.data.values);
     setData(obj);
     setRawData(response.data.values);
