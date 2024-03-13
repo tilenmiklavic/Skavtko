@@ -9,12 +9,13 @@ import { Link } from "react-router-dom";
 import { Button, Card } from "@material-tailwind/react";
 import LabelValue from "../Common/LabelValue";
 import { appendToSheet } from "../../services/gsheets";
+import { getSettings } from "../../services/settings";
 
 const Racuni = () => {
   const [decoded, setDecoded] = useState("");
   const [deconding, setDecoding] = useState(true);
   const [reciept, setReciept] = useState({} as any);
-  const [sheetId, setSheetId] = useState("");
+  const [settings, setSettings] = useState(getSettings());
 
   const handleSubmit = async (result: string) => {
     const reciept = await handleDecode(result);
@@ -55,7 +56,7 @@ const Racuni = () => {
     ];
 
     toast.promise(
-      appendToSheet(sheetData, sheetId), // The promise you are awaiting
+      appendToSheet(sheetData, settings.racuni.id), // The promise you are awaiting
       {
         loading: "Writing to sheets...", // Message shown during loading
         success: "Data written successfully!", // Message shown on success

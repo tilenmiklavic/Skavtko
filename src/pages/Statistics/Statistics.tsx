@@ -222,7 +222,7 @@ export default function Statistics() {
                               : "red"
                           }
                           size="sm"
-                          value={percentage + "%"}
+                          value={percentage.toFixed(0) + "%"}
                         />
                       </Typography>
                     </td>
