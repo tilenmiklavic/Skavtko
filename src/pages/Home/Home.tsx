@@ -27,9 +27,10 @@ import moment from "moment";
 import { getSettings } from "../../services/settings";
 import LoadingEmpty from "../../components/Common/LoadingEmpty";
 import toast from "react-hot-toast";
+import { symbol2Description, symbol2color } from "../../services/attendance";
 
 function Home() {
-  const [data, setData] = useState([1, 1, 2]);
+  const [data, setData] = useState([] as any[]);
   const [rawData, setRawData] = useState([] as any[]);
   const [loading, setLoading] = useState(true);
   const [settings] = useState(getSettings());
@@ -40,6 +41,8 @@ function Home() {
     if (settings.prisotnost.id === "") return;
 
     const result = await getSheet(settings.prisotnost.id);
+
+    console.log(result);
     const obj = sheet2Object(result.data.values);
     setData(obj);
     setRawData(result.data.values);
@@ -59,6 +62,17 @@ function Home() {
       date2Col(rawData, date) + name2RowNumber(rawData, user),
       settings.prisotnost.id
     );
+  };
+
+  const checkPresent = () => {
+    let tempData = [...data];
+
+    tempData.forEach((user: any) => {
+      user.present = symbol2Description(user[date]);
+      user.presentColor = symbol2color(user[date]);
+    });
+
+    setData(tempData);
   };
 
   const addDate = async () => {
@@ -88,6 +102,10 @@ function Home() {
 
     setToday(rawData[0].includes(date));
   }, [date]);
+
+  useEffect(() => {
+    checkPresent();
+  }, [rawData, date]);
 
   if (loading) {
     return (
@@ -140,11 +158,13 @@ function Home() {
               placeholder={undefined}
               key={user.Ime}
               className="shadow-xl border"
+              color={user.presentColor}
+              variant="gradient"
             >
               <div className="p-5 flex flex-row justify-between">
                 <div>
                   <h5 className="text-2xl font-semibold">{user.Ime}</h5>
-                  <p className="mt-2 text-gray-500">{user.Vod}</p>
+                  <p className="mt-2">{user.Vod}</p>
                 </div>
                 <div className="flex gap-2 items-center">
                   <IconButton
