@@ -1,7 +1,9 @@
+import UnderConstruction from "../Common/UnderConstruction";
+
 const OsebnoNaprevanje = () => {
   return (
     <div>
-      <h1>Napredovanje</h1>
+      <UnderConstruction />
     </div>
   );
 };
