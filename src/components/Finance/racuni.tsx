@@ -2,7 +2,7 @@ import { QrScanner } from "@yudiel/react-qr-scanner";
 import Header from "../Header/header";
 import { useState } from "react";
 import { qrDecToZoi } from "../../services/zoi";
-import { getReciptDataMock } from "../../services/furs";
+import { getReciptData, getReciptDataMock } from "../../services/furs";
 import toast from "react-hot-toast";
 import formatTime from "../../services/dateTime";
 import { Link } from "react-router-dom";
@@ -29,7 +29,8 @@ const Racuni = () => {
     let hex = qrDecToZoi(result);
     setDecoded(hex);
 
-    let reciept = await getReciptDataMock(hex);
+    // let reciept = await getReciptDataMock(hex);
+    let reciept = await getReciptData(hex);
 
     if (reciept.status === 60) {
       toast.error(reciept.text);
@@ -72,7 +73,6 @@ const Racuni = () => {
 
   return (
     <>
-      {settings.racuni.id}
       <QrScanner
         onDecode={(result) => handleSubmit(result)}
         onError={(error) => console.log(error?.message)}
