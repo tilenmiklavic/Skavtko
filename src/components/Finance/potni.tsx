@@ -1,4 +1,4 @@
-import { Input, Select, Option } from "@material-tailwind/react";
+import { Input, Select, Option, Button } from "@material-tailwind/react";
 import { useEffect, useRef, useState } from "react";
 import { getSettings } from "../../services/settings";
 import {
@@ -12,6 +12,9 @@ import "./potni.css";
 import Coordinate from "../../classes/Coordinates";
 import LabelValue from "../Common/LabelValue";
 import LoadingEmpty from "../Common/LoadingEmpty";
+import { appendToSheet } from "../../services/gsheets";
+import moment from "moment";
+import toast from "react-hot-toast";
 
 mapboxgl.accessToken = process.env.REACT_APP_DIRECTIONS_ACCESS_TOKEN as string;
 
@@ -44,16 +47,32 @@ const Potni = () => {
   const debouncedSearchTerm = useDebounce(placeInputValue, 500); // 500ms delay
 
   const directions = async () => {
-    let response = await getDirections(start.lat, start.lng, end.lat, end.lng);
-    console.log(start, end);
-    setDistance(response.data.routes[0].distance / 2);
+    let response = await getDirections(start.lng, start.lat, end.lng, end.lat);
+    setDistance(response.data.routes[0].distance);
     setTime(response.data.routes[0].duration);
-    console.log(response);
   };
 
   const places = async (query: string) => {
     let response = await getPlaces(14.5058, 46.0569, query);
     setOptions(response.data.features);
+  };
+
+  const savePotni = async () => {
+    let tempDistance = (distance / 1000).toFixed(1);
+
+    let profile = JSON.parse(localStorage.getItem("profile")!);
+    let date = moment().format("D.M.YYYY");
+
+    let sheetData = [[date, profile.name, start.name, end.name, tempDistance]];
+
+    toast.promise(
+      appendToSheet(sheetData, settings.potni.id), // The promise you are awaiting
+      {
+        loading: "Writing to sheets...", // Message shown during loading
+        success: "Data written successfully!", // Message shown on success
+        error: "Failed to write data.", // Message shown on error
+      }
+    );
   };
 
   const mapContainer = useRef<HTMLDivElement | null>(null);
@@ -195,7 +214,7 @@ const Potni = () => {
   }
 
   return (
-    <div className="flex flex-col gap-3 mt-6">
+    <div className="flex flex-col gap-3">
       <Select label="Start" placeholder={undefined} value={start.name}>
         <Input
           label="Start"
@@ -247,17 +266,25 @@ const Potni = () => {
         <div className="sidebar">
           Lng: {lng.toFixed(2)} | Lat: {lat.toFixed(2)} | Zoom:{" "}
           {zoom.toFixed(0)}
+          <div>Zemljevid je samo za lepo 😇</div>
         </div>
         <div ref={mapContainer} className="map-container" />
 
-        <div>
+        <div className="mt-2">
           <LabelValue
             label={"Distance"}
-            value={`${(distance / 1000).toFixed(1).toString()}km`}
+            value={`${(distance / 1000).toFixed(1).toString()} km`}
           />
-          <LabelValue label={"Time"} value={`${(time / 60).toString()}min`} />
+          <LabelValue
+            label={"Time"}
+            value={`${(time / 60).toFixed(0).toString()} min`}
+          />
         </div>
       </div>
+
+      <Button color="black" onClick={savePotni} placeholder={undefined}>
+        Shrani
+      </Button>
     </div>
   );
 };
