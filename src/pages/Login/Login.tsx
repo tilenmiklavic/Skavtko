@@ -80,7 +80,7 @@ export default function Login() {
   return (
     <>
       <Header title="Login" />
-      <div className="h-screen flex items-center justify-center">
+      <div className="flex items-center justify-center p-10">
         <button
           type="button"
           onClick={initLogin}

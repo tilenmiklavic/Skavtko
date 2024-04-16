@@ -37,7 +37,7 @@ function Napredovanje() {
         <Header title={"Napredovanje"} />
       </div>
       <div className=" flex-1 flex flex-col">
-        <div className="flex-1 flex flex-col mt-6">
+        <div className="flex-1 flex flex-col">
           <Tabs value="on">
             <TabsHeader placeholder={undefined}>
               {data.map(({ label, value, index }) => (

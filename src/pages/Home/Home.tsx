@@ -43,11 +43,17 @@ function Home() {
     const result = await getSheet(settings.prisotnost.id);
 
     console.log(result);
+
+    if (result?.error) {
+      console.error(result.error);
+      return;
+    }
+
     const obj = sheet2Object(result.data.values);
     setData(obj);
     setRawData(result.data.values);
     setLoading(false);
-    setToday(result.data.values[0].includes(date));
+    setToday(result.data.values[0]?.includes(date));
   };
 
   const markPresent = async (present: Present, user: string) => {

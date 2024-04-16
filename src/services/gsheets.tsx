@@ -1,5 +1,3 @@
-import { get } from "http";
-
 export async function appendToSheet(values: string[][], sheet_id: string) {
   // Assuming `formData` is the data you want to append, structured as needed for your Google Sheet
 
@@ -182,6 +180,8 @@ export async function appendHeaderItem(
 }
 
 export function sheet2Object(sheet: string[][]): any[] {
+  if (!sheet) return [];
+
   const headers = sheet[0];
   const data = sheet.slice(1);
 
