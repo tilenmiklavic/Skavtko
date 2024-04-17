@@ -13,6 +13,7 @@ import Settings from "./pages/Settings/Settings";
 import Statistics from "./pages/Statistics/Statistics";
 import FinanceManual from "./pages/Finance/FinanceManual";
 import Napredovanje from "./pages/Napredovanje/Napredovanje";
+import Privacy from "./pages/Privacy/Privacy";
 
 function App() {
   return (
@@ -86,6 +87,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Napredovanje />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/privacy"
+                element={
+                  <ProtectedRoute>
+                    <Privacy />
                   </ProtectedRoute>
                 }
               />
