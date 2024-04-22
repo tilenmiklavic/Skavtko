@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { getSheetInfo } from "../../services/gsheets";
+import { formatSheet, getSheetInfo } from "../../services/gsheets";
 import TextInput from "../Inputs/textInput";
 import Subtitle from "../Text/Subtitle";
 import SettingsInterface from "../../classes/SettingsInterface";
-import { Chip } from "@material-tailwind/react";
+import { Button, Chip } from "@material-tailwind/react";
 
 const PrisotnostSettings = () => {
   const [settings, setSettings] = useState({} as SettingsInterface);
@@ -14,6 +14,12 @@ const PrisotnostSettings = () => {
     const sheetInfo = await getSheetInfo(settings.prisotnost.id);
     setSheetInfoData(sheetInfo?.data);
     setLoading(false);
+  };
+
+  const format = async () => {
+    // TODO
+    console.log("format");
+    formatSheet(settings.prisotnost.id);
   };
 
   useEffect(() => {
@@ -41,10 +47,15 @@ const PrisotnostSettings = () => {
         <div className="flex gap-2 items-center">
           {loading && <Chip color="amber" value={"Loading..."} />}
           {!loading && (
-            <>
-              <span>Current: </span>
-              <Chip color="green" value={sheetInfoData?.properties?.title} />
-            </>
+            <div className="flex flex-row w-screen justify-between">
+              <div className="flex flex-row items-center">
+                <span className="mr-2">Current: </span>
+                <Chip color="green" value={sheetInfoData?.properties?.title} />
+              </div>
+              <Button size="sm" onClick={format} placeholder={undefined}>
+                Format
+              </Button>
+            </div>
           )}
         </div>
       ) : (

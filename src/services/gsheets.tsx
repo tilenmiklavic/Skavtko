@@ -74,6 +74,46 @@ export async function writeToSheet(
   }
 }
 
+export async function writeToSheet2(
+  sheet_id: string,
+  value: string,
+  range: string,
+  majorDimension: string
+) {
+  const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
+
+  const formData = {
+    accessToken: access_token,
+    sheetId: sheet_id,
+    apiKey: process.env.REACT_APP_API_KEY,
+    value: value,
+    range: range,
+    majorDimension: majorDimension,
+  };
+
+  try {
+    const response = await fetch("/api/sheets/writeUpdated", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      const updatedSheet = await getSheet(sheet_id);
+      return updatedSheet;
+    } else {
+      console.error("Error from server", response);
+      // Handle server errors or non-OK responses
+    }
+  } catch (error) {
+    console.error("Network error:", error);
+    // Handle network errors
+  }
+}
+
 export async function getSheet(sheet_id: string) {
   // Assuming `formData` is the data you want to append, structured as needed for your Google Sheet
 
@@ -218,7 +258,14 @@ export async function clearSheet(sheet_id: string) {
 
 export async function formatSheet(sheet_id: string) {
   clearSheet(sheet_id).then(() => {
-    console.log("Cleared");
+    // read json from local file
+    const body = require("../lib/format_sheets/prisotnost.json");
+
+    writeToSheet2(sheet_id, body.values, body.range, body.majorDimension).then(
+      () => {
+        console.log("Wrote formatted values");
+      }
+    );
   });
 }
 
