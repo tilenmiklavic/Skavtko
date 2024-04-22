@@ -12,7 +12,7 @@ const PrisotnostSettings = () => {
 
   const sheetInfo = async () => {
     const sheetInfo = await getSheetInfo(settings.prisotnost.id);
-    setSheetInfoData(sheetInfo.data);
+    setSheetInfoData(sheetInfo?.data);
     setLoading(false);
   };
 

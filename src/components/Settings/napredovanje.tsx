@@ -18,7 +18,7 @@ const NapredovanjeSettings = () => {
     const sheetInfoNapredovanje = await getSheetInfo(settings.napredovanje.id);
     setNapredovanjeSheetInfoData(sheetInfoNapredovanje.data);
     const sheetInfoGroup = await getSheetInfo(settings.group.id);
-    setGroupSheetInfoData(sheetInfoGroup.data);
+    setGroupSheetInfoData(sheetInfoGroup?.data);
     setLoading(false);
   };
 

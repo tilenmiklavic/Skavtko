@@ -16,7 +16,7 @@ const FinanceSettings = () => {
     const sheetInfoRacuni = await getSheetInfo(settings.racuni.id);
     setRacuniSheetInfoData(sheetInfoRacuni.data);
     const sheetInfoPotni = await getSheetInfo(settings.potni.id);
-    setPotniSheetInfoData(sheetInfoPotni.data);
+    setPotniSheetInfoData(sheetInfoPotni?.data);
     setLoading(false);
   };
 
