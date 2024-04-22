@@ -181,7 +181,46 @@ export async function appendHeaderItem(
   }
 }
 
-export async function formatSheet(sheet_id: string) {}
+export async function clearSheet(sheet_id: string) {
+  const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
+  // const sheet_id = JSON.parse(localStorage.getItem("sheetLink")!).id;
+
+  let position = "A:Z";
+
+  const formData = {
+    accessToken: access_token,
+    sheetId: sheet_id,
+    apiKey: process.env.REACT_APP_API_KEY,
+    position: position,
+  };
+
+  try {
+    const response = await fetch("/api/sheets/clear", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      return result;
+    } else {
+      console.error("Error from server", response);
+      // Handle server errors or non-OK responses
+    }
+  } catch (error) {
+    console.error("Network error:", error);
+    // Handle network errors
+  }
+}
+
+export async function formatSheet(sheet_id: string) {
+  clearSheet(sheet_id).then(() => {
+    console.log("Cleared");
+  });
+}
 
 export function sheet2Object(sheet: string[][]): any[] {
   if (sheet.length === 0) {
