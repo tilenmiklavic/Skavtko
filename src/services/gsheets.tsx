@@ -181,7 +181,13 @@ export async function appendHeaderItem(
   }
 }
 
+export async function formatSheet(sheet_id: string) {}
+
 export function sheet2Object(sheet: string[][]): any[] {
+  if (sheet.length === 0) {
+    return [];
+  }
+
   const headers = sheet[0];
   const data = sheet.slice(1);
 

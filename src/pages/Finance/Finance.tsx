@@ -9,8 +9,6 @@ import Racuni from "../../components/Finance/racuni";
 import Potni from "../../components/Finance/potni";
 import Header from "../../components/Header/header";
 
-// demo comment
-
 export default function Finance() {
   const data = [
     {
