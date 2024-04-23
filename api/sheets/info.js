@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
       res.status(200).json({ data: data });
       // Handle the response data
     } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
+      console.error("There was a problem with the info operation:", error);
     }
   } catch (error) {
     console.error(error);
