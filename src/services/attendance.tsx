@@ -5,11 +5,11 @@ export function symbol2Description(
   settings: SettingsInterface
 ) {
   switch (symbol) {
-    case "x":
+    case settings.symbols.present:
       return "Present";
-    case "/":
+    case settings.symbols.absent:
       return "Absent";
-    case "o":
+    case settings.symbols.excused:
       return "Excused";
     default:
       return "Unknown";
@@ -19,12 +19,12 @@ export function symbol2Description(
 export function symbol2color(symbol: string, settings: SettingsInterface) {
   switch (symbol) {
     case settings.symbols.present:
-      return "green";
+      return settings.colors.present;
     case settings.symbols.absent:
-      return "red";
+      return settings.colors.absent;
     case settings.symbols.excused:
-      return "amber";
+      return settings.colors.excused;
     default:
-      return "white";
+      return "#ffffff";
   }
 }

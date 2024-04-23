@@ -63,18 +63,21 @@ const PrisotnostSettings = () => {
       <TextInput
         label="Prisoten simbol"
         placeholder={settings?.symbols?.present || "prisoten"}
+        defaultValue={settings?.symbols?.present}
         id="present_symbol_input"
       />
 
       <TextInput
         label="Opravičen simbol"
         placeholder={settings?.symbols?.excused || "opravičen"}
+        defaultValue={settings?.symbols?.excused}
         id="excused_symbol_input"
       />
 
       <TextInput
         label="Odsoten simbol"
         placeholder={settings?.symbols?.absent || "odsoten"}
+        defaultValue={settings?.symbols?.absent}
         id="absent_symbol_input"
       />
 
