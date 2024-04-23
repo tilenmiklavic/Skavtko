@@ -10,7 +10,7 @@ import ColorInput from "../Inputs/colorInput";
 import { getSettings } from "../../services/settings";
 
 const PrisotnostSettings = () => {
-  const [settings] = useState(getSettings());
+  const [settings, setSettings] = useState(getSettings());
   const [sheetInfoData, setSheetInfoData] = useState({} as any);
   const [loading, setLoading] = useState(true);
 

@@ -14,9 +14,11 @@ import {
 import NapredovanjeSettings from "../../components/Settings/napredovanje";
 import FinanceSettings from "../../components/Settings/finance";
 import { getSettings } from "../../services/settings";
+import RenderContainer from "../../components/Common/RenderContainer";
 
 export default function Settings() {
   const [page, setPage] = useState(0);
+  const [key, setKey] = useState(new Date().toISOString());
 
   const saveLink = async (event: any) => {
     event.preventDefault();
@@ -97,6 +99,7 @@ export default function Settings() {
       localStorage.setItem("settings", JSON.stringify(settings));
     }
     saveLink(event);
+    setKey(new Date().toISOString());
   };
 
   const data = [
@@ -153,9 +156,11 @@ export default function Settings() {
               </TabsHeader>
               <TabsBody placeholder={undefined} className="mt-6">
                 {data.map(({ value, desc }) => (
-                  <TabPanel key={value} value={value} className="p-0">
-                    {desc}
-                  </TabPanel>
+                  <RenderContainer renderKey={key}>
+                    <TabPanel key={value} value={value} className="p-0">
+                      {desc}
+                    </TabPanel>
+                  </RenderContainer>
                 ))}
               </TabsBody>
             </Tabs>
