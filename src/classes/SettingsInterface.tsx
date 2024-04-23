@@ -22,6 +22,21 @@ function isSymbols(obj: any): obj is Symbols {
   );
 }
 
+interface Colors {
+  present: string;
+  excused: string;
+  absent: string;
+}
+
+function isColors(obj: any): obj is Colors {
+  return (
+    obj &&
+    typeof obj.present === "string" &&
+    typeof obj.excused === "string" &&
+    typeof obj.absent === "string"
+  );
+}
+
 class SettingsInterface {
   steg: string;
   veja: string;
@@ -31,6 +46,7 @@ class SettingsInterface {
   napredovanje: SheetDetails;
   group: SheetDetails;
   symbols: Symbols;
+  colors: Colors;
 
   constructor(options?: Partial<SettingsInterface>) {
     this.steg = options?.steg || "";
@@ -45,6 +61,11 @@ class SettingsInterface {
       excused: "o",
       absent: "/",
     };
+    this.colors = options?.colors || {
+      present: "#00ff00",
+      excused: "#ff0000",
+      absent: "#0000ff",
+    };
   }
 }
 
@@ -58,7 +79,8 @@ export function isSettingsInterface(obj: any): obj is SettingsInterface {
     isSheetDetails(obj.prisotnost) &&
     isSheetDetails(obj.napredovanje) &&
     isSheetDetails(obj.group) &&
-    isSymbols(obj.symbols)
+    isSymbols(obj.symbols) &&
+    isColors(obj.colors)
   );
 }
 
