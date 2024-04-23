@@ -159,8 +159,7 @@ function Home() {
             <Card
               placeholder={undefined}
               key={user.Ime}
-              className="shadow-xl border"
-              color={user.presentColor}
+              className={`shadow-xl border bg-[${user.presentColor}]`}
               variant="gradient"
             >
               <div className="p-5 flex flex-row justify-between">

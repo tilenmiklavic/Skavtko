@@ -91,6 +91,10 @@ export default function Settings() {
       settings.symbols.excused = event.target.excused_symbol_input.value;
       settings.symbols.absent = event.target.absent_symbol_input.value;
 
+      settings.colors.present = event.target.present_color_input.value;
+      settings.colors.excused = event.target.excused_color_input.value;
+      settings.colors.absent = event.target.absent_color_input.value;
+
       localStorage.setItem("settings", JSON.stringify(settings));
     }
     saveLink(event);

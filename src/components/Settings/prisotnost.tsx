@@ -10,9 +10,11 @@ import SheetInfo from "../Common/SheetInfo";
 import ConfirmDialog from "../Common/ConfirmDialog";
 import Horizontal from "../Lines/Horizontal";
 import { propTypesSelected } from "@material-tailwind/react/types/components/select";
+import ColorInput from "../Inputs/colorInput";
+import { getSettings } from "../../services/settings";
 
 const PrisotnostSettings = () => {
-  const [settings, setSettings] = useState({} as SettingsInterface);
+  const [settings, setSettings] = useState(getSettings());
   const [sheetInfoData, setSheetInfoData] = useState({} as any);
   const [loading, setLoading] = useState(true);
 
@@ -32,11 +34,6 @@ const PrisotnostSettings = () => {
       }
     );
   };
-
-  useEffect(() => {
-    const settings = JSON.parse(localStorage.getItem("settings")!);
-    setSettings(settings);
-  }, []);
 
   useEffect(() => {
     if (settings.racuni) {
@@ -66,20 +63,47 @@ const PrisotnostSettings = () => {
       <TextInput
         label="Prisoten simbol"
         placeholder={settings?.symbols?.present || "prisoten"}
+        defaultValue={settings?.symbols?.present}
         id="present_symbol_input"
       />
 
       <TextInput
         label="Opravičen simbol"
         placeholder={settings?.symbols?.excused || "opravičen"}
+        defaultValue={settings?.symbols?.excused}
         id="excused_symbol_input"
       />
 
       <TextInput
         label="Odsoten simbol"
         placeholder={settings?.symbols?.absent || "odsoten"}
+        defaultValue={settings?.symbols?.absent}
         id="absent_symbol_input"
       />
+
+      <Horizontal />
+
+      <div className="mb-3">
+        <div className="flex flex-row justify-between">
+          <ColorInput
+            label={"Prisoten"}
+            id={"present_color_input"}
+            defaultValue={settings.colors.present}
+          />
+          <ColorInput
+            label={"Opravičen"}
+            id={"excused_color_input"}
+            defaultValue={settings.colors.excused}
+          />
+          <ColorInput
+            label={"Odsoten"}
+            id={"absent_color_input"}
+            defaultValue={settings.colors.absent}
+          />
+        </div>
+      </div>
+
+      <Horizontal />
     </div>
   );
 };
