@@ -40,7 +40,11 @@ class SettingsInterface {
     this.prisotnost = options?.prisotnost || { id: "", link: "" };
     this.napredovanje = options?.napredovanje || { id: "", link: "" };
     this.group = options?.group || { id: "", link: "" };
-    this.symbols = options?.symbols || { present: "", excused: "", absent: "" };
+    this.symbols = options?.symbols || {
+      present: "x",
+      excused: "o",
+      absent: "/",
+    };
   }
 }
 

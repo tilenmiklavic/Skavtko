@@ -9,6 +9,7 @@ import { FormatedSheet } from "../../classes/FormatedSheet";
 import SheetInfo from "../Common/SheetInfo";
 import ConfirmDialog from "../Common/ConfirmDialog";
 import Horizontal from "../Lines/Horizontal";
+import { propTypesSelected } from "@material-tailwind/react/types/components/select";
 
 const PrisotnostSettings = () => {
   const [settings, setSettings] = useState({} as SettingsInterface);
@@ -64,19 +65,19 @@ const PrisotnostSettings = () => {
 
       <TextInput
         label="Prisoten simbol"
-        placeholder="prisoten"
+        placeholder={settings?.symbols?.present || "prisoten"}
         id="present_symbol_input"
       />
 
       <TextInput
         label="Opravičen simbol"
-        placeholder="opravičen"
+        placeholder={settings?.symbols?.excused || "opravičen"}
         id="excused_symbol_input"
       />
 
       <TextInput
         label="Odsoten simbol"
-        placeholder="odsoten"
+        placeholder={settings?.symbols?.absent || "odsoten"}
         id="absent_symbol_input"
       />
     </div>

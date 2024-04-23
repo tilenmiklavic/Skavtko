@@ -92,8 +92,6 @@ export default function Settings() {
       settings.symbols.absent = event.target.absent_symbol_input.value;
 
       localStorage.setItem("settings", JSON.stringify(settings));
-
-      toast.success("Settings saved!");
     }
     saveLink(event);
   };
