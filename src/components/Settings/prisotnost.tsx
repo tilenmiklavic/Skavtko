@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { FormatedSheet } from "../../classes/FormatedSheet";
 import SheetInfo from "../Common/SheetInfo";
 import ConfirmDialog from "../Common/ConfirmDialog";
+import Horizontal from "../Lines/Horizontal";
 
 const PrisotnostSettings = () => {
   const [settings, setSettings] = useState({} as SettingsInterface);
@@ -57,6 +58,26 @@ const PrisotnostSettings = () => {
         index={FormatedSheet.PRISOTNOST}
         sheet_id={settings?.prisotnost?.id}
         link="settings?.prisotnost?.link"
+      />
+
+      <Horizontal />
+
+      <TextInput
+        label="Prisoten simbol"
+        placeholder="prisoten"
+        id="present_symbol_input"
+      />
+
+      <TextInput
+        label="Opravičen simbol"
+        placeholder="opravičen"
+        id="excused_symbol_input"
+      />
+
+      <TextInput
+        label="Odsoten simbol"
+        placeholder="odsoten"
+        id="absent_symbol_input"
       />
     </div>
   );

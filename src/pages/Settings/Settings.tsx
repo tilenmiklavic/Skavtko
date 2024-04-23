@@ -75,19 +75,27 @@ export default function Settings() {
 
   const saveSettings = async (event: any) => {
     event.preventDefault();
+    let settings = getSettings();
 
     if (page === 0) {
-      let settings = getSettings();
-
       settings.steg = event.target.steg_input.value;
       settings.veja = event.target.veja_select.value;
 
       localStorage.setItem("settings", JSON.stringify(settings));
 
       toast.success("Settings saved!");
-    } else {
-      saveLink(event);
+
+      return;
+    } else if (page === 3) {
+      settings.symbols.present = event.target.present_symbol_input.value;
+      settings.symbols.excused = event.target.excused_symbol_input.value;
+      settings.symbols.absent = event.target.absent_symbol_input.value;
+
+      localStorage.setItem("settings", JSON.stringify(settings));
+
+      toast.success("Settings saved!");
     }
+    saveLink(event);
   };
 
   const data = [
@@ -166,9 +174,6 @@ export default function Settings() {
             >
               <span>Shrani</span>
             </Button>
-            <a className="w-full" href="/privacy">
-              Privacy policy
-            </a>
           </div>
         </div>
       </form>
