@@ -27,7 +27,11 @@ import moment from "moment";
 import { getSettings } from "../../services/settings";
 import LoadingEmpty from "../../components/Common/LoadingEmpty";
 import toast from "react-hot-toast";
-import { symbol2Description, symbol2color } from "../../services/attendance";
+import {
+  color2Text,
+  symbol2Description,
+  symbol2color,
+} from "../../services/attendance";
 
 function Home() {
   const [data, setData] = useState([] as any[]);
@@ -72,6 +76,7 @@ function Home() {
     tempData.forEach((user: any) => {
       user.present = symbol2Description(user[date], settings);
       user.presentColor = symbol2color(user[date], settings);
+      user.textColor = color2Text(user.presentColor);
     });
 
     setData(tempData);
@@ -165,8 +170,15 @@ function Home() {
             >
               <div className="p-5 flex flex-row justify-between">
                 <div>
-                  <h5 className="text-2xl font-semibold">{user.Ime}</h5>
-                  <p className="mt-2">{user.Vod}</p>
+                  <h5
+                    className="text-2xl font-semibold"
+                    style={{ color: user.textColor }}
+                  >
+                    {user.Ime}
+                  </h5>
+                  <p className="mt-2" style={{ color: user.textColor }}>
+                    {user.Vod}
+                  </p>
                 </div>
                 <div className="flex gap-2 items-center">
                   <IconButton
