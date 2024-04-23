@@ -16,7 +16,6 @@ import FinanceSettings from "../../components/Settings/finance";
 import { getSettings } from "../../services/settings";
 
 export default function Settings() {
-  const [link, setLink] = useState("");
   const [page, setPage] = useState(0);
 
   const saveLink = async (event: any) => {
