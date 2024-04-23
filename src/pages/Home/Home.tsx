@@ -47,7 +47,7 @@ function Home() {
     setData(obj);
     setRawData(result.data.values);
     setLoading(false);
-    setToday(result.data.values[0].includes(date));
+    setToday(result.data?.values?.[0]?.includes(date) ?? false);
   };
 
   const markPresent = async (present: Present, user: string) => {

@@ -1,0 +1,5 @@
+{
+  "majorDimension": "ROWS",
+  "range": "A:Z",
+  "values": [["Datum", "Ime in priimek", "Start", "Cilj", "Dolžina"]]
+}

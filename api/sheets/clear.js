@@ -1,24 +1,20 @@
-// /api/sheets/write.js
+// /api/sheets/clear.js
 module.exports = async (req, res) => {
   try {
     const body = await req.body;
-    const { accessToken, sheetId, apiKey, value, position } = body;
-    const range = `${position}:${position}`;
+    const { accessToken, sheetId, apiKey, position } = body;
 
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?includeValuesInResponse=true&valueInputOption=RAW&key=${apiKey}`;
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${position}:clear?key=${apiKey}`;
+    console.log(url);
 
     const options = {
-      method: "PUT",
+      method: "POST",
       headers: {
         Authorization: "Bearer " + accessToken,
         Accept: "application/json",
         "Content-Type": "application/json",
         valueInputOption: "RAW",
       },
-      body: JSON.stringify({
-        majorDimension: "ROWS",
-        values: [[value]],
-      }),
       compress: true,
     };
 
@@ -27,10 +23,13 @@ module.exports = async (req, res) => {
       const response = await fetch(url, options);
       const data = await response.json();
 
+      console.log(data);
+
       res.status(200).json({ data: data });
       // Handle the response data
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
+      return res.status(500).send("Error communicating with Google Sheets API");
     }
   } catch (error) {
     console.error(error);

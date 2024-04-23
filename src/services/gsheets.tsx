@@ -1,5 +1,3 @@
-import { get } from "http";
-
 export async function appendToSheet(values: string[][], sheet_id: string) {
   // Assuming `formData` is the data you want to append, structured as needed for your Google Sheet
 
@@ -53,6 +51,46 @@ export async function writeToSheet(
 
   try {
     const response = await fetch("/api/sheets/write", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      const updatedSheet = await getSheet(sheet_id);
+      return updatedSheet;
+    } else {
+      console.error("Error from server", response);
+      // Handle server errors or non-OK responses
+    }
+  } catch (error) {
+    console.error("Network error:", error);
+    // Handle network errors
+  }
+}
+
+export async function writeToSheet2(
+  sheet_id: string,
+  value: string,
+  range: string,
+  majorDimension: string
+) {
+  const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
+
+  const formData = {
+    accessToken: access_token,
+    sheetId: sheet_id,
+    apiKey: process.env.REACT_APP_API_KEY,
+    value: value,
+    range: range,
+    majorDimension: majorDimension,
+  };
+
+  try {
+    const response = await fetch("/api/sheets/writeUpdated", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -181,7 +219,66 @@ export async function appendHeaderItem(
   }
 }
 
+export async function clearSheet(sheet_id: string) {
+  const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
+  // const sheet_id = JSON.parse(localStorage.getItem("sheetLink")!).id;
+
+  let position = "A:Z";
+
+  const formData = {
+    accessToken: access_token,
+    sheetId: sheet_id,
+    apiKey: process.env.REACT_APP_API_KEY,
+    position: position,
+  };
+
+  try {
+    const response = await fetch("/api/sheets/clear", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      return result;
+    } else {
+      console.error("Error from server", response);
+      // Handle server errors or non-OK responses
+    }
+  } catch (error) {
+    console.error("Network error:", error);
+    // Handle network errors
+  }
+}
+
+export async function formatSheet(sheet_id: string, index: number) {
+  try {
+    await clearSheet(sheet_id);
+
+    const body = index2FormatedSheet(index);
+
+    const updatedSheet = await writeToSheet2(
+      sheet_id,
+      body.values,
+      body.range,
+      body.majorDimension
+    );
+
+    return updatedSheet;
+  } catch (error) {
+    console.error("Error formatting sheet:", error);
+    throw error; // Reject the promise with the error
+  }
+}
+
 export function sheet2Object(sheet: string[][]): any[] {
+  if (!sheet) {
+    return [];
+  }
+
   const headers = sheet[0];
   const data = sheet.slice(1);
 
@@ -246,4 +343,21 @@ export function group2ColIndex(data: string[][]): number {
   });
 
   return foundIndex;
+}
+
+function index2FormatedSheet(index: number) {
+  switch (index) {
+    case 1:
+      return require("../lib/format_sheets/prisotnost.json");
+    case 2:
+      return require("../lib/format_sheets/racuni.json");
+    case 3:
+      return require("../lib/format_sheets/potni.json");
+    case 4:
+      return require("../lib/format_sheets/on.json");
+    case 5:
+      return require("../lib/format_sheets/skupine.json");
+    default:
+      return "";
+  }
 }

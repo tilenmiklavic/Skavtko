@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { getSheetInfo } from "../../services/gsheets";
+import { formatSheet, getSheetInfo } from "../../services/gsheets";
 import TextInput from "../Inputs/textInput";
 import Subtitle from "../Text/Subtitle";
 import SettingsInterface from "../../classes/SettingsInterface";
-import { Chip } from "@material-tailwind/react";
+import { Button, Chip, Dialog } from "@material-tailwind/react";
+import toast from "react-hot-toast";
+import { FormatedSheet } from "../../classes/FormatedSheet";
+import SheetInfo from "../Common/SheetInfo";
+import ConfirmDialog from "../Common/ConfirmDialog";
 
 const PrisotnostSettings = () => {
   const [settings, setSettings] = useState({} as SettingsInterface);
@@ -12,8 +16,19 @@ const PrisotnostSettings = () => {
 
   const sheetInfo = async () => {
     const sheetInfo = await getSheetInfo(settings.prisotnost.id);
-    setSheetInfoData(sheetInfo.data);
+    setSheetInfoData(sheetInfo?.data);
     setLoading(false);
+  };
+
+  const format = async () => {
+    toast.promise(
+      formatSheet(settings.prisotnost.id, FormatedSheet.PRISOTNOST), // The promise you are awaiting
+      {
+        loading: "Formatting sheet...", // Message shown during loading
+        success: "Sheet formatted successfully!", // Message shown on success
+        error: "Failed to format sheet.", // Message shown on error
+      }
+    );
   };
 
   useEffect(() => {
@@ -36,20 +51,13 @@ const PrisotnostSettings = () => {
         id="prisotnost_input"
       />
 
-      {settings?.prisotnost?.link ? (
-        // <span>Current: {sheetInfoData?.properties?.title}</span>
-        <div className="flex gap-2 items-center">
-          {loading && <Chip color="amber" value={"Loading..."} />}
-          {!loading && (
-            <>
-              <span>Current: </span>
-              <Chip color="green" value={sheetInfoData?.properties?.title} />
-            </>
-          )}
-        </div>
-      ) : (
-        <Chip color="amber" value={"No spreadsheet"} />
-      )}
+      <SheetInfo
+        loading={loading}
+        title={sheetInfoData?.properties?.title}
+        index={FormatedSheet.PRISOTNOST}
+        sheet_id={settings?.prisotnost?.id}
+        link="settings?.prisotnost?.link"
+      />
     </div>
   );
 };
