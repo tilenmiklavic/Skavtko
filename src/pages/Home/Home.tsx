@@ -41,8 +41,6 @@ function Home() {
     if (settings.prisotnost.id === "") return;
 
     const result = await getSheet(settings.prisotnost.id);
-
-    console.log(result);
     const obj = sheet2Object(result.data.values);
     setData(obj);
     setRawData(result.data.values);
@@ -53,10 +51,10 @@ function Home() {
   const markPresent = async (present: Present, user: string) => {
     const symbol =
       present === Present.present
-        ? "x"
+        ? settings.symbols.present
         : present === Present.absent
-        ? "/"
-        : "o";
+        ? settings.symbols.absent
+        : settings.symbols.excused;
     const response = await writeToSheet(
       symbol,
       date2Col(rawData, date) + name2RowNumber(rawData, user),
@@ -72,8 +70,8 @@ function Home() {
     let tempData = [...data];
 
     tempData.forEach((user: any) => {
-      user.present = symbol2Description(user[date]);
-      user.presentColor = symbol2color(user[date]);
+      user.present = symbol2Description(user[date], settings);
+      user.presentColor = symbol2color(user[date], settings);
     });
 
     setData(tempData);

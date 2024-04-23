@@ -1,4 +1,9 @@
-export function symbol2Description(symbol: string) {
+import SettingsInterface from "../classes/SettingsInterface";
+
+export function symbol2Description(
+  symbol: string,
+  settings: SettingsInterface
+) {
   switch (symbol) {
     case "x":
       return "Present";
@@ -11,13 +16,13 @@ export function symbol2Description(symbol: string) {
   }
 }
 
-export function symbol2color(symbol: string) {
+export function symbol2color(symbol: string, settings: SettingsInterface) {
   switch (symbol) {
-    case "x":
+    case settings.symbols.present:
       return "green";
-    case "/":
+    case settings.symbols.absent:
       return "red";
-    case "o":
+    case settings.symbols.excused:
       return "amber";
     default:
       return "white";
