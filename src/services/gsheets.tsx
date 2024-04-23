@@ -1,5 +1,3 @@
-import { get } from "http";
-
 export async function appendToSheet(values: string[][], sheet_id: string) {
   // Assuming `formData` is the data you want to append, structured as needed for your Google Sheet
 
@@ -256,21 +254,28 @@ export async function clearSheet(sheet_id: string) {
   }
 }
 
-export async function formatSheet(sheet_id: string) {
-  clearSheet(sheet_id).then(() => {
-    // read json from local file
-    const body = require("../lib/format_sheets/prisotnost.json");
+export async function formatSheet(sheet_id: string, index: number) {
+  try {
+    await clearSheet(sheet_id);
 
-    writeToSheet2(sheet_id, body.values, body.range, body.majorDimension).then(
-      () => {
-        console.log("Wrote formatted values");
-      }
+    const body = index2FormatedSheet(index);
+
+    const updatedSheet = await writeToSheet2(
+      sheet_id,
+      body.values,
+      body.range,
+      body.majorDimension
     );
-  });
+
+    return updatedSheet;
+  } catch (error) {
+    console.error("Error formatting sheet:", error);
+    throw error; // Reject the promise with the error
+  }
 }
 
 export function sheet2Object(sheet: string[][]): any[] {
-  if (sheet.length === 0) {
+  if (!sheet) {
     return [];
   }
 
@@ -338,4 +343,21 @@ export function group2ColIndex(data: string[][]): number {
   });
 
   return foundIndex;
+}
+
+function index2FormatedSheet(index: number) {
+  switch (index) {
+    case 1:
+      return require("../lib/format_sheets/prisotnost.json");
+    case 2:
+      return require("../lib/format_sheets/racuni.json");
+    case 3:
+      return require("../lib/format_sheets/potni.json");
+    case 4:
+      return require("../lib/format_sheets/on.json");
+    case 5:
+      return require("../lib/format_sheets/skupine.json");
+    default:
+      return "";
+  }
 }

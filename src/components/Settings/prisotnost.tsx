@@ -4,6 +4,8 @@ import TextInput from "../Inputs/textInput";
 import Subtitle from "../Text/Subtitle";
 import SettingsInterface from "../../classes/SettingsInterface";
 import { Button, Chip } from "@material-tailwind/react";
+import toast from "react-hot-toast";
+import { FormatedSheet } from "../../classes/FormatedSheet";
 
 const PrisotnostSettings = () => {
   const [settings, setSettings] = useState({} as SettingsInterface);
@@ -17,9 +19,14 @@ const PrisotnostSettings = () => {
   };
 
   const format = async () => {
-    // TODO
-    console.log("format");
-    formatSheet(settings.prisotnost.id);
+    toast.promise(
+      formatSheet(settings.prisotnost.id, FormatedSheet.PRISOTNOST), // The promise you are awaiting
+      {
+        loading: "Formatting sheet...", // Message shown during loading
+        success: "Sheet formatted successfully!", // Message shown on success
+        error: "Failed to format sheet.", // Message shown on error
+      }
+    );
   };
 
   useEffect(() => {
