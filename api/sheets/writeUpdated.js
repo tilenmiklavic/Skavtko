@@ -1,9 +1,8 @@
-// /api/sheets/write.js
+// /api/sheets/writeUpdated.js
 module.exports = async (req, res) => {
   try {
     const body = await req.body;
-    const { accessToken, sheetId, apiKey, value, position } = body;
-    const range = `${position}:${position}`;
+    const { accessToken, sheetId, apiKey, value, range, majorDimension } = body;
 
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?includeValuesInResponse=true&valueInputOption=RAW&key=${apiKey}`;
 
@@ -16,8 +15,9 @@ module.exports = async (req, res) => {
         valueInputOption: "RAW",
       },
       body: JSON.stringify({
-        majorDimension: "ROWS",
-        values: [[value]],
+        majorDimension: majorDimension,
+        range: range,
+        values: value,
       }),
       compress: true,
     };

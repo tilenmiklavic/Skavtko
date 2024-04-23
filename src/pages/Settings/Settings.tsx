@@ -14,8 +14,6 @@ import {
 import NapredovanjeSettings from "../../components/Settings/napredovanje";
 import FinanceSettings from "../../components/Settings/finance";
 import { getSettings } from "../../services/settings";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSave } from "@fortawesome/free-solid-svg-icons";
 
 export default function Settings() {
   const [link, setLink] = useState("");
