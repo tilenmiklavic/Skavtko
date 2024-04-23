@@ -5,6 +5,8 @@ import TextInput from "../Inputs/textInput";
 import { Button, Chip, Input } from "@material-tailwind/react";
 import Horizontal from "../Lines/Horizontal";
 import { getSettings } from "../../services/settings";
+import SheetInfo from "../Common/SheetInfo";
+import { FormatedSheet } from "../../classes/FormatedSheet";
 
 const FinanceSettings = () => {
   const [settings] = useState(getSettings());
@@ -40,26 +42,13 @@ const FinanceSettings = () => {
         id="racuni_input"
       />
 
-      {settings?.racuni?.link ? (
-        // <span>Current: {sheetInfoData?.properties?.title}</span>
-        <div className="flex gap-2 items-center">
-          {loading && <Chip color="amber" value={"Loading..."} />}
-          {!loading && (
-            <>
-              <span>Current: </span>
-              <Chip
-                color="green"
-                value={racuniSheetInfoData?.properties?.title}
-              />
-              <Button placeholder={undefined} size="sm" onClick={formatSheet}>
-                Format
-              </Button>
-            </>
-          )}
-        </div>
-      ) : (
-        <Chip color="amber" value={"No spreadsheet"} />
-      )}
+      <SheetInfo
+        loading={loading}
+        title={racuniSheetInfoData?.properties?.title}
+        index={FormatedSheet.RACUNI}
+        sheet_id={settings.racuni.id}
+        link={settings?.racuni?.link}
+      />
 
       <Horizontal />
 
@@ -67,27 +56,13 @@ const FinanceSettings = () => {
       {/* <Input crossOrigin={undefined} id="racuni_input" required={false} /> */}
       <TextInput label="Spreadsheet link" placeholder="link" id="potni_input" />
 
-      {settings?.potni?.link ? (
-        // <span>Current: {sheetInfoData?.properties?.title}</span>
-        <div className="flex gap-2 items-center">
-          {loading && <Chip color="amber" value={"Loading..."} />}
-          {!loading && (
-            <>
-              <span>Current: </span>
-
-              <Chip
-                color="green"
-                value={potniSheetInfoData?.properties?.title}
-              />
-              <Button placeholder={undefined} size="sm">
-                Format
-              </Button>
-            </>
-          )}
-        </div>
-      ) : (
-        <Chip color="amber" value={"No spreadsheet"} />
-      )}
+      <SheetInfo
+        loading={loading}
+        title={potniSheetInfoData?.properties?.title}
+        index={FormatedSheet.POTNI}
+        sheet_id={settings.potni.id}
+        link={settings?.potni?.link}
+      />
     </div>
   );
 };

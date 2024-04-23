@@ -54,7 +54,7 @@ const PrisotnostSettings = () => {
         loading={loading}
         title={sheetInfoData?.properties?.title}
         index={FormatedSheet.PRISOTNOST}
-        sheet_id={settings.prisotnost.id}
+        sheet_id={settings?.prisotnost?.id}
         link="settings?.prisotnost?.link"
       />
     </div>
