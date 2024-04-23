@@ -27,7 +27,11 @@ import moment from "moment";
 import { getSettings } from "../../services/settings";
 import LoadingEmpty from "../../components/Common/LoadingEmpty";
 import toast from "react-hot-toast";
-import { symbol2Description, symbol2color } from "../../services/attendance";
+import {
+  color2Text,
+  symbol2Description,
+  symbol2color,
+} from "../../services/attendance";
 
 function Home() {
   const [data, setData] = useState([] as any[]);
@@ -41,8 +45,6 @@ function Home() {
     if (settings.prisotnost.id === "") return;
 
     const result = await getSheet(settings.prisotnost.id);
-
-    console.log(result);
     const obj = sheet2Object(result.data.values);
     setData(obj);
     setRawData(result.data.values);
@@ -53,10 +55,10 @@ function Home() {
   const markPresent = async (present: Present, user: string) => {
     const symbol =
       present === Present.present
-        ? "x"
+        ? settings.symbols.present
         : present === Present.absent
-        ? "/"
-        : "o";
+        ? settings.symbols.absent
+        : settings.symbols.excused;
     const response = await writeToSheet(
       symbol,
       date2Col(rawData, date) + name2RowNumber(rawData, user),
@@ -72,8 +74,9 @@ function Home() {
     let tempData = [...data];
 
     tempData.forEach((user: any) => {
-      user.present = symbol2Description(user[date]);
-      user.presentColor = symbol2color(user[date]);
+      user.present = symbol2Description(user[date], settings);
+      user.presentColor = symbol2color(user[date], settings);
+      user.textColor = color2Text(user.presentColor);
     });
 
     setData(tempData);
@@ -162,13 +165,20 @@ function Home() {
               placeholder={undefined}
               key={user.Ime}
               className="shadow-xl border"
-              color={user.presentColor}
+              style={{ backgroundColor: user.presentColor }}
               variant="gradient"
             >
               <div className="p-5 flex flex-row justify-between">
                 <div>
-                  <h5 className="text-2xl font-semibold">{user.Ime}</h5>
-                  <p className="mt-2">{user.Vod}</p>
+                  <h5
+                    className="text-2xl font-semibold"
+                    style={{ color: user.textColor }}
+                  >
+                    {user.Ime}
+                  </h5>
+                  <p className="mt-2" style={{ color: user.textColor }}>
+                    {user.Vod}
+                  </p>
                 </div>
                 <div className="flex gap-2 items-center">
                   <IconButton

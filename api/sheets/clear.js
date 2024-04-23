@@ -28,8 +28,7 @@ module.exports = async (req, res) => {
       res.status(200).json({ data: data });
       // Handle the response data
     } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
-      return res.status(500).send("Error communicating with Google Sheets API");
+      console.error("There was a problem with the clear operation:", error);
     }
   } catch (error) {
     console.error(error);
