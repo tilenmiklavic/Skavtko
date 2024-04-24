@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { getSheetInfo } from "../../services/gsheets";
 import Subtitle from "../Text/Subtitle";
 import TextInput from "../Inputs/textInput";
-import { Chip, Input } from "@material-tailwind/react";
 import Horizontal from "../Lines/Horizontal";
 import { getSettings } from "../../services/settings";
+import SheetInfo from "../Common/SheetInfo";
+import { FormatedSheet } from "../../classes/FormatedSheet";
 
 const NapredovanjeSettings = () => {
-  const [settings, setSettings] = useState(getSettings());
+  const [settings] = useState(getSettings());
   const [napredovanjeSheetInfoData, setNapredovanjeSheetInfoData] = useState(
     {} as any
   );
@@ -17,15 +18,18 @@ const NapredovanjeSettings = () => {
   const napredovanjeSheetInfo = async () => {
     const sheetInfoNapredovanje = await getSheetInfo(settings.napredovanje.id);
     setNapredovanjeSheetInfoData(sheetInfoNapredovanje.data);
+    setLoading(false);
+  };
+
+  const groupSheetInfo = async () => {
     const sheetInfoGroup = await getSheetInfo(settings.group.id);
     setGroupSheetInfoData(sheetInfoGroup?.data);
     setLoading(false);
   };
 
   useEffect(() => {
-    if (settings.napredovanje) {
-      napredovanjeSheetInfo();
-    }
+    if (settings.napredovanje) napredovanjeSheetInfo();
+    if (settings.group) groupSheetInfo();
   }, [settings]);
 
   return (
@@ -37,46 +41,26 @@ const NapredovanjeSettings = () => {
         id="napredovanje_input"
       />
 
-      {settings?.napredovanje?.link ? (
-        // <span>Current: {sheetInfoData?.properties?.title}</span>
-        <div className="flex gap-2 items-center">
-          {loading && <Chip color="amber" value={"Loading..."} />}
-          {!loading && (
-            <>
-              <span>Current: </span>
-              <Chip
-                color="green"
-                value={napredovanjeSheetInfoData?.properties?.title}
-              />
-            </>
-          )}
-        </div>
-      ) : (
-        <Chip color="amber" value={"No spreadsheet"} />
-      )}
+      <SheetInfo
+        loading={loading}
+        title={napredovanjeSheetInfoData?.properties?.title}
+        index={FormatedSheet.ON}
+        sheet_id={settings?.napredovanje?.id}
+        link={settings?.napredovanje?.link}
+      />
 
       <Horizontal />
 
       <Subtitle title="Tekmovanje med vodi" />
       <TextInput label="Spreadsheet link" placeholder="link" id="group_input" />
 
-      {settings?.group?.link ? (
-        // <span>Current: {sheetInfoData?.properties?.title}</span>
-        <div className="flex gap-2 items-center">
-          {loading && <Chip color="amber" value={"Loading..."} />}
-          {!loading && (
-            <>
-              <span>Current: </span>
-              <Chip
-                color="green"
-                value={groupSheetInfoData?.properties?.title}
-              />
-            </>
-          )}
-        </div>
-      ) : (
-        <Chip color="amber" value={"No spreadsheet"} />
-      )}
+      <SheetInfo
+        loading={loading}
+        title={groupSheetInfoData?.properties?.title}
+        index={FormatedSheet.SKUPINE}
+        sheet_id={settings?.group?.id}
+        link={settings?.group?.link}
+      />
     </div>
   );
 };

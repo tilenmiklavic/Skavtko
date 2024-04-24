@@ -1,11 +1,12 @@
 // /api/sheets/info.js
 module.exports = async (req, res) => {
-  const axios = require("axios");
-
   try {
     const body = await req.body;
     const { accessToken, apiKey, sheetId } = body;
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?key=${apiKey}`;
+
+    console.log("url", url);
+    console.log("accessToken", accessToken);
 
     const options = {
       method: "GET",

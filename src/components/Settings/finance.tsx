@@ -48,6 +48,7 @@ const FinanceSettings = () => {
         index={FormatedSheet.RACUNI}
         sheet_id={settings.racuni.id}
         link={settings?.racuni?.link}
+        format={true}
       />
 
       <Horizontal />
@@ -62,6 +63,7 @@ const FinanceSettings = () => {
         index={FormatedSheet.POTNI}
         sheet_id={settings.potni.id}
         link={settings?.potni?.link}
+        format={true}
       />
     </div>
   );
