@@ -24,17 +24,6 @@ const PrisotnostSettings = () => {
     setLoading(false);
   };
 
-  const format = async () => {
-    toast.promise(
-      formatSheet(settings.prisotnost.id, FormatedSheet.PRISOTNOST), // The promise you are awaiting
-      {
-        loading: "Formatting sheet...", // Message shown during loading
-        success: "Sheet formatted successfully!", // Message shown on success
-        error: "Failed to format sheet.", // Message shown on error
-      }
-    );
-  };
-
   useEffect(() => {
     if (settings.racuni) {
       sheetInfo();
@@ -55,7 +44,8 @@ const PrisotnostSettings = () => {
         title={sheetInfoData?.properties?.title}
         index={FormatedSheet.PRISOTNOST}
         sheet_id={settings?.prisotnost?.id}
-        link="settings?.prisotnost?.link"
+        link={settings?.prisotnost?.link}
+        format={true}
       />
 
       <Horizontal />

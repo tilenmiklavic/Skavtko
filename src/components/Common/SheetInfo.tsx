@@ -10,6 +10,7 @@ interface SheetInfoProps {
   index: number;
   sheet_id: string;
   link: string;
+  format?: boolean;
 }
 
 const SheetInfo = (props: SheetInfoProps) => {
@@ -44,9 +45,15 @@ const SheetInfo = (props: SheetInfoProps) => {
                   <span className="mr-2">Current: </span>
                   <Chip color="green" value={props.title} />
                 </div>
-                <Button size="sm" onClick={openDialog} placeholder={undefined}>
-                  Format
-                </Button>
+                {props.format && (
+                  <Button
+                    size="sm"
+                    onClick={openDialog}
+                    placeholder={undefined}
+                  >
+                    Format
+                  </Button>
+                )}
               </div>
             )}
           </div>
