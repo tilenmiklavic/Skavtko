@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavItem from "./navitem";
 import {
   faGear,
@@ -9,9 +9,10 @@ import {
 
 import "./navigation.css";
 import { faBitcoin } from "@fortawesome/free-brands-svg-icons";
+import { route2Index } from "../../services/navigation";
 
 const Navigation = () => {
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(route2Index(window.location.pathname));
 
   return (
     <nav className="w-full h-20 flex border-b border-t border-gray-200 dark:border-gray-600">
