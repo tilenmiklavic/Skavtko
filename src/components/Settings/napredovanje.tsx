@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { getSheetInfo } from "../../services/gsheets";
+import { createSheet, formatSheet, getSheetInfo } from "../../services/gsheets";
 import Subtitle from "../Text/Subtitle";
 import TextInput from "../Inputs/textInput";
 import Horizontal from "../Lines/Horizontal";
-import { getSettings } from "../../services/settings";
+import { getSettings, saveSettings } from "../../services/settings";
 import SheetInfo from "../Common/SheetInfo";
 import { FormatedSheet } from "../../classes/FormatedSheet";
+import TextInputButton from "../Inputs/textInputButton";
+import toast from "react-hot-toast";
 
 const NapredovanjeSettings = () => {
   const [settings] = useState(getSettings());
@@ -25,6 +27,23 @@ const NapredovanjeSettings = () => {
     const sheetInfoGroup = await getSheetInfo(settings.group.id);
     setGroupSheetInfoData(sheetInfoGroup?.data);
     setLoading(false);
+  };
+
+  const createNewGroupSheet = async (title?: string) => {
+    const result = await createSheet(title || "Skupine");
+    const table = await formatSheet(
+      result.data.spreadsheetId,
+      FormatedSheet.SKUPINE
+    );
+
+    if (result?.data) {
+      settings.group = {
+        id: result.data.spreadsheetId,
+        link: result.data.spreadsheetUrl,
+      };
+      saveSettings(settings);
+      groupSheetInfo();
+    }
   };
 
   useEffect(() => {
@@ -52,7 +71,21 @@ const NapredovanjeSettings = () => {
       <Horizontal />
 
       <Subtitle title="Tekmovanje med vodi" />
-      <TextInput label="Spreadsheet link" placeholder="link" id="group_input" />
+      <TextInputButton
+        label={"Spreadsheet link"}
+        id={"group_input"}
+        placeholder={"link"}
+        onButtonClick={(title?: string) => {
+          toast.promise(
+            createNewGroupSheet(title), // The promise you are awaiting
+            {
+              loading: "Creating new sheet...", // Message shown during loading
+              success: "Sheet created successfully!", // Message shown on success
+              error: "Failed to create sheet.", // Message shown on error
+            }
+          );
+        }}
+      />
 
       <SheetInfo
         loading={loading}
@@ -60,6 +93,7 @@ const NapredovanjeSettings = () => {
         index={FormatedSheet.SKUPINE}
         sheet_id={settings?.group?.id}
         link={settings?.group?.link}
+        format={true}
       />
     </div>
   );

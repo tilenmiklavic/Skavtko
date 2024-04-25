@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createSheet, getSheetInfo } from "../../services/gsheets";
+import { createSheet, formatSheet, getSheetInfo } from "../../services/gsheets";
 import TextInput from "../Inputs/textInput";
 import Subtitle from "../Text/Subtitle";
 import { FormatedSheet } from "../../classes/FormatedSheet";
@@ -23,6 +23,10 @@ const PrisotnostSettings = () => {
 
   const createNewSheet = async (title?: string) => {
     const result = await createSheet(title || "Prisotnost");
+    const table = await formatSheet(
+      result.data.spreadsheetId,
+      FormatedSheet.PRISOTNOST
+    );
 
     if (result?.data) {
       settings.prisotnost = {
