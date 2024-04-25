@@ -2,14 +2,10 @@ import { useEffect, useState } from "react";
 import { formatSheet, getSheetInfo } from "../../services/gsheets";
 import TextInput from "../Inputs/textInput";
 import Subtitle from "../Text/Subtitle";
-import SettingsInterface from "../../classes/SettingsInterface";
-import { Button, Chip, Dialog } from "@material-tailwind/react";
 import toast from "react-hot-toast";
 import { FormatedSheet } from "../../classes/FormatedSheet";
 import SheetInfo from "../Common/SheetInfo";
-import ConfirmDialog from "../Common/ConfirmDialog";
 import Horizontal from "../Lines/Horizontal";
-import { propTypesSelected } from "@material-tailwind/react/types/components/select";
 import ColorInput from "../Inputs/colorInput";
 import { getSettings } from "../../services/settings";
 
