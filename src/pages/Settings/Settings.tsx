@@ -16,7 +16,6 @@ import FinanceSettings from "../../components/Settings/finance";
 import { getSettings } from "../../services/settings";
 
 export default function Settings() {
-  const [link, setLink] = useState("");
   const [page, setPage] = useState(0);
 
   const saveLink = async (event: any) => {
@@ -130,7 +129,7 @@ export default function Settings() {
   return (
     <div className="bg-blue flex flex-col flex-1" id="demo">
       <div>
-        <Header title={"Nastavitve"} />
+        <Header title={"Nastavitve"} settings={true} />
       </div>
       <form
         method="post"
@@ -162,12 +161,6 @@ export default function Settings() {
             </Tabs>
           </div>
           <div className="flex flex-col">
-            {/* <button
-              type="submit"
-              className="mt-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Shrani
-            </button> */}
             <Button
               color="black"
               className="w-full"
