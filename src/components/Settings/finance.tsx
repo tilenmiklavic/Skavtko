@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { getSheetInfo } from "../../services/gsheets";
+import { createSheet, formatSheet, getSheetInfo } from "../../services/gsheets";
 import Subtitle from "../Text/Subtitle";
 import TextInput from "../Inputs/textInput";
-import { Button, Chip, Input } from "@material-tailwind/react";
 import Horizontal from "../Lines/Horizontal";
-import { getSettings } from "../../services/settings";
+import { getSettings, saveSettings } from "../../services/settings";
 import SheetInfo from "../Common/SheetInfo";
 import { FormatedSheet } from "../../classes/FormatedSheet";
+import TextInputButton from "../Inputs/textInputButton";
+import toast from "react-hot-toast";
 
 const FinanceSettings = () => {
   const [settings] = useState(getSettings());
@@ -22,24 +23,64 @@ const FinanceSettings = () => {
     setLoading(false);
   };
 
-  const formatSheet = async () => {
-    // TODO
-    console.log("format");
-  };
-
   useEffect(() => {
     if (settings.racuni) {
       racuniSheetInfo();
     }
   }, [settings]);
 
+  const createNewRacuniSheet = async (title?: string) => {
+    const result = await createSheet(title || "Računi");
+    const table = await formatSheet(
+      result.data.spreadsheetId,
+      FormatedSheet.RACUNI
+    );
+
+    if (result?.data) {
+      settings.racuni = {
+        id: result.data.spreadsheetId,
+        link: result.data.spreadsheetUrl,
+      };
+      saveSettings(settings);
+      racuniSheetInfo();
+    }
+  };
+
+  const createNewPotniSheet = async (title?: string) => {
+    const result = await createSheet(title || "Potni");
+    const table = await formatSheet(
+      result.data.spreadsheetId,
+      FormatedSheet.POTNI
+    );
+
+    if (result?.data) {
+      settings.potni = {
+        id: result.data.spreadsheetId,
+        link: result.data.spreadsheetUrl,
+      };
+      saveSettings(settings);
+      racuniSheetInfo();
+    }
+  };
+
   return (
     <div>
       <Subtitle title="Računi" />
-      <TextInput
-        label="Spreadsheet link"
-        placeholder="link"
-        id="racuni_input"
+
+      <TextInputButton
+        label={"Spreadsheet link"}
+        id={"racuni_input"}
+        placeholder={"link"}
+        onButtonClick={(title?: string) => {
+          toast.promise(
+            createNewRacuniSheet(title), // The promise you are awaiting
+            {
+              loading: "Creating new sheet...", // Message shown during loading
+              success: "Sheet created successfully!", // Message shown on success
+              error: "Failed to create sheet.", // Message shown on error
+            }
+          );
+        }}
       />
 
       <SheetInfo
@@ -54,8 +95,21 @@ const FinanceSettings = () => {
       <Horizontal />
 
       <Subtitle title="Potni stroški" />
-      {/* <Input crossOrigin={undefined} id="racuni_input" required={false} /> */}
-      <TextInput label="Spreadsheet link" placeholder="link" id="potni_input" />
+      <TextInputButton
+        label={"Spreadsheet link"}
+        id={"potni_input"}
+        placeholder={"link"}
+        onButtonClick={(title?: string) => {
+          toast.promise(
+            createNewPotniSheet(title), // The promise you are awaiting
+            {
+              loading: "Creating new sheet...", // Message shown during loading
+              success: "Sheet created successfully!", // Message shown on success
+              error: "Failed to create sheet.", // Message shown on error
+            }
+          );
+        }}
+      />
 
       <SheetInfo
         loading={loading}

@@ -1,20 +1,17 @@
 import { useEffect, useState } from "react";
-import { formatSheet, getSheetInfo } from "../../services/gsheets";
+import { createSheet, formatSheet, getSheetInfo } from "../../services/gsheets";
 import TextInput from "../Inputs/textInput";
 import Subtitle from "../Text/Subtitle";
-import SettingsInterface from "../../classes/SettingsInterface";
-import { Button, Chip, Dialog } from "@material-tailwind/react";
-import toast from "react-hot-toast";
 import { FormatedSheet } from "../../classes/FormatedSheet";
 import SheetInfo from "../Common/SheetInfo";
-import ConfirmDialog from "../Common/ConfirmDialog";
 import Horizontal from "../Lines/Horizontal";
-import { propTypesSelected } from "@material-tailwind/react/types/components/select";
 import ColorInput from "../Inputs/colorInput";
-import { getSettings } from "../../services/settings";
+import { getSettings, saveSettings } from "../../services/settings";
+import TextInputButton from "../Inputs/textInputButton";
+import toast from "react-hot-toast";
 
 const PrisotnostSettings = () => {
-  const [settings, setSettings] = useState(getSettings());
+  const [settings] = useState(getSettings());
   const [sheetInfoData, setSheetInfoData] = useState({} as any);
   const [loading, setLoading] = useState(true);
 
@@ -22,6 +19,23 @@ const PrisotnostSettings = () => {
     const sheetInfo = await getSheetInfo(settings.prisotnost.id);
     setSheetInfoData(sheetInfo?.data);
     setLoading(false);
+  };
+
+  const createNewSheet = async (title?: string) => {
+    const result = await createSheet(title || "Prisotnost");
+    const table = await formatSheet(
+      result.data.spreadsheetId,
+      FormatedSheet.PRISOTNOST
+    );
+
+    if (result?.data) {
+      settings.prisotnost = {
+        id: result.data.spreadsheetId,
+        link: result.data.spreadsheetUrl,
+      };
+      saveSettings(settings);
+      sheetInfo();
+    }
   };
 
   useEffect(() => {
@@ -34,10 +48,21 @@ const PrisotnostSettings = () => {
     <div>
       <div>
         <Subtitle title="Prisotnost" />
-        <TextInput
+
+        <TextInputButton
           label="Spreadsheet link"
           placeholder="link"
           id="prisotnost_input"
+          onButtonClick={(title?: string) => {
+            toast.promise(
+              createNewSheet(title), // The promise you are awaiting
+              {
+                loading: "Creating new sheet...", // Message shown during loading
+                success: "Sheet created successfully!", // Message shown on success
+                error: "Failed to create sheet.", // Message shown on error
+              }
+            );
+          }}
         />
 
         <SheetInfo

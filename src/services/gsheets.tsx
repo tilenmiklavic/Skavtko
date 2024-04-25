@@ -1,3 +1,33 @@
+export async function createSheet(title: string) {
+  const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
+
+  const formData = {
+    accessToken: access_token,
+    sheetTitle: title,
+    apiKey: process.env.REACT_APP_API_KEY,
+  };
+
+  try {
+    const response = await fetch("/api/sheets/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      return await response.json();
+    } else {
+      console.error("Error from server", response);
+      // Handle server errors or non-OK responses
+    }
+  } catch (error) {
+    console.error("Network error:", error);
+    // Handle network errors
+  }
+}
+
 export async function appendToSheet(values: string[][], sheet_id: string) {
   // Assuming `formData` is the data you want to append, structured as needed for your Google Sheet
 

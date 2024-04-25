@@ -8,6 +8,9 @@ import {
 
 interface DialogProps {
   open: boolean;
+  title: string;
+  content: string;
+  children?: React.ReactNode;
   handleConfirm: () => void;
   handleOpen: () => void;
 }
@@ -19,10 +22,9 @@ const ConfirmDialog = (props: DialogProps) => {
       handler={props.handleOpen}
       placeholder={undefined}
     >
-      <DialogHeader placeholder={undefined}>Pozor.</DialogHeader>
-      <DialogBody placeholder={undefined}>
-        Ta akcija je nepovratna. Ali ste prepričani, da želite nadaljevati?
-      </DialogBody>
+      <DialogHeader placeholder={undefined}>{props.title}</DialogHeader>
+      <DialogBody placeholder={undefined}>{props.content}</DialogBody>
+      {props.children}
       <DialogFooter placeholder={undefined}>
         <Button
           variant="text"

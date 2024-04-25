@@ -59,6 +59,8 @@ const SheetInfo = (props: SheetInfoProps) => {
           </div>
           <ConfirmDialog
             open={openModal}
+            title="Pozor"
+            content="Ta akcija je nepovratna. Ali ste prepričani, da želite nadaljevati?"
             handleOpen={() => {
               setOpenModal(!openModal);
             }}

@@ -29,6 +29,12 @@ export function getSettings(): SettingsInterface {
   return settings;
 }
 
+export function saveSettings(settings: SettingsInterface): void {
+  // check if the settings obect is of the correct type
+  if (!isSettingsInterface(settings)) return;
+  localStorage.setItem("settings", JSON.stringify(settings));
+}
+
 export function getProfile(): UserProfile {
   let profile = JSON.parse(localStorage.getItem("profile") || "");
 
