@@ -10,7 +10,7 @@ interface SelectProps {
 
 const VejaSelect = (props: SelectProps) => {
   return (
-    <>
+    <div className="mb-3">
       <label
         htmlFor="countries"
         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -29,7 +29,7 @@ const VejaSelect = (props: SelectProps) => {
         <option value="iv">IV</option>
         <option value="pp">PP</option>
       </select>
-    </>
+    </div>
   );
 };
 

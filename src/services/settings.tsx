@@ -1,3 +1,4 @@
+import UserProfile from "../classes/Profile";
 import SettingsInterface, {
   isSettingsInterface,
 } from "../classes/SettingsInterface";
@@ -26,4 +27,10 @@ export function getSettings(): SettingsInterface {
   if (!isSettingsInterface(settings)) return createSettingsObject(settings);
 
   return settings;
+}
+
+export function getProfile(): UserProfile {
+  let profile = JSON.parse(localStorage.getItem("profile") || "");
+
+  return new UserProfile(profile);
 }

@@ -7,6 +7,7 @@ interface NavItemProps {
   required?: boolean;
   value?: string;
   defaultValue?: string;
+  disabled?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -25,6 +26,7 @@ const TextInput = (props: NavItemProps) => {
         required={props.required}
         defaultValue={props.defaultValue}
         onChange={props.onChange}
+        disabled={props.disabled}
       ></input>
     </div>
   );
