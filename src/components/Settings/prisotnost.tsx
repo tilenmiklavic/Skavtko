@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getSheetInfo } from "../../services/gsheets";
+import { createSheet, getSheetInfo } from "../../services/gsheets";
 import TextInput from "../Inputs/textInput";
 import Subtitle from "../Text/Subtitle";
 import { FormatedSheet } from "../../classes/FormatedSheet";
@@ -8,6 +8,7 @@ import Horizontal from "../Lines/Horizontal";
 import ColorInput from "../Inputs/colorInput";
 import { getSettings } from "../../services/settings";
 import TextInputButton from "../Inputs/textInputButton";
+import toast from "react-hot-toast";
 
 const PrisotnostSettings = () => {
   const [settings] = useState(getSettings());
@@ -20,7 +21,10 @@ const PrisotnostSettings = () => {
     setLoading(false);
   };
 
-  const createSheet = () => {};
+  const createNewSheet = async (title?: string) => {
+    const result = await createSheet(title || "Prisotnost");
+    console.log(result);
+  };
 
   useEffect(() => {
     if (settings.racuni) {
@@ -37,8 +41,15 @@ const PrisotnostSettings = () => {
           label="Spreadsheet link"
           placeholder="link"
           id="prisotnost_input"
-          onButtonClick={() => {
-            createSheet();
+          onButtonClick={(title?: string) => {
+            toast.promise(
+              createNewSheet(title), // The promise you are awaiting
+              {
+                loading: "Creating new sheet...", // Message shown during loading
+                success: "Sheet created successfully!", // Message shown on success
+                error: "Failed to create sheet.", // Message shown on error
+              }
+            );
           }}
         />
 

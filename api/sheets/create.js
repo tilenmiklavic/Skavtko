@@ -1,0 +1,38 @@
+// /api/sheets/create.js
+module.exports = async (req, res) => {
+  try {
+    const body = await req.body;
+    const { accessToken, sheetTitle, apiKey } = body;
+
+    const url = `https://sheets.googleapis.com/v4/spreadsheets?key=${apiKey}`;
+
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + accessToken,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        properties: {
+          title: sheetTitle,
+        },
+      }),
+      compress: true,
+    };
+
+    try {
+      // Fetch data from external API
+      const response = await fetch(url, options);
+      const data = await response.json();
+
+      res.status(200).json({ data: data });
+      // Handle the response data
+    } catch (error) {
+      console.error("There was a problem with the create operation:", error);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error communicating with Google Sheets API");
+  }
+};

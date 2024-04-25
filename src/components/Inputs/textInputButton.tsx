@@ -1,5 +1,9 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ConfirmDialog from "../Common/ConfirmDialog";
+import { useState } from "react";
+import TextInput from "./textInput";
+import toast from "react-hot-toast";
 
 interface TextInputProps {
   label: string;
@@ -9,11 +13,23 @@ interface TextInputProps {
   value?: string;
   defaultValue?: string;
   disabled?: boolean;
-  onButtonClick?: () => void;
+  onButtonClick: (title?: string) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const TextInputButton = (props: TextInputProps) => {
+  const [openModal, setOpenModal] = useState(false);
+  const [sheetName, setSheetName] = useState("");
+
+  const openDialog = () => {
+    setOpenModal(!openModal);
+  };
+
+  const handleConfirm = () => {
+    setOpenModal(!openModal);
+    props.onButtonClick(sheetName);
+  };
+
   return (
     <div className="relative flex w-full max-w-[24rem] mb-3">
       <div className="relative w-full min-w-[200px] h-10 min-w-0">
@@ -30,10 +46,29 @@ const TextInputButton = (props: TextInputProps) => {
         className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-2 px-4 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none !absolute right-1 top-1 rounded"
         type="button"
         style={{ position: "relative", overflow: "hidden" }}
-        onClick={props.onButtonClick}
+        onClick={openDialog}
       >
         <FontAwesomeIcon icon={faPlus} />
       </button>
+
+      <ConfirmDialog
+        open={openModal}
+        title="Ustvarjanje..."
+        content="Vnesi ime nove tabele, ki bo shranjena v tvoj Drive:"
+        handleOpen={() => {
+          setOpenModal(!openModal);
+        }}
+        handleConfirm={() => handleConfirm()}
+      >
+        <div className="p-3">
+          <TextInput
+            label={""}
+            id={"new_sheet_input"}
+            placeholder={"ime"}
+            onChange={(e) => setSheetName(e.target.value)}
+          />
+        </div>
+      </ConfirmDialog>
     </div>
   );
 };
