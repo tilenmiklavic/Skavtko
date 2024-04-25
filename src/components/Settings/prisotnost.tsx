@@ -6,7 +6,7 @@ import { FormatedSheet } from "../../classes/FormatedSheet";
 import SheetInfo from "../Common/SheetInfo";
 import Horizontal from "../Lines/Horizontal";
 import ColorInput from "../Inputs/colorInput";
-import { getSettings } from "../../services/settings";
+import { getSettings, saveSettings } from "../../services/settings";
 import TextInputButton from "../Inputs/textInputButton";
 import toast from "react-hot-toast";
 
@@ -23,7 +23,15 @@ const PrisotnostSettings = () => {
 
   const createNewSheet = async (title?: string) => {
     const result = await createSheet(title || "Prisotnost");
-    console.log(result);
+
+    if (result?.data) {
+      settings.prisotnost = {
+        id: result.data.spreadsheetId,
+        link: result.data.spreadsheetUrl,
+      };
+      saveSettings(settings);
+      sheetInfo();
+    }
   };
 
   useEffect(() => {
