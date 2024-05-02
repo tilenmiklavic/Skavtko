@@ -16,8 +16,6 @@ const FinanceSettings = () => {
   const [potniSheetInfoData, setPotniSheetInfoData] = useState({} as any);
   const [loading, setLoading] = useState(true);
   const [sheets, setSheets] = useState([] as any[]);
-  const [potniSheetSelectId, setPotniSheetSelectId] = useState("");
-  const [racuniSheetSelectId, setRacuniSheetSelectId] = useState("");
 
   const racuniSheetInfo = async () => {
     const sheetInfoRacuni = await getSheetInfo(settings.racuni.id);

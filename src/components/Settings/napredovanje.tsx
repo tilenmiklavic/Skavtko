@@ -8,6 +8,8 @@ import SheetInfo from "../Common/SheetInfo";
 import { FormatedSheet } from "../../classes/FormatedSheet";
 import TextInputButton from "../Inputs/textInputButton";
 import toast from "react-hot-toast";
+import Select from "../Inputs/select";
+import { getSheets } from "../../services/drive";
 
 const NapredovanjeSettings = () => {
   const [settings] = useState(getSettings());
@@ -16,6 +18,7 @@ const NapredovanjeSettings = () => {
   );
   const [groupSheetInfoData, setGroupSheetInfoData] = useState({} as any);
   const [loading, setLoading] = useState(true);
+  const [sheets, setSheets] = useState([] as any[]);
 
   const napredovanjeSheetInfo = async () => {
     const sheetInfoNapredovanje = await getSheetInfo(settings.napredovanje.id);
@@ -46,7 +49,13 @@ const NapredovanjeSettings = () => {
     }
   };
 
+  const getFiles = async () => {
+    const foo = await getSheets();
+    setSheets(foo);
+  };
+
   useEffect(() => {
+    getFiles();
     if (settings.napredovanje) napredovanjeSheetInfo();
     if (settings.group) groupSheetInfo();
   }, [settings]);
@@ -59,6 +68,14 @@ const NapredovanjeSettings = () => {
         placeholder="link"
         id="napredovanje_input"
       />
+      <div className="mb-3">
+        <Select
+          label="or select"
+          placeholder=""
+          id="napredovanje_sheet_select"
+          options={sheets}
+        ></Select>
+      </div>
 
       <SheetInfo
         loading={loading}
@@ -86,6 +103,14 @@ const NapredovanjeSettings = () => {
           );
         }}
       />
+      <div className="mb-3">
+        <Select
+          label="or select"
+          placeholder=""
+          id="group_sheet_select"
+          options={sheets}
+        ></Select>
+      </div>
 
       <SheetInfo
         loading={loading}

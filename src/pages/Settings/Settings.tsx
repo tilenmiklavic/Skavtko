@@ -28,6 +28,7 @@ export default function Settings() {
     const potniLink = event.target?.potni_input?.value;
     const potniId = event.target?.potni_sheet_select?.value;
     const prisotnostLink = event.target?.prisotnost_input?.value;
+    const prisotnostId = event.target?.prisotnost_sheet_select?.value;
     const napredovanjeLink = event.target?.napredovanje_input?.value;
     const skupineLink = event.target?.group_input?.value;
 
@@ -56,6 +57,8 @@ export default function Settings() {
           link: prisotnostLink,
           id: prisotnostLink.toString().split("/")[5],
         }
+      : prisotnostId
+      ? { link: `${sheetLink}${prisotnostId}`, id: prisotnostId }
       : settings.prisotnost;
 
     settings.napredovanje = napredovanjeLink
