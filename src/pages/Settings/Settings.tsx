@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import Header from "../../components/Header/header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GeneralSettings from "../../components/Settings/general";
 import PrisotnostSettings from "../../components/Settings/prisotnost";
 import {
@@ -14,6 +14,7 @@ import {
 import NapredovanjeSettings from "../../components/Settings/napredovanje";
 import FinanceSettings from "../../components/Settings/finance";
 import { getSettings } from "../../services/settings";
+import { getSheets, listSheets } from "../../services/drive";
 
 export default function Settings() {
   const [page, setPage] = useState(0);
@@ -125,6 +126,14 @@ export default function Settings() {
       desc: <PrisotnostSettings />,
     },
   ];
+
+  const getAllSheets = async () => {
+    await getSheets();
+  };
+
+  useEffect(() => {
+    getAllSheets();
+  });
 
   return (
     <div className="bg-blue flex flex-col flex-1" id="demo">
