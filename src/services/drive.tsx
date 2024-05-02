@@ -25,12 +25,12 @@ export async function listSheets() {
   } catch (error) {
     console.error("Network error:", error);
     // Handle network errors
-  }
+  } 
 }
 
 export async function getSheets(): Promise<any[]> {
   // Get sheets from local storage
-  let sheets = localStorage.getItem("files") || "[]";
+  let sheets = localStorage.getItem("files") || "";
 
   // If the sheets are not found, fetch them from the server
   if (!sheets) {
