@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import { createSheet, formatSheet, getSheetInfo } from "../../services/gsheets";
 import Subtitle from "../Text/Subtitle";
-import TextInput from "../Inputs/textInput";
 import Horizontal from "../Lines/Horizontal";
 import { getSettings, saveSettings } from "../../services/settings";
 import SheetInfo from "../Common/SheetInfo";
 import { FormatedSheet } from "../../classes/FormatedSheet";
 import TextInputButton from "../Inputs/textInputButton";
 import toast from "react-hot-toast";
+import { Select, Option } from "@material-tailwind/react";
+import { getSheets } from "../../services/drive";
 
 const FinanceSettings = () => {
   const [settings] = useState(getSettings());
   const [racuniSheetInfoData, setRacuniSheetInfoData] = useState({} as any);
   const [potniSheetInfoData, setPotniSheetInfoData] = useState({} as any);
   const [loading, setLoading] = useState(true);
+  const [sheets, setSheets] = useState([] as any[]);
 
   const racuniSheetInfo = async () => {
     const sheetInfoRacuni = await getSheetInfo(settings.racuni.id);
@@ -23,7 +25,13 @@ const FinanceSettings = () => {
     setLoading(false);
   };
 
+  const getFiles = async () => {
+    const foo = await getSheets();
+    setSheets(foo);
+  };
+
   useEffect(() => {
+    getFiles();
     if (settings.racuni) {
       racuniSheetInfo();
     }
@@ -31,10 +39,7 @@ const FinanceSettings = () => {
 
   const createNewRacuniSheet = async (title?: string) => {
     const result = await createSheet(title || "Računi");
-    const table = await formatSheet(
-      result.data.spreadsheetId,
-      FormatedSheet.RACUNI
-    );
+    await formatSheet(result.data.spreadsheetId, FormatedSheet.RACUNI);
 
     if (result?.data) {
       settings.racuni = {
@@ -83,6 +88,14 @@ const FinanceSettings = () => {
         }}
       />
 
+      <div className="mb-3">
+        <Select label="or select" placeholder={undefined}>
+          {sheets.map((sheet: any) => (
+            <Option key={sheet.id}>{sheet.name}</Option>
+          ))}
+        </Select>
+      </div>
+
       <SheetInfo
         loading={loading}
         title={racuniSheetInfoData?.properties?.title}
@@ -110,6 +123,13 @@ const FinanceSettings = () => {
           );
         }}
       />
+      <div className="mb-3">
+        <Select label="or select" placeholder={undefined}>
+          {sheets.map((sheet: any) => (
+            <Option key={sheet.id}>{sheet.name}</Option>
+          ))}
+        </Select>
+      </div>
 
       <SheetInfo
         loading={loading}
