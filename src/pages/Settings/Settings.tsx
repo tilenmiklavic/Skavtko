@@ -30,7 +30,9 @@ export default function Settings() {
     const prisotnostLink = event.target?.prisotnost_input?.value;
     const prisotnostId = event.target?.prisotnost_sheet_select?.value;
     const napredovanjeLink = event.target?.napredovanje_input?.value;
+    const napredovanjeId = event.target?.napredovanje_sheet_select?.value;
     const skupineLink = event.target?.group_input?.value;
+    const skupineId = event.target?.group_sheet_select?.value;
 
     const settings = getSettings();
 
@@ -66,6 +68,8 @@ export default function Settings() {
           link: napredovanjeLink,
           id: napredovanjeLink.toString().split("/")[5],
         }
+      : napredovanjeId
+      ? { link: `${sheetLink}${napredovanjeId}`, id: napredovanjeId }
       : settings.napredovanje;
 
     settings.group = skupineLink
@@ -73,6 +77,8 @@ export default function Settings() {
           link: skupineLink,
           id: skupineLink.toString().split("/")[5],
         }
+      : skupineId
+      ? { link: `${sheetLink}${skupineId}`, id: skupineId }
       : settings.group;
 
     localStorage.setItem("settings", JSON.stringify(settings));
