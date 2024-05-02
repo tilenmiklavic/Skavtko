@@ -36,7 +36,7 @@ export function saveSettings(settings: SettingsInterface): void {
 }
 
 export function getProfile(): UserProfile {
-  let profile = JSON.parse(localStorage.getItem("profile") || "");
+  let profile = JSON.parse(localStorage.getItem("profile") || "{}");
 
   return new UserProfile(profile);
 }
