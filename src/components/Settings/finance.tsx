@@ -7,8 +7,8 @@ import SheetInfo from "../Common/SheetInfo";
 import { FormatedSheet } from "../../classes/FormatedSheet";
 import TextInputButton from "../Inputs/textInputButton";
 import toast from "react-hot-toast";
-import { Select, Option } from "@material-tailwind/react";
 import { getSheets } from "../../services/drive";
+import Select from "../Inputs/select";
 
 const FinanceSettings = () => {
   const [settings] = useState(getSettings());
@@ -16,6 +16,8 @@ const FinanceSettings = () => {
   const [potniSheetInfoData, setPotniSheetInfoData] = useState({} as any);
   const [loading, setLoading] = useState(true);
   const [sheets, setSheets] = useState([] as any[]);
+  const [potniSheetSelectId, setPotniSheetSelectId] = useState("");
+  const [racuniSheetSelectId, setRacuniSheetSelectId] = useState("");
 
   const racuniSheetInfo = async () => {
     const sheetInfoRacuni = await getSheetInfo(settings.racuni.id);
@@ -68,6 +70,10 @@ const FinanceSettings = () => {
     }
   };
 
+  const sheetSelectionChange = (id: any) => {
+    console.log("selection change", id);
+  };
+
   return (
     <div>
       <Subtitle title="Računi" />
@@ -89,11 +95,12 @@ const FinanceSettings = () => {
       />
 
       <div className="mb-3">
-        <Select label="or select" placeholder={undefined}>
-          {sheets.map((sheet: any) => (
-            <Option key={sheet.id}>{sheet.name}</Option>
-          ))}
-        </Select>
+        <Select
+          label="or select"
+          placeholder=""
+          id="racuni_sheet_select"
+          options={sheets}
+        ></Select>
       </div>
 
       <SheetInfo
@@ -124,11 +131,12 @@ const FinanceSettings = () => {
         }}
       />
       <div className="mb-3">
-        <Select label="or select" placeholder={undefined}>
-          {sheets.map((sheet: any) => (
-            <Option key={sheet.id}>{sheet.name}</Option>
-          ))}
-        </Select>
+        <Select
+          label="or select"
+          placeholder=""
+          id="potni_sheet_select"
+          options={sheets}
+        ></Select>
       </div>
 
       <SheetInfo

@@ -25,7 +25,7 @@ export async function listSheets() {
   } catch (error) {
     console.error("Network error:", error);
     // Handle network errors
-  } 
+  }
 }
 
 export async function getSheets(): Promise<any[]> {
@@ -35,6 +35,7 @@ export async function getSheets(): Promise<any[]> {
   // If the sheets are not found, fetch them from the server
   if (!sheets) {
     const newSheets = await listSheets();
+    console.log("setting new sheets", newSheets);
     localStorage.setItem("files", JSON.stringify(newSheets));
     return newSheets || [];
   }
@@ -50,20 +51,19 @@ export async function getSheets(): Promise<any[]> {
 }
 
 function filterFiles(files: Response, filter: string) {
-  return files.data.files.filter((sheet) =>
-    sheet.mimeType.toLowerCase().includes(filter.toLowerCase())
-  );
+  return files.data.files
+    .filter((sheet) =>
+      sheet.mimeType.toLowerCase().includes(filter.toLowerCase())
+    )
+    .map((file) => ({
+      ...file,
+      value: file.id,
+      label: file.name,
+    }));
 }
 
 interface Response {
   data: {
     files: any[];
   };
-}
-
-export interface DriveFile {
-  kind: string;
-  mimeType: string;
-  id: string;
-  name: string;
 }

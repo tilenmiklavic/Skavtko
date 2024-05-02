@@ -14,7 +14,8 @@ import {
 import NapredovanjeSettings from "../../components/Settings/napredovanje";
 import FinanceSettings from "../../components/Settings/finance";
 import { getSettings } from "../../services/settings";
-import { getSheets, listSheets } from "../../services/drive";
+import { getSheets } from "../../services/drive";
+import { sheetLink } from "../../services/constants";
 
 export default function Settings() {
   const [page, setPage] = useState(0);
@@ -23,7 +24,9 @@ export default function Settings() {
     event.preventDefault();
 
     const racuniLink = event.target?.racuni_input?.value;
+    const racuniId = event.target?.racuni_sheet_select?.value;
     const potniLink = event.target?.potni_input?.value;
+    const potniId = event.target?.potni_sheet_select?.value;
     const prisotnostLink = event.target?.prisotnost_input?.value;
     const napredovanjeLink = event.target?.napredovanje_input?.value;
     const skupineLink = event.target?.group_input?.value;
@@ -35,6 +38,8 @@ export default function Settings() {
           link: racuniLink,
           id: racuniLink.toString().split("/")[5],
         }
+      : racuniId
+      ? { link: `${sheetLink}${racuniId}`, id: racuniId }
       : settings.racuni;
 
     settings.potni = potniLink
@@ -42,6 +47,8 @@ export default function Settings() {
           link: potniLink,
           id: potniLink.toString().split("/")[5],
         }
+      : potniId
+      ? { link: `${sheetLink}${potniId}`, id: potniId }
       : settings.potni;
 
     settings.prisotnost = prisotnostLink
