@@ -60,9 +60,12 @@ function Home() {
         ? settings.symbols.absent
         : settings.symbols.excused;
     const response = await writeToSheet(
-      symbol,
-      date2Col(rawData, date) + name2RowNumber(rawData, user),
-      settings.prisotnost.id
+      settings.prisotnost.id,
+      [[symbol]],
+      `${date2Col(rawData, date) + name2RowNumber(rawData, user)}:${
+        date2Col(rawData, date) + name2RowNumber(rawData, user)
+      }`,
+      "ROWS"
     );
 
     const obj = sheet2Object(response.data.values);

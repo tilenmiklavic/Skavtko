@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import Header from "../../components/Header/header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GeneralSettings from "../../components/Settings/general";
 import PrisotnostSettings from "../../components/Settings/prisotnost";
 import {
@@ -14,6 +14,8 @@ import {
 import NapredovanjeSettings from "../../components/Settings/napredovanje";
 import FinanceSettings from "../../components/Settings/finance";
 import { getSettings } from "../../services/settings";
+import { getSheets } from "../../services/drive";
+import { sheetLink } from "../../services/constants";
 
 export default function Settings() {
   const [page, setPage] = useState(0);
@@ -22,10 +24,15 @@ export default function Settings() {
     event.preventDefault();
 
     const racuniLink = event.target?.racuni_input?.value;
+    const racuniId = event.target?.racuni_sheet_select?.value;
     const potniLink = event.target?.potni_input?.value;
+    const potniId = event.target?.potni_sheet_select?.value;
     const prisotnostLink = event.target?.prisotnost_input?.value;
+    const prisotnostId = event.target?.prisotnost_sheet_select?.value;
     const napredovanjeLink = event.target?.napredovanje_input?.value;
+    const napredovanjeId = event.target?.napredovanje_sheet_select?.value;
     const skupineLink = event.target?.group_input?.value;
+    const skupineId = event.target?.group_sheet_select?.value;
 
     const settings = getSettings();
 
@@ -34,6 +41,8 @@ export default function Settings() {
           link: racuniLink,
           id: racuniLink.toString().split("/")[5],
         }
+      : racuniId
+      ? { link: `${sheetLink}${racuniId}`, id: racuniId }
       : settings.racuni;
 
     settings.potni = potniLink
@@ -41,6 +50,8 @@ export default function Settings() {
           link: potniLink,
           id: potniLink.toString().split("/")[5],
         }
+      : potniId
+      ? { link: `${sheetLink}${potniId}`, id: potniId }
       : settings.potni;
 
     settings.prisotnost = prisotnostLink
@@ -48,6 +59,8 @@ export default function Settings() {
           link: prisotnostLink,
           id: prisotnostLink.toString().split("/")[5],
         }
+      : prisotnostId
+      ? { link: `${sheetLink}${prisotnostId}`, id: prisotnostId }
       : settings.prisotnost;
 
     settings.napredovanje = napredovanjeLink
@@ -55,6 +68,8 @@ export default function Settings() {
           link: napredovanjeLink,
           id: napredovanjeLink.toString().split("/")[5],
         }
+      : napredovanjeId
+      ? { link: `${sheetLink}${napredovanjeId}`, id: napredovanjeId }
       : settings.napredovanje;
 
     settings.group = skupineLink
@@ -62,6 +77,8 @@ export default function Settings() {
           link: skupineLink,
           id: skupineLink.toString().split("/")[5],
         }
+      : skupineId
+      ? { link: `${sheetLink}${skupineId}`, id: skupineId }
       : settings.group;
 
     localStorage.setItem("settings", JSON.stringify(settings));
@@ -125,6 +142,14 @@ export default function Settings() {
       desc: <PrisotnostSettings />,
     },
   ];
+
+  const getAllSheets = async () => {
+    await getSheets();
+  };
+
+  useEffect(() => {
+    getAllSheets();
+  });
 
   return (
     <div className="bg-blue flex flex-col flex-1" id="demo">

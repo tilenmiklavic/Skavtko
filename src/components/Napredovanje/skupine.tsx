@@ -86,9 +86,10 @@ const TekmovanjeSkupine = () => {
       let index = rawData.findIndex((row) => row[0] === team.Ime);
       // Await is not necessary here; just return the promise
       return writeToSheet(
-        team.Točke.toString(),
-        `B${index + 1}`,
-        settings.group.id
+        settings.group.id,
+        [[team.Točke.toString()]],
+        `B${index + 1}:B${index + 1}`,
+        "ROWS"
       );
     });
 

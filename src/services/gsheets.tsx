@@ -64,47 +64,8 @@ export async function appendToSheet(values: string[][], sheet_id: string) {
 }
 
 export async function writeToSheet(
-  value: string,
-  position: string,
-  sheet_id: string
-) {
-  const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
-  // const sheet_id = JSON.parse(localStorage.getItem("sheetLink")!).id;
-
-  const formData = {
-    accessToken: access_token,
-    sheetId: sheet_id,
-    apiKey: process.env.REACT_APP_API_KEY,
-    value: value,
-    position: position,
-  };
-
-  try {
-    const response = await fetch("/api/sheets/write", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-
-    if (response.ok) {
-      const result = await response.json();
-      const updatedSheet = await getSheet(sheet_id);
-      return updatedSheet;
-    } else {
-      console.error("Error from server", response);
-      // Handle server errors or non-OK responses
-    }
-  } catch (error) {
-    console.error("Network error:", error);
-    // Handle network errors
-  }
-}
-
-export async function writeToSheet2(
   sheet_id: string,
-  value: string,
+  value: string[][],
   range: string,
   majorDimension: string
 ) {
@@ -120,7 +81,7 @@ export async function writeToSheet2(
   };
 
   try {
-    const response = await fetch("/api/sheets/writeUpdated", {
+    const response = await fetch("/api/sheets/write", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -290,7 +251,7 @@ export async function formatSheet(sheet_id: string, index: number) {
 
     const body = index2FormatedSheet(index);
 
-    const updatedSheet = await writeToSheet2(
+    const updatedSheet = await writeToSheet(
       sheet_id,
       body.values,
       body.range,

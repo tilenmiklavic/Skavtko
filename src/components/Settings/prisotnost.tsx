@@ -9,11 +9,14 @@ import ColorInput from "../Inputs/colorInput";
 import { getSettings, saveSettings } from "../../services/settings";
 import TextInputButton from "../Inputs/textInputButton";
 import toast from "react-hot-toast";
+import Select from "../Inputs/select";
+import { getSheets } from "../../services/drive";
 
 const PrisotnostSettings = () => {
   const [settings] = useState(getSettings());
   const [sheetInfoData, setSheetInfoData] = useState({} as any);
   const [loading, setLoading] = useState(true);
+  const [sheets, setSheets] = useState([] as any[]);
 
   const sheetInfo = async () => {
     const sheetInfo = await getSheetInfo(settings.prisotnost.id);
@@ -38,7 +41,13 @@ const PrisotnostSettings = () => {
     }
   };
 
+  const getFiles = async () => {
+    const foo = await getSheets();
+    setSheets(foo);
+  };
+
   useEffect(() => {
+    getFiles();
     if (settings.racuni) {
       sheetInfo();
     }
@@ -64,6 +73,14 @@ const PrisotnostSettings = () => {
             );
           }}
         />
+        <div className="mb-3">
+          <Select
+            label="or select"
+            placeholder=""
+            id="prisotnost_sheet_select"
+            options={sheets}
+          ></Select>
+        </div>
 
         <SheetInfo
           loading={loading}

@@ -9,6 +9,12 @@ const GeneralSettings = () => {
   const [veja, setVeja] = useState("");
   const [settings] = useState(getSettings());
   const [profile] = useState(getProfile());
+  const selectVejaOptions = [
+    { value: "bb", label: "BB" },
+    { value: "vv", label: "VV" },
+    { value: "iv", label: "IV" },
+    { value: "pp", label: "PP" },
+  ];
 
   useEffect(() => {
     setSteg(settings.steg);
@@ -31,6 +37,7 @@ const GeneralSettings = () => {
         id={"veja_select"}
         placeholder={"Veja"}
         value={veja}
+        options={selectVejaOptions}
         onChange={(e) => setVeja(e.target.value)}
       />
       <TextInput
