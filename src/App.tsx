@@ -22,7 +22,7 @@ function App() {
         <Toaster />
       </div>
       <div className="flex flex-col h-dvh">
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 overflow-auto">
           <Container>
             <Routes>
               <Route path="/login" element={<Login />} />
