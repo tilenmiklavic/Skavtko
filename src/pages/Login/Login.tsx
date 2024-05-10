@@ -80,7 +80,7 @@ export default function Login() {
   return (
     <>
       <Header title="Login" />
-      <div className="flex items-center justify-center">
+      <div className="flex flex-1 items-center justify-center">
         <button
           type="button"
           onClick={initLogin}
