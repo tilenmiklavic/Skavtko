@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
     appendHeaderItem,
     date2Col,
@@ -19,7 +19,8 @@ import {
     faCalendarPlus,
     faCircle,
     faCircleCheck,
-    faCircleXmark
+    faCircleXmark,
+    faPlusCircle
 } from "@fortawesome/free-solid-svg-icons";
 import Header from "../../components/Header/header";
 import Present from "../../classes/Present";
@@ -33,6 +34,7 @@ import {
     symbol2color
 } from "../../services/attendance";
 import DateInput from "../../components/Inputs/dateInput";
+import TextInput from "../../components/Inputs/textInput";
 
 function Home() {
     const [data, setData] = useState([] as any[]);
@@ -41,6 +43,8 @@ function Home() {
     const [settings] = useState(getSettings());
     const [date, setDate] = useState(moment().format("D.M.YYYY"));
     const [today, setToday] = useState(false);
+
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const getData = async () => {
         if (settings.prisotnost.id === "") return;
@@ -102,6 +106,10 @@ function Home() {
     const changeDate = (e: any) => {
         const newDate = moment(e.target.value).format("D.M.YYYY");
         setDate(newDate);
+    };
+
+    const addUser = async (name: string) => {
+        console.log(name);
     };
 
     useEffect(() => {
@@ -244,6 +252,43 @@ function Home() {
                         </Card>
                     );
                 })}
+                <Card
+                    placeholder={undefined}
+                    className="shadow-xl border"
+                    variant="gradient"
+                >
+                    <div className="p-5 flex flex-row justify-between">
+                        <div>
+                            <h5 className="text-xl font-semibold">
+                                Nov uporabnik
+                            </h5>
+                            <TextInput
+                                id={"new_user_input"}
+                                placeholder={"ime priimek"}
+                                className="mt-2"
+                                ref={inputRef}
+                            />
+                        </div>
+                        <div className="flex gap-2 items-center">
+                            <IconButton
+                                placeholder={undefined}
+                                size="lg"
+                                disabled={!today}
+                                onClick={() => {
+                                    if (inputRef.current) {
+                                        addUser(inputRef.current.value);
+                                    }
+                                }}
+                            >
+                                <FontAwesomeIcon
+                                    className="icon"
+                                    size="xl"
+                                    icon={faPlusCircle}
+                                />
+                            </IconButton>
+                        </div>
+                    </div>
+                </Card>
             </div>
         </div>
     );
