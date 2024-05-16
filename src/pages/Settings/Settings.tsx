@@ -192,7 +192,7 @@ export default function Settings() {
                     <div className="flex flex-col">
                         <Button
                             color="black"
-                            className="w-full"
+                            className="w-full mt-10"
                             type="submit"
                             placeholder={undefined}
                         >
