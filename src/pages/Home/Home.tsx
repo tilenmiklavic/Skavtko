@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import {
     appendHeaderItem,
+    appendToSheet,
     date2Col,
     getSheet,
     name2RowNumber,
@@ -109,7 +110,16 @@ function Home() {
     };
 
     const addUser = async (name: string) => {
-        console.log(name);
+        toast
+            .promise(
+                appendToSheet([[name]], settings.prisotnost.id), // The promise you are awaiting
+                {
+                    loading: "Adding user...", // Message shown during loading
+                    success: "User added successfully!", // Message shown on success
+                    error: "Failed to add user." // Message shown on error
+                }
+            )
+            .then(() => getData());
     };
 
     useEffect(() => {
@@ -273,7 +283,6 @@ function Home() {
                             <IconButton
                                 placeholder={undefined}
                                 size="lg"
-                                disabled={!today}
                                 onClick={() => {
                                     if (inputRef.current) {
                                         addUser(inputRef.current.value);
