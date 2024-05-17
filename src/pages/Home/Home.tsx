@@ -119,7 +119,12 @@ function Home() {
                     error: "Failed to add user." // Message shown on error
                 }
             )
-            .then(() => getData());
+            .then(() => {
+                getData();
+                if (inputRef.current) {
+                    inputRef.current.value = "";
+                }
+            });
     };
 
     useEffect(() => {
