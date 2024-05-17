@@ -62,6 +62,7 @@ const PrisotnostSettings = () => {
                     label="Spreadsheet link"
                     placeholder="link"
                     id="prisotnost_input"
+                    clearButton={true}
                     onButtonClick={(title?: string) => {
                         toast.promise(
                             createNewSheet(title), // The promise you are awaiting
@@ -102,6 +103,7 @@ const PrisotnostSettings = () => {
                     placeholder={settings?.symbols?.present || "prisoten"}
                     defaultValue={settings?.symbols?.present}
                     id="present_symbol_input"
+                    clearButton={true}
                 />
 
                 <TextInput
@@ -109,6 +111,7 @@ const PrisotnostSettings = () => {
                     placeholder={settings?.symbols?.excused || "opravičen"}
                     defaultValue={settings?.symbols?.excused}
                     id="excused_symbol_input"
+                    clearButton={true}
                 />
 
                 <TextInput
@@ -116,6 +119,7 @@ const PrisotnostSettings = () => {
                     placeholder={settings?.symbols?.absent || "odsoten"}
                     defaultValue={settings?.symbols?.absent}
                     id="absent_symbol_input"
+                    clearButton={true}
                 />
             </div>
 
