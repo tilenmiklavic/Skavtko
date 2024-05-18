@@ -2,19 +2,17 @@ import { useEffect, useState, useRef } from "react";
 import {
     appendHeaderItem,
     appendToSheet,
+    colNumber2ColLetter,
     date2Col,
     getSheet,
+    name2ColIndex,
     name2RowNumber,
+    removeRow,
     sheet2Object,
+    vod2ColIndex,
     writeToSheet
 } from "../../services/gsheets";
-import {
-    Alert,
-    Button,
-    Card,
-    IconButton,
-    Input
-} from "@material-tailwind/react";
+import { Alert, Button, Card, IconButton } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faCalendarPlus,
@@ -36,6 +34,10 @@ import {
 } from "../../services/attendance";
 import DateInput from "../../components/Inputs/dateInput";
 import TextInput from "../../components/Inputs/textInput";
+import { useLongPress } from "@uidotdev/usehooks";
+import ConfirmDialog from "../../components/Common/ConfirmDialog";
+import LongPressCard from "../../components/Card/LongPressCard";
+import User from "../../classes/User";
 
 function Home() {
     const [data, setData] = useState([] as any[]);
@@ -44,6 +46,9 @@ function Home() {
     const [settings] = useState(getSettings());
     const [date, setDate] = useState(moment().format("D.M.YYYY"));
     const [today, setToday] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+    const [editedUserName, setEditedUserName] = useState("");
+    const [editedUserVod, setEditedUserVod] = useState("");
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -127,6 +132,65 @@ function Home() {
             });
     };
 
+    const editUser = async (origin_name: string, name: string, vod: string) => {
+        console.log("Editing user", name, vod);
+        console.log(name2RowNumber(rawData, origin_name));
+
+        let row_index = name2RowNumber(rawData, origin_name);
+        let name_col_index = name2ColIndex(rawData);
+        let vod_col_index = vod2ColIndex(rawData);
+        let name_col_letter = colNumber2ColLetter(name_col_index);
+        let vod_col_letter = colNumber2ColLetter(vod_col_index);
+
+        toast
+            .promise(
+                writeToSheet(
+                    settings.prisotnost.id,
+                    [[name]],
+                    `${name_col_letter}${row_index}:${name_col_letter}${row_index}`,
+                    "ROWS"
+                ), // The promise you are awaiting
+                {
+                    loading: "Editing name...", // Message shown during loading
+                    success: "Name edited successfully!", // Message shown on success
+                    error: "Failed to edit name." // Message shown on error
+                }
+            )
+            .then(() => {
+                toast
+                    .promise(
+                        writeToSheet(
+                            settings.prisotnost.id,
+                            [[vod]],
+                            `${vod_col_letter}${row_index}:${vod_col_letter}${row_index}`,
+                            "ROWS"
+                        ), // The promise you are awaiting
+                        {
+                            loading: "Editing vod...", // Message shown during loading
+                            success: "Vod edited successfully!", // Message shown on success
+                            error: "Failed to edit vod." // Message shown on error
+                        }
+                    )
+                    .then(() => getData());
+            });
+    };
+
+    const removeUser = async (name: string) => {
+        console.log("Removing user", name);
+        let row_index = name2RowNumber(rawData, name);
+
+        toast
+            .promise(
+                removeRow(settings.prisotnost.id, row_index), // The promise you are awaiting
+                {
+                    loading: "Removing user...", // Message shown during loading
+                    success: "User removed successfully!", // Message shown on success
+                    error: "Failed to remove user." // Message shown on error
+                }
+            )
+            .then(() => getData());
+    };
+
     useEffect(() => {
         getData();
     }, [settings]);
@@ -186,19 +250,27 @@ function Home() {
             />
 
             <div className="flex flex-col gap-2 mt-5">
-                {data.map((user: any) => {
+                {data.map((user: User) => {
                     return (
-                        <Card
+                        <LongPressCard
                             placeholder={undefined}
                             key={user.Ime}
+                            data={user}
                             className="shadow-xl border"
                             style={{ backgroundColor: user.presentColor }}
                             variant="gradient"
+                            onSave={(
+                                origin_name: string,
+                                name: string,
+                                vod: string
+                            ) => editUser(origin_name, name, vod)}
+                            onRemove={(name: string) => removeUser(name)}
                         >
                             <div className="p-5 flex flex-row justify-between">
                                 <div>
                                     <h5
                                         className="text-2xl font-semibold"
+                                        id="user_name"
                                         style={{ color: user.textColor }}
                                     >
                                         {user.Ime}
@@ -264,7 +336,7 @@ function Home() {
                                     </IconButton>
                                 </div>
                             </div>
-                        </Card>
+                        </LongPressCard>
                     );
                 })}
                 <Card
