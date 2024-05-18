@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ConfirmDialog from "../Common/ConfirmDialog";
 import { useState } from "react";
 import TextInput from "./textInput";
-import toast from "react-hot-toast";
 
 interface TextInputProps {
     label: string;
@@ -59,7 +58,7 @@ const TextInputButton = (props: TextInputProps) => {
             </div>
             <ConfirmDialog
                 open={openModal}
-                title="Ustvarjanje..."
+                title="Urejanje..."
                 content="Vnesi ime nove tabele, ki bo shranjena v tvoj Drive:"
                 handleOpen={() => {
                     setOpenModal(!openModal);
