@@ -44,7 +44,7 @@
         "tailwindcss-animate": "^1.0.7",
         "typescript": "^4.4.2",
         "use-places-autocomplete": "^4.0.1",
-        "vercel": "^33.5.3",
+        "vercel": "^37.4.2",
         "web-vitals": "^2.1.0"
     },
     "scripts": {
