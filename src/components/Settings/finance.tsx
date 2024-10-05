@@ -25,9 +25,12 @@ const FinanceSettings = () => {
     setLoading(false);
   };
 
+  const setSheetsFromDrive = (sheets: any) => {
+    setSheets(sheets);
+  }
+
   const getFiles = async () => {
-    const foo = await getSheets();
-    setSheets(foo);
+    getSheets(setSheetsFromDrive);
   };
 
   useEffect(() => {

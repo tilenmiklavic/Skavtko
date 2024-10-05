@@ -1,9 +1,13 @@
+let initialCall = true;
+let originsWaiting: Array<(data: any) => void> = [];
+
 export async function listSheets() {
   const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
 
   const formData = {
     accessToken: access_token,
     apiKey: process.env.REACT_APP_API_KEY,
+    q: "mimeType: 'application/vnd.google-apps.spreadsheet'"
   };
 
   try {
@@ -28,26 +32,27 @@ export async function listSheets() {
   }
 }
 
-export async function getSheets(): Promise<any[]> {
+export async function getSheets(foo?:(data: any) => void) {
+  foo && originsWaiting.push(foo);
+
   // Get sheets from local storage
-  let sheets = localStorage.getItem("files") || "";
+  let sheets: any;
 
   // If the sheets are not found, fetch them from the server
-  if (!sheets) {
-    const newSheets = await listSheets();
-    console.log("setting new sheets", newSheets);
-    localStorage.setItem("files", JSON.stringify(newSheets));
-    return newSheets || [];
+  if (initialCall) {
+    initialCall = false;
+    sheets = await listSheets();
+    localStorage.setItem("files", JSON.stringify(sheets));
+  } else {
+    let files = localStorage.getItem("files")
+    sheets = JSON.parse(files || "{}");
   }
 
-  // Parse the sheets
-  sheets = JSON.parse(sheets);
+  originsWaiting.forEach(origin => {
+    origin(sheets);
+  })
 
-  if (!Array.isArray(sheets)) {
-    return [];
-  }
-
-  return sheets;
+  originsWaiting = [];
 }
 
 function filterFiles(files: Response, filter: string) {

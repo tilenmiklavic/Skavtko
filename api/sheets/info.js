@@ -5,9 +5,6 @@ module.exports = async (req, res) => {
     const { accessToken, apiKey, sheetId } = body;
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?key=${apiKey}`;
 
-    console.log("url", url);
-    console.log("accessToken", accessToken);
-
     const options = {
       method: "GET",
       headers: {

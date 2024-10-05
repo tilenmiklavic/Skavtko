@@ -2,8 +2,8 @@
 module.exports = async (req, res) => {
   try {
     const body = await req.body;
-    const { accessToken, apiKey } = body;
-    const url = `https://www.googleapis.com/drive/v3/files?key=${apiKey}`;
+    const { accessToken, apiKey, q } = body;
+    const url = `https://www.googleapis.com/drive/v3/files?key=${apiKey}&q=${q}`;
 
     const options = {
       method: "GET",

@@ -104,8 +104,6 @@ export async function writeToSheet(
 }
 
 export async function getSheet(sheet_id: string) {
-    // Assuming `formData` is the data you want to append, structured as needed for your Google Sheet
-
     const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
     // const sheet_id = JSON.parse(localStorage.getItem("sheetLink")!).id;
 
@@ -138,8 +136,6 @@ export async function getSheet(sheet_id: string) {
 }
 
 export async function getSheetInfo(sheet_id: string) {
-    // Assuming `formData` is the data you want to append, structured as needed for your Google Sheet
-
     const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
     // const sheet_id = JSON.parse(localStorage.getItem("sheetLink")!).id;
 
@@ -178,6 +174,7 @@ export async function appendHeaderItem(
 ) {
     const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
 
+    debugger;
     const formData = {
         accessToken: access_token,
         sheetId: sheet_id,
