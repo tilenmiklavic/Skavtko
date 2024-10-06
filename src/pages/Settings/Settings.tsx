@@ -67,9 +67,14 @@ export default function Settings() {
       ? {
           link: napredovanjeLink,
           id: napredovanjeLink.toString().split("/")[5],
+          izziviNumber: settings.napredovanje.izziviNumber,
         }
       : napredovanjeId
-        ? { link: `${sheetLink}${napredovanjeId}`, id: napredovanjeId }
+        ? {
+            link: `${sheetLink}${napredovanjeId}`,
+            id: napredovanjeId,
+            izziviNumber: settings.napredovanje.izziviNumber,
+          }
         : settings.napredovanje;
 
     settings.group = skupineLink
@@ -102,6 +107,11 @@ export default function Settings() {
       toast.success("Settings saved!");
 
       return;
+    } else if (page === 2) {
+      settings.napredovanje.izziviNumber =
+        event.target.napredovanje_number_input.value;
+
+      localStorage.setItem("settings", JSON.stringify(settings));
     } else if (page === 3) {
       settings.symbols.present = event.target.present_symbol_input.value;
       settings.symbols.excused = event.target.excused_symbol_input.value;
@@ -132,7 +142,7 @@ export default function Settings() {
     {
       label: "Napredovanje",
       value: "napredovanje",
-      index: 1,
+      index: 2,
       desc: <NapredovanjeSettings />,
     },
     {

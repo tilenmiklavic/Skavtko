@@ -40,3 +40,19 @@ export function getProfile(): UserProfile {
 
   return new UserProfile(profile);
 }
+
+export function isVV(): boolean {
+  return getSettings().veja === "vv";
+}
+
+export function isBB(): boolean {
+  return getSettings().veja === "bb";
+}
+
+export function isIV(): boolean {
+  return getSettings().veja === "iv";
+}
+
+export function isPP(): boolean {
+  return getSettings().veja === "pp";
+}
