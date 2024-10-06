@@ -24,7 +24,7 @@ const NapredovanjeSettings = () => {
         const sheetInfoNapredovanje = await getSheetInfo(
             settings.napredovanje.id
         );
-        setNapredovanjeSheetInfoData(sheetInfoNapredovanje.data);
+        setNapredovanjeSheetInfoData(sheetInfoNapredovanje?.data);
         setLoading(false);
     };
 

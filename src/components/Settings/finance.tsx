@@ -19,7 +19,7 @@ const FinanceSettings = () => {
 
   const racuniSheetInfo = async () => {
     const sheetInfoRacuni = await getSheetInfo(settings.racuni.id);
-    setRacuniSheetInfoData(sheetInfoRacuni.data);
+    setRacuniSheetInfoData(sheetInfoRacuni?.data);
     const sheetInfoPotni = await getSheetInfo(settings.potni.id);
     setPotniSheetInfoData(sheetInfoPotni?.data);
     setLoading(false);
