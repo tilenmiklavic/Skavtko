@@ -7,7 +7,7 @@ export function isValid(element: any) {
     return false;
   }
 
-  if (element == undefined) {
+  if (element === undefined) {
     return false;
   }
 
