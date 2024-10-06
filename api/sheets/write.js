@@ -41,7 +41,7 @@ module.exports = async (req, res) => {
     } catch (error) {
       console.error(
         "There was a problem with the write updated operation:",
-        error
+        error,
       );
     }
   } catch (error) {

@@ -2,7 +2,7 @@ import SettingsInterface from "../classes/SettingsInterface";
 
 export function symbol2Description(
   symbol: string,
-  settings: SettingsInterface
+  settings: SettingsInterface,
 ) {
   switch (symbol) {
     case settings.symbols.present:

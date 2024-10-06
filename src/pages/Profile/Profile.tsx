@@ -28,7 +28,7 @@ export default function Profile() {
     setLoggedId(moment() < moment(auth.expiration_timestamp));
 
     auth.expiration_timestamp = moment(auth.expiration_timestamp).format(
-      "HH:mm:ss, MM. DD. YYYY"
+      "HH:mm:ss, MM. DD. YYYY",
     );
 
     setProfile(profile);

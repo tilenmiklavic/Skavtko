@@ -3,7 +3,7 @@ export function isEmpty(object: any) {
 }
 
 export function isValid(element: any) {
-  if (element === "undefined"){
+  if (element === "undefined") {
     return false;
   }
 

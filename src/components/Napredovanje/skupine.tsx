@@ -73,7 +73,7 @@ const TekmovanjeSkupine = () => {
           loading: "Writing to sheets...", // Message shown during loading
           success: "Data written successfully!", // Message shown on success
           error: "Failed to write data.", // Message shown on error
-        }
+        },
       )
       .then(() => {
         setUpdating(false);
@@ -89,7 +89,7 @@ const TekmovanjeSkupine = () => {
         settings.group.id,
         [[team.Točke.toString()]],
         `B${index + 1}:B${index + 1}`,
-        "ROWS"
+        "ROWS",
       );
     });
 

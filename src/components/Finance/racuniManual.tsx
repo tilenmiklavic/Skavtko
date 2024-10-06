@@ -34,7 +34,7 @@ const RacuniManual = () => {
           loading: "Writing to sheets...", // Message shown during loading
           success: "Data written successfully!", // Message shown on success
           error: "Failed to write data.", // Message shown on error
-        }
+        },
       )
       .then(() => {
         setSaving(false);

@@ -29,7 +29,7 @@ const SheetInfo = (props: SheetInfoProps) => {
         loading: "Formatting sheet...", // Message shown during loading
         success: "Sheet formatted successfully!", // Message shown on success
         error: "Failed to format sheet.", // Message shown on error
-      }
+      },
     );
   };
 

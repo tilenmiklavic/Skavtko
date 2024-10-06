@@ -4,7 +4,7 @@ import SettingsInterface, {
 } from "../classes/SettingsInterface";
 
 export default function createSettingsObject(
-  partialSettings?: any
+  partialSettings?: any,
 ): SettingsInterface {
   return new SettingsInterface(partialSettings);
 }

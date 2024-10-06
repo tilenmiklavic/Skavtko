@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      }
+      },
     );
     if (!response.ok) {
       throw new Error("Failed to fetch user info");
