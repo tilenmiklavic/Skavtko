@@ -137,7 +137,10 @@ export async function getSheet(sheet_id: string) {
 
 export async function getSheetInfo(sheet_id: string) {
     const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
-    // const sheet_id = JSON.parse(localStorage.getItem("sheetLink")!).id;
+
+    if (!sheet_id) {
+        return null;
+    }
 
     const formData = {
         accessToken: access_token,

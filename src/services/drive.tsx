@@ -1,3 +1,5 @@
+import { isValid } from "./stringUtils";
+
 let initialCall = true;
 let originsWaiting: Array<(data: any) => void> = [];
 
@@ -45,7 +47,12 @@ export async function getSheets(foo?:(data: any) => void) {
     localStorage.setItem("files", JSON.stringify(sheets));
   } else {
     let files = localStorage.getItem("files")
-    sheets = JSON.parse(files || "{}");
+    if (isValid(files)) {
+      sheets = JSON.parse(files || "{}");
+    } else {
+      sheets = await listSheets();
+      localStorage.setItem("files", JSON.stringify(sheets));
+    }
   }
 
   originsWaiting.forEach(origin => {
