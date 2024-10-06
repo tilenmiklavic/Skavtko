@@ -9,7 +9,7 @@ export async function listSheets() {
   const formData = {
     accessToken: access_token,
     apiKey: process.env.REACT_APP_API_KEY,
-    q: "mimeType: 'application/vnd.google-apps.spreadsheet'"
+    q: "mimeType: 'application/vnd.google-apps.spreadsheet'",
   };
 
   try {
@@ -34,7 +34,7 @@ export async function listSheets() {
   }
 }
 
-export async function getSheets(foo?:(data: any) => void) {
+export async function getSheets(foo?: (data: any) => void) {
   foo && originsWaiting.push(foo);
 
   // Get sheets from local storage
@@ -46,7 +46,7 @@ export async function getSheets(foo?:(data: any) => void) {
     sheets = await listSheets();
     localStorage.setItem("files", JSON.stringify(sheets));
   } else {
-    let files = localStorage.getItem("files")
+    let files = localStorage.getItem("files");
     if (isValid(files)) {
       sheets = JSON.parse(files || "{}");
     } else {
@@ -55,9 +55,9 @@ export async function getSheets(foo?:(data: any) => void) {
     }
   }
 
-  originsWaiting.forEach(origin => {
+  originsWaiting.forEach((origin) => {
     origin(sheets);
-  })
+  });
 
   originsWaiting = [];
 }
@@ -65,7 +65,7 @@ export async function getSheets(foo?:(data: any) => void) {
 function filterFiles(files: Response, filter: string) {
   return files.data.files
     .filter((sheet) =>
-      sheet.mimeType.toLowerCase().includes(filter.toLowerCase())
+      sheet.mimeType.toLowerCase().includes(filter.toLowerCase()),
     )
     .map((file) => ({
       ...file,

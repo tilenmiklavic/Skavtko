@@ -27,7 +27,7 @@ const FinanceSettings = () => {
 
   const setSheetsFromDrive = (sheets: any) => {
     setSheets(sheets);
-  }
+  };
 
   const getFiles = async () => {
     getSheets(setSheetsFromDrive);
@@ -58,7 +58,7 @@ const FinanceSettings = () => {
     const result = await createSheet(title || "Potni");
     const table = await formatSheet(
       result.data.spreadsheetId,
-      FormatedSheet.POTNI
+      FormatedSheet.POTNI,
     );
 
     if (result?.data) {
@@ -90,7 +90,7 @@ const FinanceSettings = () => {
               loading: "Creating new sheet...", // Message shown during loading
               success: "Sheet created successfully!", // Message shown on success
               error: "Failed to create sheet.", // Message shown on error
-            }
+            },
           );
         }}
       />
@@ -127,7 +127,7 @@ const FinanceSettings = () => {
               loading: "Creating new sheet...", // Message shown during loading
               success: "Sheet created successfully!", // Message shown on success
               error: "Failed to create sheet.", // Message shown on error
-            }
+            },
           );
         }}
       />

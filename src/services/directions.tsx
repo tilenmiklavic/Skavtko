@@ -4,7 +4,7 @@ export async function getDirections(
   lat1: number,
   lng1: number,
   lat2: number,
-  lng2: number
+  lng2: number,
 ) {
   //   const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
   const access_token = process.env.REACT_APP_DIRECTIONS_ACCESS_TOKEN;

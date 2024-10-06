@@ -25,7 +25,7 @@ const Header = (props: NavItemProps) => {
     openLogoutDialog();
     window.localStorage.clear();
     navigate("/login");
-  }
+  };
 
   return (
     <div className="flex items-center justify-between ms-3 my-3">
@@ -41,12 +41,15 @@ const Header = (props: NavItemProps) => {
         />
       )}
 
-      <LogoutDialog open={openModal} title={""} 
+      <LogoutDialog
+        open={openModal}
+        title={""}
         handleConfirm={() => {
           logout();
-        }} handleOpen={() => {
-            setOpenModal(!openModal);
-        }} 
+        }}
+        handleOpen={() => {
+          setOpenModal(!openModal);
+        }}
       />
     </div>
   );

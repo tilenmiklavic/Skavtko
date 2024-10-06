@@ -216,8 +216,8 @@ export default function Statistics() {
                             percentage > 80
                               ? "green"
                               : percentage >= 50
-                              ? "amber"
-                              : "red"
+                                ? "amber"
+                                : "red"
                           }
                           size="sm"
                           value={percentage.toFixed(0) + "%"}
@@ -225,7 +225,7 @@ export default function Statistics() {
                       </Typography>
                     </td>
                   </tr>
-                )
+                ),
               )}
             </tbody>
           </table>
