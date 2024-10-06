@@ -1,33 +1,53 @@
 "use client";
 
-import { faGear } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
 import Title from "../Text/Title";
+import { useState } from "react";
+import { getProfile } from "../../services/settings";
+import { Avatar } from "@material-tailwind/react";
+import LogoutDialog from "../Common/LogoutDialog";
+import { useNavigate } from "react-router-dom";
 
 interface NavItemProps {
   title: string;
-  settings?: string;
+  settings?: boolean;
 }
 
 const Header = (props: NavItemProps) => {
+  const [profile] = useState(getProfile());
+  const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
+
+  const openLogoutDialog = () => {
+    setOpenModal(!openModal);
+  };
+
+  const logout = () => {
+    openLogoutDialog();
+    window.localStorage.clear();
+    navigate("/login");
+  }
+
   return (
-    <div className="flex items-center justify-between ms-3 mt-3">
+    <div className="flex items-center justify-between ms-3 my-3">
       <Title title={props.title} />
 
-      {props.settings ? (
-        <button
-          type="button"
-          className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-        >
-          <Link to={props.settings}>
-            <FontAwesomeIcon className="mr-2" size="1x" icon={faGear} />
-            Nastavitve
-          </Link>
-        </button>
-      ) : (
-        <></>
+      {props.settings && (
+        <Avatar
+          src={profile.picture}
+          size="sm"
+          alt="avatar"
+          placeholder={undefined}
+          onClick={openLogoutDialog}
+        />
       )}
+
+      <LogoutDialog open={openModal} title={""} 
+        handleConfirm={() => {
+          logout();
+        }} handleOpen={() => {
+            setOpenModal(!openModal);
+        }} 
+      />
     </div>
   );
 };

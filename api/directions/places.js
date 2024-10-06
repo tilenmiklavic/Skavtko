@@ -1,7 +1,5 @@
 // /api/directions/get.js
 module.exports = async (req, res) => {
-  const axios = require("axios");
-
   try {
     const body = await req.body;
     const { accessToken, lat, lng, query } = body;

@@ -10,12 +10,21 @@ interface NavItemProps {
   path: string;
   icon: IconProp;
   enabled?: boolean;
+  onClick?: () => void;
 }
 
 const NavItem = (props: NavItemProps) => {
   return (
     <div>
-      <Link to={props.path} className="flex flex-col items-center space-y-2">
+      <Link
+        to={props.path}
+        onClick={props.onClick}
+        className={`flex flex-col items-center p-6 ${
+          props.enabled ? "bg-gray-300" : ""
+        } rounded-t-lg
+
+`}
+      >
         <FontAwesomeIcon className="icon" icon={props.icon} />
         <span className="iconLabel text-xs font-bold">{props.title}</span>
       </Link>

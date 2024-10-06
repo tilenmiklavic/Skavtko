@@ -1,81 +1,153 @@
 import { useEffect, useState } from "react";
-import { getSheetInfo } from "../../services/gsheets";
+import { createSheet, formatSheet, getSheetInfo } from "../../services/gsheets";
 import Subtitle from "../Text/Subtitle";
-import TextInput from "../Inputs/textInput";
-import { Chip, Input } from "@material-tailwind/react";
 import Horizontal from "../Lines/Horizontal";
-import { getSettings } from "../../services/settings";
+import { getSettings, saveSettings } from "../../services/settings";
+import SheetInfo from "../Common/SheetInfo";
+import { FormatedSheet } from "../../classes/FormatedSheet";
+import TextInputButton from "../Inputs/textInputButton";
+import toast from "react-hot-toast";
+import { getSheets } from "../../services/drive";
+import Select from "../Inputs/select";
 
 const FinanceSettings = () => {
-  const [settings, setSettings] = useState(getSettings());
+  const [settings] = useState(getSettings());
   const [racuniSheetInfoData, setRacuniSheetInfoData] = useState({} as any);
   const [potniSheetInfoData, setPotniSheetInfoData] = useState({} as any);
   const [loading, setLoading] = useState(true);
+  const [sheets, setSheets] = useState([] as any[]);
 
   const racuniSheetInfo = async () => {
     const sheetInfoRacuni = await getSheetInfo(settings.racuni.id);
-    setRacuniSheetInfoData(sheetInfoRacuni.data);
+    setRacuniSheetInfoData(sheetInfoRacuni?.data);
     const sheetInfoPotni = await getSheetInfo(settings.potni.id);
-    setPotniSheetInfoData(sheetInfoPotni.data);
+    setPotniSheetInfoData(sheetInfoPotni?.data);
     setLoading(false);
   };
 
+  const setSheetsFromDrive = (sheets: any) => {
+    setSheets(sheets);
+  }
+
+  const getFiles = async () => {
+    getSheets(setSheetsFromDrive);
+  };
+
   useEffect(() => {
+    getFiles();
     if (settings.racuni) {
       racuniSheetInfo();
     }
   }, [settings]);
 
+  const createNewRacuniSheet = async (title?: string) => {
+    const result = await createSheet(title || "Računi");
+    await formatSheet(result.data.spreadsheetId, FormatedSheet.RACUNI);
+
+    if (result?.data) {
+      settings.racuni = {
+        id: result.data.spreadsheetId,
+        link: result.data.spreadsheetUrl,
+      };
+      saveSettings(settings);
+      racuniSheetInfo();
+    }
+  };
+
+  const createNewPotniSheet = async (title?: string) => {
+    const result = await createSheet(title || "Potni");
+    const table = await formatSheet(
+      result.data.spreadsheetId,
+      FormatedSheet.POTNI
+    );
+
+    if (result?.data) {
+      settings.potni = {
+        id: result.data.spreadsheetId,
+        link: result.data.spreadsheetUrl,
+      };
+      saveSettings(settings);
+      racuniSheetInfo();
+    }
+  };
+
+  const sheetSelectionChange = (id: any) => {
+    console.log("selection change", id);
+  };
+
   return (
     <div>
       <Subtitle title="Računi" />
-      <TextInput
-        label="Spreadsheet link"
-        placeholder="link"
-        id="racuni_input"
+
+      <TextInputButton
+        label={"Spreadsheet link"}
+        id={"racuni_input"}
+        placeholder={"link"}
+        onButtonClick={(title?: string) => {
+          toast.promise(
+            createNewRacuniSheet(title), // The promise you are awaiting
+            {
+              loading: "Creating new sheet...", // Message shown during loading
+              success: "Sheet created successfully!", // Message shown on success
+              error: "Failed to create sheet.", // Message shown on error
+            }
+          );
+        }}
       />
 
-      {settings?.racuni?.link ? (
-        // <span>Current: {sheetInfoData?.properties?.title}</span>
-        <div className="flex gap-2 items-center">
-          {loading && <Chip color="amber" value={"Loading..."} />}
-          {!loading && (
-            <>
-              <span>Current: </span>
-              <Chip
-                color="green"
-                value={racuniSheetInfoData?.properties?.title}
-              />
-            </>
-          )}
-        </div>
-      ) : (
-        <Chip color="amber" value={"No spreadsheet"} />
-      )}
+      <div className="mb-3">
+        <Select
+          label="or select"
+          placeholder=""
+          id="racuni_sheet_select"
+          options={sheets}
+        ></Select>
+      </div>
+
+      <SheetInfo
+        loading={loading}
+        title={racuniSheetInfoData?.properties?.title}
+        index={FormatedSheet.RACUNI}
+        sheet_id={settings.racuni.id}
+        link={settings?.racuni?.link}
+        format={true}
+      />
 
       <Horizontal />
 
       <Subtitle title="Potni stroški" />
-      {/* <Input crossOrigin={undefined} id="racuni_input" required={false} /> */}
-      <TextInput label="Spreadsheet link" placeholder="link" id="potni_input" />
+      <TextInputButton
+        label={"Spreadsheet link"}
+        id={"potni_input"}
+        placeholder={"link"}
+        onButtonClick={(title?: string) => {
+          toast.promise(
+            createNewPotniSheet(title), // The promise you are awaiting
+            {
+              loading: "Creating new sheet...", // Message shown during loading
+              success: "Sheet created successfully!", // Message shown on success
+              error: "Failed to create sheet.", // Message shown on error
+            }
+          );
+        }}
+      />
+      <div className="mb-3">
+        <Select
+          label="or select"
+          placeholder=""
+          id="potni_sheet_select"
+          options={sheets}
+        ></Select>
+      </div>
 
-      {settings?.potni?.link ? (
-        // <span>Current: {sheetInfoData?.properties?.title}</span>
-        <div className="flex gap-2 items-center">
-          {loading && <Chip color="amber" value={"Loading..."} />}
-          {!loading && (
-            <>
-              <span>Current: </span>
-              <Chip
-                color="green"
-                value={potniSheetInfoData?.properties?.title}
-              />
-            </>
-          )}
-        </div>
-      ) : (
-        <Chip color="amber" value={"No spreadsheet"} />
-      )}
+      <SheetInfo
+        loading={loading}
+        title={potniSheetInfoData?.properties?.title}
+        index={FormatedSheet.POTNI}
+        sheet_id={settings.potni.id}
+        link={settings?.potni?.link}
+        format={true}
+      />
     </div>
   );
 };

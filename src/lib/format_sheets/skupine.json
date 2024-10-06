@@ -1,0 +1,8 @@
+{
+  "majorDimension": "COLUMNS",
+  "range": "A:Z",
+  "values": [
+    ["Ime", "medvedi", "sove", "delfini", "levinje"],
+    ["Točke", 0, 0, 0, 0]
+  ]
+}

@@ -1,11 +1,10 @@
-// /api/append.js
+// /api/sheets/create.js
 module.exports = async (req, res) => {
-  const axios = require("axios");
-
   try {
     const body = await req.body;
-    const { accessToken, sheetId, apiKey, values } = body;
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/A:A:append?includeValuesInResponse=true&valueInputOption=RAW&key=${apiKey}`;
+    const { accessToken, sheetTitle, apiKey } = body;
+
+    const url = `https://sheets.googleapis.com/v4/spreadsheets?key=${apiKey}`;
 
     const options = {
       method: "POST",
@@ -13,12 +12,11 @@ module.exports = async (req, res) => {
         Authorization: "Bearer " + accessToken,
         Accept: "application/json",
         "Content-Type": "application/json",
-        valueInputOption: "RAW",
       },
       body: JSON.stringify({
-        majorDimension: "ROWS",
-        range: "A:A",
-        values: values,
+        properties: {
+          title: sheetTitle,
+        },
       }),
       compress: true,
     };
@@ -31,7 +29,7 @@ module.exports = async (req, res) => {
       res.status(200).json({ data: data });
       // Handle the response data
     } catch (error) {
-      console.error("There was a problem with the append operation:", error);
+      console.error("There was a problem with the create operation:", error);
     }
   } catch (error) {
     console.error(error);

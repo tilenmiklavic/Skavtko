@@ -54,7 +54,7 @@ export default function Login() {
     const client = window.google.accounts.oauth2.initTokenClient({
       client_id: process.env.REACT_APP_CLIENT_ID,
       scope:
-        "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive",
       callback: (response: any) => {
         // @ts-ignore
         getProfileInfo(response.access_token);
@@ -80,7 +80,7 @@ export default function Login() {
   return (
     <>
       <Header title="Login" />
-      <div className="flex items-center justify-center p-10">
+      <div className="flex flex-1 items-center justify-center">
         <button
           type="button"
           onClick={initLogin}

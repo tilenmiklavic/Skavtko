@@ -13,6 +13,7 @@ import Settings from "./pages/Settings/Settings";
 import Statistics from "./pages/Statistics/Statistics";
 import FinanceManual from "./pages/Finance/FinanceManual";
 import Napredovanje from "./pages/Napredovanje/Napredovanje";
+import Privacy from "./pages/Privacy/Privacy";
 
 function App() {
   return (
@@ -20,8 +21,8 @@ function App() {
       <div>
         <Toaster />
       </div>
-      <div className="flex flex-col h-dvh	">
-        <div className="flex-1 flex flex-col overflow-auto">
+      <div className="flex flex-col h-dvh">
+        <div className="flex flex-col flex-1 overflow-auto">
           <Container>
             <Routes>
               <Route path="/login" element={<Login />} />
@@ -86,6 +87,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Napredovanje />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/privacy"
+                element={
+                  <ProtectedRoute>
+                    <Privacy />
                   </ProtectedRoute>
                 }
               />

@@ -14,7 +14,7 @@ import LoadingEmpty from "../Common/LoadingEmpty";
 
 const Racuni = () => {
   const [decoded, setDecoded] = useState("");
-  const [deconding, setDecoding] = useState(true);
+  const [decoding, setDecoding] = useState(true);
   const [reciept, setReciept] = useState({} as any);
   const [settings, setSettings] = useState(getSettings());
 
@@ -29,8 +29,8 @@ const Racuni = () => {
     let hex = qrDecToZoi(result);
     setDecoded(hex);
 
-    // let reciept = await getReciptDataMock(hex);
-    let reciept = await getReciptData(hex);
+    let reciept = await getReciptDataMock(hex);
+    // let reciept = await getReciptData(hex);
 
     if (reciept.status === 60) {
       toast.error(reciept.text);
@@ -73,24 +73,26 @@ const Racuni = () => {
 
   return (
     <>
-      <QrScanner
-        onDecode={(result) => handleSubmit(result)}
-        onError={(error) => console.log(error?.message)}
-        scanDelay={1000}
-        stopDecoding={!deconding}
-      />
+      {decoding && (
+        <>
+          <QrScanner
+            onDecode={(result) => handleSubmit(result)}
+            onError={(error) => console.log(error?.message)}
+            scanDelay={1000}
+            stopDecoding={!decoding}
+          />
 
-      {deconding && (
-        <div className="w-full flex justify-center mt-3">
-          <Link to={"/finance/manual"} className="w-full">
-            <Button placeholder={undefined} fullWidth={true}>
-              Vnesi Ročno
-            </Button>
-          </Link>
-        </div>
+          <div className="w-full flex justify-center mt-3">
+            <Link to={"/finance/manual"} className="w-full">
+              <Button placeholder={undefined} fullWidth={true}>
+                Vnesi Ročno
+              </Button>
+            </Link>
+          </div>
+        </>
       )}
 
-      {!deconding && (
+      {!decoding && (
         <>
           <Card placeholder={undefined} className="mt-4 p-3">
             <LabelValue

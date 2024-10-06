@@ -1,13 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavItem from "./navitem";
 import {
-  faUser,
-  faHome,
-  faReceipt,
-  faTrophy,
-  faWheelchair,
   faGear,
-  faCheck,
   faCheckCircle,
   faDumbbell,
   faChartPie,
@@ -15,18 +9,44 @@ import {
 
 import "./navigation.css";
 import { faBitcoin } from "@fortawesome/free-brands-svg-icons";
+import { route2Index } from "../../services/navigation";
 
 const Navigation = () => {
-  const [tab] = useState(0);
+  const [tab, setTab] = useState(route2Index(window.location.pathname));
 
   return (
-    <nav className=" w-full border-b border-gray-200 dark:border-gray-600">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-around mx-auto p-4">
-        <NavItem path={"/"} icon={faCheckCircle} enabled={tab === 0} />
-        <NavItem path={"/finance"} icon={faBitcoin} enabled={tab === 1} />
-        <NavItem path={"/on"} icon={faDumbbell} enabled={tab === 2} />
-        <NavItem path={"/statistics"} icon={faChartPie} enabled={tab === 2} />
-        <NavItem path={"/settings"} icon={faGear} enabled={tab === 2} />
+    <nav className="w-full h-20 flex border-b border-t border-gray-200 dark:border-gray-600">
+      <div className="w-screen flex justify-around items-center p-4">
+        <NavItem
+          path={"/"}
+          icon={faCheckCircle}
+          enabled={tab === 0}
+          onClick={() => setTab(0)}
+        />
+        <NavItem
+          path={"/finance"}
+          icon={faBitcoin}
+          enabled={tab === 1}
+          onClick={() => setTab(1)}
+        />
+        <NavItem
+          path={"/on"}
+          icon={faDumbbell}
+          enabled={tab === 2}
+          onClick={() => setTab(2)}
+        />
+        <NavItem
+          path={"/statistics"}
+          icon={faChartPie}
+          enabled={tab === 3}
+          onClick={() => setTab(3)}
+        />
+        <NavItem
+          path={"/settings"}
+          icon={faGear}
+          enabled={tab === 4}
+          onClick={() => setTab(4)}
+        />
       </div>
     </nav>
   );
