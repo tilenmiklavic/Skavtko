@@ -214,15 +214,6 @@ const TekmovanjeSkupine = () => {
                   <IconButton
                     placeholder={undefined}
                     size="lg"
-                    onClick={() => updatePoints(user.Ime, true)}
-                  >
-                    {" "}
-                    <FontAwesomeIcon className="icon" size="xl" icon={faPlus} />
-                  </IconButton>
-                  <p className="text-2xl font-bold">{user.Točke}</p>
-                  <IconButton
-                    placeholder={undefined}
-                    size="lg"
                     onClick={() => updatePoints(user.Ime, false)}
                   >
                     {" "}
@@ -231,6 +222,15 @@ const TekmovanjeSkupine = () => {
                       size="xl"
                       icon={faMinus}
                     />
+                  </IconButton>
+                  <p className="text-2xl font-bold">{user.Točke}</p>
+                  <IconButton
+                    placeholder={undefined}
+                    size="lg"
+                    onClick={() => updatePoints(user.Ime, true)}
+                  >
+                    {" "}
+                    <FontAwesomeIcon className="icon" size="xl" icon={faPlus} />
                   </IconButton>
                 </div>
               </div>
