@@ -3,6 +3,7 @@ import { formatSheet } from "../../services/gsheets";
 import { Button, Chip } from "@material-tailwind/react";
 import ConfirmDialog from "./ConfirmDialog";
 import { useState } from "react";
+import Alert from "./Alert";
 
 interface SheetInfoProps {
   loading: boolean;
@@ -34,26 +35,28 @@ const SheetInfo = (props: SheetInfoProps) => {
   };
 
   return (
-    <>
+    <Alert>
       {props.link ? (
         <>
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center w-full">
             {props.loading && <Chip color="amber" value={"Loading..."} />}
             {!props.loading && (
-              <div className="flex flex-row w-screen justify-between">
+              <div className="flex flex-row w-full justify-between">
                 <div className="flex flex-row items-center">
                   <span className="mr-2">Current: </span>
-                  <Chip color="green" value={props.title} />
+                  <Chip color="green" value={props?.title} />
                 </div>
-                {props.format && (
-                  <Button
-                    size="sm"
-                    onClick={openDialog}
-                    placeholder={undefined}
-                  >
-                    Format
-                  </Button>
-                )}
+                <div className="flex">
+                  {props.format && (
+                    <Button
+                      size="sm"
+                      onClick={openDialog}
+                      placeholder={undefined}
+                    >
+                      Format
+                    </Button>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -68,9 +71,12 @@ const SheetInfo = (props: SheetInfoProps) => {
           />
         </>
       ) : (
-        <Chip color="amber" value={"No spreadsheet"} />
+        <div className="flex flex-row items-center">
+          <span className="mr-2">Current: </span>
+          <Chip color="amber" value={"No spreadsheet"} />
+        </div>
       )}
-    </>
+    </Alert>
   );
 };
 

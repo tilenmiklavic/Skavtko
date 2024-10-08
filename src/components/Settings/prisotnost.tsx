@@ -83,6 +83,7 @@ const PrisotnostSettings = () => {
             placeholder=""
             id="prisotnost_sheet_select"
             options={sheets}
+            value={settings?.prisotnost?.id}
           ></Select>
         </div>
 

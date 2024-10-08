@@ -9,6 +9,7 @@ import TextInputButton from "../Inputs/textInputButton";
 import toast from "react-hot-toast";
 import { getSheets } from "../../services/drive";
 import Select from "../Inputs/select";
+import { Alert } from "@material-tailwind/react";
 
 const FinanceSettings = () => {
   const [settings] = useState(getSettings());
@@ -101,6 +102,7 @@ const FinanceSettings = () => {
           placeholder=""
           id="racuni_sheet_select"
           options={sheets}
+          value={settings?.racuni?.id}
         ></Select>
       </div>
 
@@ -112,6 +114,8 @@ const FinanceSettings = () => {
         link={settings?.racuni?.link}
         format={true}
       />
+
+      <Alert children={undefined} />
 
       <Horizontal />
 
@@ -137,6 +141,7 @@ const FinanceSettings = () => {
           placeholder=""
           id="potni_sheet_select"
           options={sheets}
+          value={settings?.potni?.id}
         ></Select>
       </div>
 
