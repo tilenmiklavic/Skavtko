@@ -13,6 +13,7 @@ import {
   calculateMeetingAttendanceByUser,
   calculateMeetingAttendanceSum,
   meetingLabels,
+  numberOfMeetings,
 } from "../../services/stats";
 import Subtitle from "../../components/Text/Subtitle";
 import LoadingEmpty from "../../components/Common/LoadingEmpty";
@@ -115,8 +116,8 @@ export default function Statistics() {
     },
   };
 
-  const TABLE_HEAD = ["Ime", "Priden", ""];
-  hasVod(data) && TABLE_HEAD.splice(1, 0, 'Vod');
+  const TABLE_HEAD = ["Ime", "Priden"];
+  hasVod(data) && TABLE_HEAD.splice(1, 0, "Vod");
 
   const TABLE_ROWS = calculateMeetingAttendanceByUser(rawData);
 
@@ -148,7 +149,7 @@ export default function Statistics() {
         </Card>
 
         <Card className=" w-full overflow-scroll mt-3" placeholder={undefined}>
-          <table className="w-full min-w-max table-auto text-left">
+          <table className="w-full table-auto text-left">
             <thead>
               <tr>
                 {TABLE_HEAD.map((head) => (
@@ -184,36 +185,28 @@ export default function Statistics() {
                     </td>
                     {group && (
                       <td className="p-4">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                        placeholder={undefined}
-                      >
-                        {group}
-                      </Typography>
-                    </td>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                          placeholder={undefined}
+                        >
+                          {group}
+                        </Typography>
+                      </td>
                     )}
-                    <td className="p-4">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                        placeholder={undefined}
-                      >
-                        {attendance}
-                      </Typography>
-                    </td>
-                    <td className="p-4">
-                      <Typography
-                        as="a"
-                        href="#"
-                        variant="small"
-                        color="blue-gray"
-                        className="font-medium"
-                        placeholder={undefined}
-                      >
+                    <td className="p-4 w-1/4">
+                      <div className="justify-center">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal text-center"
+                          placeholder={undefined}
+                        >
+                          {attendance} / {numberOfMeetings(rawData)}
+                        </Typography>
                         <Chip
+                          className="justify-items-center"
                           variant="ghost"
                           color={
                             percentage > 80
@@ -225,7 +218,7 @@ export default function Statistics() {
                           size="sm"
                           value={percentage.toFixed(0) + "%"}
                         />
-                      </Typography>
+                      </div>
                     </td>
                   </tr>
                 ),
