@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { Button, Card } from "@material-tailwind/react";
 import LabelValue from "../Common/LabelValue";
 import { appendToSheet } from "../../services/gsheets";
-import { getSettings } from "../../services/settings";
+import { getProfile, getSettings } from "../../services/settings";
 import LoadingEmpty from "../Common/LoadingEmpty";
 
 const Racuni = () => {
@@ -16,6 +16,7 @@ const Racuni = () => {
   const [decoding, setDecoding] = useState(true);
   const [reciept, setReciept] = useState({} as any);
   const [settings, setSettings] = useState(getSettings());
+  const [profile, setProfile] = useState(getProfile());
 
   const handleSubmit = async (result: string) => {
     const reciept = await handleDecode(result);
@@ -45,9 +46,10 @@ const Racuni = () => {
     return reciept;
   };
 
-  const saveRecipet = async () => {
+  const saveReciept = async () => {
     const sheetData = [
       [
+        `${profile.given_name} ${profile.family_name}`,
         reciept.Date,
         reciept.Time,
         reciept.Name,
@@ -63,7 +65,9 @@ const Racuni = () => {
         success: "Data written successfully!", // Message shown on success
         error: "Failed to write data.", // Message shown on error
       },
-    );
+    ).then(() => {
+      setDecoding(true);
+    });
   };
 
   if (settings.racuni.id === "") {
@@ -108,7 +112,7 @@ const Racuni = () => {
             <Button
               placeholder={undefined}
               disabled={reciept.valid ? false : true}
-              onClick={reciept.valid ? saveRecipet : undefined}
+              onClick={reciept.valid ? saveReciept : undefined}
               color="blue"
             >
               Shrani račun
