@@ -1,6 +1,6 @@
 interface User {
-  Ime: string;
-  Vod: string;
+  ime: string;
+  vod: string;
   textColor: string;
   presentColor: string;
 }
