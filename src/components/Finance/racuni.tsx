@@ -65,7 +65,9 @@ const Racuni = () => {
         success: "Data written successfully!", // Message shown on success
         error: "Failed to write data.", // Message shown on error
       },
-    );
+    ).then(() => {
+      setDecoding(true);
+    });
   };
 
   if (settings.racuni.id === "") {
