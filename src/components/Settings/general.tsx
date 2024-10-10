@@ -29,7 +29,7 @@ const GeneralSettings = () => {
         label={"Steg"}
         id={"steg_input"}
         placeholder={"Steg"}
-        value={steg}
+        defaultValue={steg}
         onChange={(e) => setSteg(e.target.value)}
       />
       <Select
