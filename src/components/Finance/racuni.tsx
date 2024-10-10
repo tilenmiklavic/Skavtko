@@ -49,7 +49,7 @@ const Racuni = () => {
   const saveReciept = async () => {
     const sheetData = [
       [
-        `${profile.given_name}, ${profile.family_name}`,
+        `${profile.given_name} ${profile.family_name}`,
         reciept.Date,
         reciept.Time,
         reciept.Name,
