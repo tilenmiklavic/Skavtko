@@ -177,7 +177,6 @@ export async function appendHeaderItem(
 ) {
   const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
 
-  debugger;
   const formData = {
     accessToken: access_token,
     sheetId: sheet_id,
@@ -313,7 +312,7 @@ export function sheet2Object(sheet: string[][]): any[] {
   const result = data.map((row) => {
     const obj = {} as any;
     row.forEach((cell, i) => {
-      obj[headers[i]] = cell;
+      obj[headers[i].toLowerCase()] = cell;
     });
     return obj;
   });

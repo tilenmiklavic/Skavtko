@@ -17,6 +17,7 @@ import {
 import Subtitle from "../../components/Text/Subtitle";
 import LoadingEmpty from "../../components/Common/LoadingEmpty";
 import { getSettings } from "../../services/settings";
+import { hasVod } from "../../services/data";
 
 export default function Statistics() {
   const [data, setData] = useState([["1"]]);
@@ -114,7 +115,8 @@ export default function Statistics() {
     },
   };
 
-  const TABLE_HEAD = ["Ime", "Vod", "Priden", ""];
+  const TABLE_HEAD = ["Ime", "Priden", ""];
+  hasVod(data) && TABLE_HEAD.splice(1, 0, 'Vod');
 
   const TABLE_ROWS = calculateMeetingAttendanceByUser(rawData);
 
@@ -180,7 +182,8 @@ export default function Statistics() {
                         {name}
                       </Typography>
                     </td>
-                    <td className="p-4">
+                    {group && (
+                      <td className="p-4">
                       <Typography
                         variant="small"
                         color="blue-gray"
@@ -190,6 +193,7 @@ export default function Statistics() {
                         {group}
                       </Typography>
                     </td>
+                    )}
                     <td className="p-4">
                       <Typography
                         variant="small"

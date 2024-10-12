@@ -254,7 +254,7 @@ function Home() {
           return (
             <LongPressCard
               placeholder={undefined}
-              key={user.Ime}
+              key={user.ime}
               data={user}
               className="shadow-xl border"
               style={{ backgroundColor: user.presentColor }}
@@ -271,17 +271,17 @@ function Home() {
                     id="user_name"
                     style={{ color: user.textColor }}
                   >
-                    {user.Ime}
+                    {user.ime}
                   </h5>
                   <p className="mt-2" style={{ color: user.textColor }}>
-                    {user.Vod}
+                    {user.vod}
                   </p>
                 </div>
                 <div className="flex gap-2 items-center">
                   <IconButton
                     placeholder={undefined}
                     size="lg"
-                    onClick={() => markPresent(Present.present, user.Ime)}
+                    onClick={() => markPresent(Present.present, user.ime)}
                     disabled={!today}
                   >
                     <FontAwesomeIcon
@@ -293,7 +293,7 @@ function Home() {
                   <IconButton
                     placeholder={undefined}
                     size="lg"
-                    onClick={() => markPresent(Present.unknown, user.Ime)}
+                    onClick={() => markPresent(Present.unknown, user.ime)}
                     disabled={!today}
                   >
                     <FontAwesomeIcon
@@ -305,7 +305,7 @@ function Home() {
                   <IconButton
                     placeholder={undefined}
                     size="lg"
-                    onClick={() => markPresent(Present.absent, user.Ime)}
+                    onClick={() => markPresent(Present.absent, user.ime)}
                     disabled={!today}
                   >
                     <FontAwesomeIcon

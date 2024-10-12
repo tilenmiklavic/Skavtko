@@ -5,25 +5,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Header from "../Header/header";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { getSettings } from "../../services/settings";
+import { getProfile, getSettings } from "../../services/settings";
 import toast from "react-hot-toast";
 import { appendToSheet } from "../../services/gsheets";
 
 const RacuniManual = () => {
   const [settings, setSettings] = useState(getSettings());
+  const [profile, setProfile] = useState(getProfile());
   const [saving, setSaving] = useState(false);
 
-  const saveRecipet = async (event: any) => {
+  const saveReciept = async (event: any) => {
     event.preventDefault();
     setSaving(true);
 
     const sheetData = [
       [
+        `${profile.given_name} ${profile.family_name}`,
         event.target.date_input.value,
         event.target.time_input.value,
         event.target.trgovina_input.value,
         event.target.znesek_input.value,
-        "123",
       ],
     ];
 
@@ -67,7 +68,7 @@ const RacuniManual = () => {
           placeholder={undefined}
           className="flex-1"
         >
-          <form className="mb-2" onSubmit={saveRecipet}>
+          <form className="mb-2" onSubmit={saveReciept}>
             <div className="mb-1 flex flex-col gap-6">
               <Input
                 label="Znesek"

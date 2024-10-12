@@ -1,5 +1,5 @@
 {
   "majorDimension": "ROWS",
   "range": "A:Z",
-  "values": [["Datum", "Ura", "Trgovina", "Znesek", "Številka računa"]]
+  "values": [["Ime", "Datum", "Ura", "Trgovina", "Znesek", "Številka računa"]]
 }

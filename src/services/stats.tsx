@@ -53,7 +53,7 @@ export function calculateMeetingAttendanceByUser(values: string[][]) {
 
     tempAttendance.attendance = tempSum;
     tempAttendance.name = values[i][nameIndex];
-    tempAttendance.group = values[i][groupIndex];
+    values[i][groupIndex] && (tempAttendance.group = values[i][groupIndex]);
     tempAttendance.percentage = (tempSum / meetings) * 100;
 
     attendance.push(tempAttendance);
