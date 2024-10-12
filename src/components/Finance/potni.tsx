@@ -210,7 +210,7 @@ const Potni = () => {
   });
 
   if (settings.potni.id === "") {
-    return <LoadingEmpty settings={settings.potni.id} />;
+    return <LoadingEmpty settings={settings.potni.id} tab={1} />;
   }
 
   return (

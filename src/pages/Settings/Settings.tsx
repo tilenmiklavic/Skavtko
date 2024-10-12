@@ -16,9 +16,12 @@ import FinanceSettings from "../../components/Settings/finance";
 import { getSettings } from "../../services/settings";
 import { getSheets } from "../../services/drive";
 import { sheetLink } from "../../services/constants";
+import { useLocation } from "react-router-dom";
 
 export default function Settings() {
+  const tabs = ["general", "finance", "napredovanje", "prisotnost"];
   const [page, setPage] = useState(0);
+  const [tab, setTab] = useState(tabs[useLocation()?.state?.tab || 0]);
 
   const saveLink = async (event: any) => {
     event.preventDefault();
@@ -163,7 +166,7 @@ export default function Settings() {
       >
         <div className=" flex-1 flex flex-col">
           <div className="flex-1 flex flex-col mt-6">
-            <Tabs value="general">
+            <Tabs value={tab}>
               <TabsHeader placeholder={undefined}>
                 {data.map(({ label, value, index }) => (
                   <Tab
