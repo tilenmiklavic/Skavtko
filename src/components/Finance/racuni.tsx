@@ -67,7 +67,7 @@ const Racuni = () => {
   };
 
   if (settings.racuni.id === "") {
-    return <LoadingEmpty settings={settings.racuni.id} />;
+    return <LoadingEmpty settings={settings.racuni.id} tab={1} />;
   }
 
   return (

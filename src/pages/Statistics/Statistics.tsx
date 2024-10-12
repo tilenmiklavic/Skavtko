@@ -119,8 +119,7 @@ export default function Statistics() {
   const TABLE_ROWS = calculateMeetingAttendanceByUser(rawData);
 
   if (loading) {
-    return <LoadingEmpty settings={settings.prisotnost.id} />;
-    return <Chip color="amber" size="lg" value={"Loading..."} />;
+    return <LoadingEmpty settings={settings.prisotnost.id} tab={3} />;
   }
 
   return (

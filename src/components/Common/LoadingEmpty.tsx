@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom";
 
 interface LoadingEmptyProps {
   settings: string;
+  tab?: number;
 }
 
 const LoadingEmpty = (props: LoadingEmptyProps) => {
   const navigate = useNavigate();
 
-  const navigateToSettings = () => {
-    navigate("/settings");
+  const navigateToSettings = (tab: number) => {
+    navigate("/settings", {state: {tab: tab}});
   };
 
   return (
@@ -28,7 +29,7 @@ const LoadingEmpty = (props: LoadingEmptyProps) => {
               color="black"
               size="sm"
               className="!absolute top-3 right-3"
-              onClick={() => navigateToSettings()}
+              onClick={() => navigateToSettings(props.tab || 0)}
               placeholder={undefined}
             >
               Set

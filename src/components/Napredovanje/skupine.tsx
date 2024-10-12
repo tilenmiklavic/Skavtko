@@ -177,7 +177,7 @@ const TekmovanjeSkupine = () => {
   };
 
   if (loading) {
-    return <LoadingEmpty settings={settings.group.id} />;
+    return <LoadingEmpty settings={settings.group.id} tab={2} />;
     return <Chip color="amber" size="lg" value={"Loading..."} />;
   }
 
