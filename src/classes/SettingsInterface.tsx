@@ -3,6 +3,10 @@ interface SheetDetails {
   link: string;
 }
 
+interface NapredovanjeSheetDetails extends SheetDetails {
+  izziviNumber: number;
+}
+
 function isSheetDetails(obj: any): obj is SheetDetails {
   return obj && typeof obj.id === "string" && typeof obj.link === "string";
 }
@@ -43,7 +47,7 @@ class SettingsInterface {
   racuni: SheetDetails;
   potni: SheetDetails;
   prisotnost: SheetDetails;
-  napredovanje: SheetDetails;
+  napredovanje: NapredovanjeSheetDetails;
   group: SheetDetails;
   symbols: Symbols;
   colors: Colors;
@@ -54,7 +58,11 @@ class SettingsInterface {
     this.racuni = options?.racuni || { id: "", link: "" };
     this.potni = options?.potni || { id: "", link: "" };
     this.prisotnost = options?.prisotnost || { id: "", link: "" };
-    this.napredovanje = options?.napredovanje || { id: "", link: "" };
+    this.napredovanje = options?.napredovanje || {
+      id: "",
+      link: "",
+      izziviNumber: 0,
+    };
     this.group = options?.group || { id: "", link: "" };
     this.symbols = options?.symbols || {
       present: "x",

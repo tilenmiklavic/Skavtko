@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { createSheet, formatSheet, getSheetInfo } from "../../services/gsheets";
 import Subtitle from "../Text/Subtitle";
-import TextInput from "../Inputs/textInput";
 import Horizontal from "../Lines/Horizontal";
-import { getSettings, saveSettings } from "../../services/settings";
+import { getSettings, isBB, isVV, saveSettings } from "../../services/settings";
 import SheetInfo from "../Common/SheetInfo";
 import { FormatedSheet } from "../../classes/FormatedSheet";
 import TextInputButton from "../Inputs/textInputButton";
 import toast from "react-hot-toast";
 import Select from "../Inputs/select";
 import { getSheets } from "../../services/drive";
+import NumberInput from "../Inputs/numberInput";
+import { capitalize } from "../../services/stringUtils";
 
 const NapredovanjeSettings = () => {
   const [settings] = useState(getSettings());
@@ -19,6 +20,7 @@ const NapredovanjeSettings = () => {
   const [groupSheetInfoData, setGroupSheetInfoData] = useState({} as any);
   const [loading, setLoading] = useState(true);
   const [sheets, setSheets] = useState([] as any[]);
+  const [izziviName, setIzziviName] = useState("izzivi");
 
   const napredovanjeSheetInfo = async () => {
     const sheetInfoNapredovanje = await getSheetInfo(settings.napredovanje.id);
@@ -78,6 +80,8 @@ const NapredovanjeSettings = () => {
     getFiles();
     if (settings.napredovanje) napredovanjeSheetInfo();
     if (settings.group) groupSheetInfo();
+    if (isVV()) setIzziviName("pleni");
+    if (isBB()) setIzziviName("hlodi");
   }, [settings]);
 
   return (
@@ -105,6 +109,7 @@ const NapredovanjeSettings = () => {
           placeholder=""
           id="napredovanje_sheet_select"
           options={sheets}
+          value={settings?.napredovanje?.id}
         ></Select>
       </div>
 
@@ -114,6 +119,15 @@ const NapredovanjeSettings = () => {
         index={FormatedSheet.ON}
         sheet_id={settings?.napredovanje?.id}
         link={settings?.napredovanje?.link}
+      />
+
+      <NumberInput
+        id={"napredovanje_number_input"}
+        label={capitalize(izziviName)}
+        placeholder={"Število"}
+        max={5}
+        min={1}
+        defaultValue={settings.napredovanje.izziviNumber}
       />
 
       <Horizontal />

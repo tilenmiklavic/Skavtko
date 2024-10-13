@@ -90,7 +90,7 @@ export async function writeToSheet(
     });
 
     if (response.ok) {
-      const result = await response.json();
+      await response.json();
       const updatedSheet = await getSheet(sheet_id);
       return updatedSheet;
     } else {
