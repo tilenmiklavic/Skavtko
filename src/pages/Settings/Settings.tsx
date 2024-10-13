@@ -174,6 +174,7 @@ export default function Settings() {
                     value={value}
                     placeholder={undefined}
                     onClick={() => changePage(index)}
+                    className="flex-1 text-sm"
                   >
                     {label}
                   </Tab>
