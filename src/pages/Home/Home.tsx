@@ -38,6 +38,7 @@ import { useLongPress } from "@uidotdev/usehooks";
 import ConfirmDialog from "../../components/Common/ConfirmDialog";
 import LongPressCard from "../../components/Card/LongPressCard";
 import User from "../../classes/User";
+import { includesDate } from "../../services/dateTime";
 
 function Home() {
   const [data, setData] = useState([] as any[]);
@@ -60,7 +61,7 @@ function Home() {
     setData(obj);
     setRawData(result.data.values);
     setLoading(false);
-    setToday(result.data?.values?.[0]?.includes(date) ?? false);
+    setToday(includesDate(result.data?.values?.[0], date))
   };
 
   const markPresent = async (present: Present, user: string) => {
@@ -234,11 +235,11 @@ function Home() {
               onClick={() => addDate()}
               placeholder={undefined}
             >
-              Add
+              Dodaj
             </Button>
           }
         >
-          Date not in sheet
+          Manjkajoč datum
         </Alert>
       )}
 
