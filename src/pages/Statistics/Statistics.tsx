@@ -13,18 +13,22 @@ import {
   calculateMeetingAttendanceByUser,
   calculateMeetingAttendanceSum,
   meetingLabels,
+  numberOfMeetings,
 } from "../../services/stats";
 import Subtitle from "../../components/Text/Subtitle";
 import LoadingEmpty from "../../components/Common/LoadingEmpty";
 import { getSettings } from "../../services/settings";
 import { hasVod } from "../../services/data";
+import Attendance from "../../classes/Attendance";
 
 export default function Statistics() {
   const [data, setData] = useState([["1"]]);
   const [rawData, setRawData] = useState([] as any[]);
   const [loading, setLoading] = useState(true);
   const [settings, setSettings] = useState(getSettings());
-
+  const [tableData, setTableData] = useState([] as Attendance[]);
+  const [ascending, setAscending] = useState(true);
+  
   const getData = async () => {
     if (settings.prisotnost.id === "") return;
 
@@ -37,7 +41,14 @@ export default function Statistics() {
 
   useEffect(() => {
     getData();
+    const tempTableData = calculateMeetingAttendanceByUser(rawData);
+    setTableData(tempTableData);
   }, [settings]);
+
+  useEffect(() => {
+    const tempTableData = calculateMeetingAttendanceByUser(rawData);
+    setTableData(tempTableData);
+  }, [rawData])
 
   const meetingsChartConfig = {
     type: "line" as "line",
@@ -115,10 +126,30 @@ export default function Statistics() {
     },
   };
 
-  const TABLE_HEAD = ["Ime", "Priden", ""];
-  hasVod(data) && TABLE_HEAD.splice(1, 0, 'Vod');
+  const TABLE_HEAD = ["Ime", "Priden"];
+  hasVod(data) && TABLE_HEAD.splice(1, 0, "Vod");
+  
+  const sortTable = (index: number): any => {
+    let sortedTableData;
 
-  const TABLE_ROWS = calculateMeetingAttendanceByUser(rawData);
+    switch (index) {
+      case 0:
+        sortedTableData = [...tableData].sort((a, b) => ascending ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name));
+        break;
+      case 1:
+        sortedTableData = [...tableData].sort((a, b) => ascending ? b.group.localeCompare(a.group) : a.group.localeCompare(b.group));
+        break;
+      case 2:
+        sortedTableData = [...tableData].sort((a, b) => ascending ? a.attendance - b.attendance : b.attendance - a.attendance);
+        break;
+      default:
+        console.log(`Sorry, we are out of`);
+    }
+    
+    setTableData(sortedTableData || []);
+    setAscending(!ascending);
+    return null;
+  }
 
   if (loading) {
     return <LoadingEmpty settings={settings.prisotnost.id} tab={3} />;
@@ -148,13 +179,14 @@ export default function Statistics() {
         </Card>
 
         <Card className=" w-full overflow-scroll mt-3" placeholder={undefined}>
-          <table className="w-full min-w-max table-auto text-left">
+          <table className="w-full table-auto text-left">
             <thead>
               <tr>
-                {TABLE_HEAD.map((head) => (
+                {TABLE_HEAD.map((head, index) => (
                   <th
                     key={head}
                     className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+                    onClick={() => sortTable(index)}
                   >
                     <Typography
                       variant="small"
@@ -169,7 +201,7 @@ export default function Statistics() {
               </tr>
             </thead>
             <tbody>
-              {TABLE_ROWS.map(
+              {tableData.map(
                 ({ name, group, attendance, percentage }, index) => (
                   <tr key={name} className="even:bg-blue-gray-50/50">
                     <td className="p-4">
@@ -184,36 +216,28 @@ export default function Statistics() {
                     </td>
                     {group && (
                       <td className="p-4">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                        placeholder={undefined}
-                      >
-                        {group}
-                      </Typography>
-                    </td>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                          placeholder={undefined}
+                        >
+                          {group}
+                        </Typography>
+                      </td>
                     )}
-                    <td className="p-4">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                        placeholder={undefined}
-                      >
-                        {attendance}
-                      </Typography>
-                    </td>
-                    <td className="p-4">
-                      <Typography
-                        as="a"
-                        href="#"
-                        variant="small"
-                        color="blue-gray"
-                        className="font-medium"
-                        placeholder={undefined}
-                      >
+                    <td className="p-4 w-1/4">
+                      <div className="justify-center">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal text-center"
+                          placeholder={undefined}
+                        >
+                          {attendance} / {numberOfMeetings(rawData)}
+                        </Typography>
                         <Chip
+                          className="justify-items-center"
                           variant="ghost"
                           color={
                             percentage > 80
@@ -225,7 +249,7 @@ export default function Statistics() {
                           size="sm"
                           value={percentage.toFixed(0) + "%"}
                         />
-                      </Typography>
+                      </div>
                     </td>
                   </tr>
                 ),
