@@ -265,7 +265,7 @@ function Home() {
               onRemove={(name: string) => removeUser(name)}
             >
               <div className="p-5 flex flex-row justify-between">
-                <div>
+                <div className="flex flex-1 flex-col overflow-hidden col">
                   <h5
                     className="text-2xl font-semibold"
                     id="user_name"
@@ -273,11 +273,11 @@ function Home() {
                   >
                     {user.ime}
                   </h5>
-                  <p className="mt-2" style={{ color: user.textColor }}>
+                  <p style={{ color: user.textColor }}>
                     {user.vod}
                   </p>
                 </div>
-                <div className="flex gap-2 items-center">
+                <div className="flex flex-1 gap-1 items-center">
                   <IconButton
                     placeholder={undefined}
                     size="lg"

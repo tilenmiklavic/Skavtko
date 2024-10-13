@@ -26,8 +26,8 @@ export default function LongPressCard(props: LongPressCardProps) {
 
   const attrs = useLongPress(
     () => {
-      setEditedUserName(props.data.Ime);
-      setEditedUserVod(props.data.Vod);
+      setEditedUserName(props.data.ime);
+      setEditedUserVod(props.data.vod);
       setOpenModal(!openModal);
     },
     { threshold: 500 },
