@@ -20,3 +20,9 @@ export default function formatTime(timeString: string) {
 export function isDateString(dateString: string) {
   return moment(dateString, "D.M.YYYY", true).isValid();
 }
+
+export function includesDate(headers: string[], today: string) {
+  return headers.some(header => {
+    return moment(header, "DD.MM.YYYY").isSame(moment(today, "DD.MM.YYYY"));
+  })
+}
