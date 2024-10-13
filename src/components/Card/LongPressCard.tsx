@@ -1,11 +1,11 @@
 import { Button, Card } from "@material-tailwind/react";
 import { variant } from "@material-tailwind/react/types/components/card";
-import { useLongPress } from "@uidotdev/usehooks";
 import ConfirmDialog from "../Common/ConfirmDialog";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import TextInput from "../Inputs/textInput";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useLongPress } from "../../services/longpress";
 
 type LongPressCardProps = {
   placeholder: undefined;
@@ -26,11 +26,11 @@ export default function LongPressCard(props: LongPressCardProps) {
 
   const attrs = useLongPress(
     () => {
-      setEditedUserName(props.data.Ime);
-      setEditedUserVod(props.data.Vod);
+      setEditedUserName(props.data.ime);
+      setEditedUserVod(props.data.vod);
       setOpenModal(!openModal);
     },
-    { threshold: 500 },
+    { threshold: 500, allowScroll: false, scrollThreshold: 20 },
   );
 
   return (
