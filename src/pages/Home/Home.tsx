@@ -209,7 +209,7 @@ function Home() {
   if (loading) {
     return (
       <>
-        <LoadingEmpty settings={settings.prisotnost.id} tab={3} />
+        <LoadingEmpty settings={settings.prisotnost.id} />
       </>
     );
   }
