@@ -19,7 +19,7 @@ import { sheetLink } from "../../services/constants";
 import { useLocation } from "react-router-dom";
 
 export default function Settings() {
-  const tabs = ["general", "finance", "napredovanje", "prisotnost"];
+  const tabs = ["splošno", "finance", "napredovanje", "prisotnost"];
   const [page, setPage] = useState(0);
   const [tab, setTab] = useState(tabs[useLocation()?.state?.tab || 0]);
 
@@ -121,8 +121,8 @@ export default function Settings() {
 
   const data = [
     {
-      label: "General",
-      value: "general",
+      label: "Splošno",
+      value: "splošno",
       index: 0,
       desc: <GeneralSettings />,
     },
