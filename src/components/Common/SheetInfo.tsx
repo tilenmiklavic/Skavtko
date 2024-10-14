@@ -42,7 +42,7 @@ const SheetInfo = (props: SheetInfoProps) => {
             {!props.loading && (
               <div className="flex flex-row w-screen justify-between">
                 <div className="flex flex-row items-center">
-                  <span className="mr-2">Tretutna: </span>
+                  <span className="mr-2">Current: </span>
                   <Chip color="green" value={props.title} />
                 </div>
                 {props.format && (
