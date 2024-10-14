@@ -2,6 +2,7 @@ import moment from "moment";
 import { isDateString } from "./dateTime";
 import Attendance from "../classes/Attendance";
 import { group2ColIndex, name2ColIndex } from "./gsheets";
+import { getSettings } from "./settings";
 
 export function calculateMeetingAttendanceSum(values: string[][]) {
   let sums: number[] = [];
@@ -37,6 +38,7 @@ export function numberOfMeetings(values: string[][]) {
 }
 
 export function calculateMeetingAttendanceByUser(values: string[][]) {
+  const settings = getSettings();
   let attendance: Attendance[] = [];
   let meetings = numberOfMeetings(values);
   let nameIndex = name2ColIndex(values);
@@ -48,7 +50,7 @@ export function calculateMeetingAttendanceByUser(values: string[][]) {
     let tempSum = 0;
 
     for (let j = 1; j < values[i].length; j++) {
-      tempSum += values[i][j] === "x" ? 1 : 0;
+      tempSum += values[i][j] === settings.symbols.present ? 1 : 0;
     }
 
     tempAttendance.attendance = tempSum;
