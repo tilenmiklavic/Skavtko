@@ -83,6 +83,7 @@ const FinanceSettings = () => {
         label={"Spreadsheet link"}
         id={"racuni_input"}
         placeholder={"link"}
+        defaultValue={settings.racuni.link}
         onButtonClick={(title?: string) => {
           toast.promise(
             createNewRacuniSheet(title), // The promise you are awaiting
@@ -97,7 +98,7 @@ const FinanceSettings = () => {
 
       <div className="mb-3">
         <Select
-          label="or select"
+          label="ali izberi"
           placeholder=""
           id="racuni_sheet_select"
           options={sheets}
@@ -133,7 +134,7 @@ const FinanceSettings = () => {
       />
       <div className="mb-3">
         <Select
-          label="or select"
+          label="ali izberi"
           placeholder=""
           id="potni_sheet_select"
           options={sheets}

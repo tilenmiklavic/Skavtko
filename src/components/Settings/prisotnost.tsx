@@ -65,6 +65,7 @@ const PrisotnostSettings = () => {
           label="Spreadsheet link"
           placeholder="link"
           id="prisotnost_input"
+          defaultValue={settings.prisotnost.link}
           clearButton={true}
           onButtonClick={(title?: string) => {
             toast.promise(
@@ -79,7 +80,7 @@ const PrisotnostSettings = () => {
         />
         <div className="mb-3">
           <Select
-            label="or select"
+            label="ali izberi"
             placeholder=""
             id="prisotnost_sheet_select"
             options={sheets}
