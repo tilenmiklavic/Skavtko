@@ -23,7 +23,7 @@ const GeneralSettings = () => {
 
   return (
     <div className="flex-1">
-      <Subtitle title="Splošno" />
+      <Subtitle title="General" />
 
       <TextInput
         label={"Steg"}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createSheet, formatSheet, getSheetInfo } from "../../services/gsheets";
 import Subtitle from "../Text/Subtitle";
+import TextInput from "../Inputs/textInput";
 import Horizontal from "../Lines/Horizontal";
 import { getSettings, saveSettings } from "../../services/settings";
 import SheetInfo from "../Common/SheetInfo";
@@ -100,7 +101,7 @@ const NapredovanjeSettings = () => {
       />
       <div className="mb-3">
         <Select
-          label="ali izberi"
+          label="or select"
           placeholder=""
           id="napredovanje_sheet_select"
           options={sheets}
@@ -136,7 +137,7 @@ const NapredovanjeSettings = () => {
       />
       <div className="mb-3">
         <Select
-          label="sli izberi"
+          label="or select"
           placeholder=""
           id="group_sheet_select"
           options={sheets}
