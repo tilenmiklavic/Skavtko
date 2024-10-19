@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
         compress: true,
       };
     } else if (method === "remove_row") {
-      url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values:batchClear?key=${apiKey}`;
+      url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}:batchUpdate`;
       options = {
         method: "POST",
         headers: {
@@ -28,7 +28,18 @@ module.exports = async (req, res) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ranges: [position],
+          "requests": [
+            {
+              "deleteDimension": {
+                "range": {
+                  "sheetId": 0,
+                  "dimension": "ROWS",
+                  "startIndex": position - 1,
+                  "endIndex": position
+                }
+              }
+            },
+          ],
         }),
         compress: true,
       };
@@ -38,6 +49,8 @@ module.exports = async (req, res) => {
       // Fetch data from external API
       const response = await fetch(url, options);
       const data = await response.json();
+
+      console.log(data)
 
       res.status(200).json({ data: data });
       // Handle the response data

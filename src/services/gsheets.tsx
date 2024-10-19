@@ -249,13 +249,11 @@ export async function removeRow(sheet_id: string, row: number) {
   const access_token = JSON.parse(localStorage.getItem("auth")!).access_token;
   // const sheet_id = JSON.parse(localStorage.getItem("sheetLink")!).id;
 
-  let position = `${row}:${row}`;
-
   const formData = {
     accessToken: access_token,
     sheetId: sheet_id,
     apiKey: process.env.REACT_APP_API_KEY,
-    position: position,
+    position: row,
     method: "remove_row",
   };
 
