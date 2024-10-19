@@ -10,6 +10,7 @@ import {
   Tabs,
   TabsBody,
   TabsHeader,
+  Typography,
 } from "@material-tailwind/react";
 import NapredovanjeSettings from "../../components/Settings/napredovanje";
 import FinanceSettings from "../../components/Settings/finance";
@@ -162,7 +163,7 @@ export default function Settings() {
       <form
         method="post"
         onSubmit={saveSettings}
-        className="mb-4 flex flex-col flex-1"
+        className="flex flex-col flex-1 mb-1"
       >
         <div className=" flex-1 flex flex-col">
           <div className="flex-1 flex flex-col mt-6">
