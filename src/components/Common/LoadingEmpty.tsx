@@ -12,7 +12,7 @@ const LoadingEmpty = (props: LoadingEmptyProps) => {
   const navigate = useNavigate();
 
   const navigateToSettings = (tab: number) => {
-    navigate("/settings", {state: {tab: tab}});
+    navigate("/settings", { state: { tab: tab } });
   };
 
   return (
@@ -39,7 +39,7 @@ const LoadingEmpty = (props: LoadingEmptyProps) => {
           Link not set
         </Alert>
       ) : (
-        <Chip color="amber" size="lg" value={"Loading..."} />
+        <Chip color="amber" size="lg" value={"Nalaganje..."} />
       )}
     </>
   );

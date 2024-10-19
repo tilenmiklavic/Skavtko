@@ -122,7 +122,7 @@ export default function Settings() {
 
   const data = [
     {
-      label: "General",
+      label: "Splošno",
       value: "general",
       index: 0,
       desc: <GeneralSettings />,

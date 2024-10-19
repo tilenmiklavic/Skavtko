@@ -79,7 +79,7 @@ const PrisotnostSettings = () => {
         />
         <div className="mb-3">
           <Select
-            label="or select"
+            label="ali izberi"
             placeholder=""
             id="prisotnost_sheet_select"
             options={sheets}

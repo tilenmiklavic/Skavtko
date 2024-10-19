@@ -28,7 +28,7 @@ export default function Statistics() {
   const [settings, setSettings] = useState(getSettings());
   const [tableData, setTableData] = useState([] as Attendance[]);
   const [ascending, setAscending] = useState(true);
-  
+
   const getData = async () => {
     if (settings.prisotnost.id === "") return;
 
@@ -48,7 +48,7 @@ export default function Statistics() {
   useEffect(() => {
     const tempTableData = calculateMeetingAttendanceByUser(rawData);
     setTableData(tempTableData);
-  }, [rawData])
+  }, [rawData]);
 
   const meetingsChartConfig = {
     type: "line" as "line",
@@ -128,28 +128,38 @@ export default function Statistics() {
 
   const TABLE_HEAD = ["Ime", "Priden"];
   hasVod(data) && TABLE_HEAD.splice(1, 0, "Vod");
-  
+
   const sortTable = (index: number): any => {
     let sortedTableData;
 
     switch (index) {
       case 0:
-        sortedTableData = [...tableData].sort((a, b) => ascending ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name));
+        sortedTableData = [...tableData].sort((a, b) =>
+          ascending
+            ? b.name.localeCompare(a.name)
+            : a.name.localeCompare(b.name),
+        );
         break;
       case 1:
-        sortedTableData = [...tableData].sort((a, b) => ascending ? b.group.localeCompare(a.group) : a.group.localeCompare(b.group));
+        sortedTableData = [...tableData].sort((a, b) =>
+          ascending
+            ? b.group.localeCompare(a.group)
+            : a.group.localeCompare(b.group),
+        );
         break;
       case 2:
-        sortedTableData = [...tableData].sort((a, b) => ascending ? a.attendance - b.attendance : b.attendance - a.attendance);
+        sortedTableData = [...tableData].sort((a, b) =>
+          ascending ? a.attendance - b.attendance : b.attendance - a.attendance,
+        );
         break;
       default:
         console.log(`Sorry, we are out of`);
     }
-    
+
     setTableData(sortedTableData || []);
     setAscending(!ascending);
     return null;
-  }
+  };
 
   if (loading) {
     return <LoadingEmpty settings={settings.prisotnost.id} tab={3} />;
@@ -158,7 +168,7 @@ export default function Statistics() {
   return (
     <div className="bg-blue flex flex-col flex-1" id="demo">
       <div>
-        <Header title={"Statistics"} />
+        <Header title={"Statistika"} />
       </div>
       <div>
         <Card placeholder={undefined}>
