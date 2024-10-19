@@ -62,9 +62,9 @@ class SettingsInterface {
       absent: "/",
     };
     this.colors = options?.colors || {
-      present: "#00ff00",
-      excused: "#ff0000",
-      absent: "#0000ff",
+      present: "#27ae60",
+      excused: "#f1c40f",
+      absent: "#e74c3c",
     };
   }
 }
