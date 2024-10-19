@@ -101,7 +101,7 @@ const NapredovanjeSettings = () => {
       />
       <div className="mb-3">
         <Select
-          label="or select"
+          label="ali izberi"
           placeholder=""
           id="napredovanje_sheet_select"
           options={sheets}
@@ -137,7 +137,7 @@ const NapredovanjeSettings = () => {
       />
       <div className="mb-3">
         <Select
-          label="or select"
+          label="ali izberi"
           placeholder=""
           id="group_sheet_select"
           options={sheets}

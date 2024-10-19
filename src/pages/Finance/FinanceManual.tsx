@@ -11,7 +11,7 @@ import RacuniManual from "../../components/Finance/racuniManual";
 export default function FinanceManual() {
   const data = [
     {
-      label: "Racuni",
+      label: "Računi",
       value: "racuni",
       index: 0,
       desc: <RacuniManual />,

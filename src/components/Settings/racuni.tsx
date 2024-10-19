@@ -39,7 +39,7 @@ const RacuniSettings = () => {
       {settings?.racuni?.link ? (
         // <span>Current: {sheetInfoData?.properties?.title}</span>
         <div className="flex gap-2 items-center">
-          {loading && <Chip color="amber" value={"Loading..."} />}
+          {loading && <Chip color="amber" value={"Nalaganje..."} />}
           {!loading && (
             <>
               <span>Current: </span>

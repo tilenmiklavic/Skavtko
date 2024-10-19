@@ -61,7 +61,7 @@ function Home() {
     setData(obj);
     setRawData(result.data.values);
     setLoading(false);
-    setToday(includesDate(result.data?.values?.[0], date))
+    setToday(includesDate(result.data?.values?.[0], date));
   };
 
   const markPresent = async (present: Present, user: string) => {
@@ -102,9 +102,9 @@ function Home() {
       .promise(
         appendHeaderItem(settings.prisotnost.id, rawData, date), // The promise you are awaiting
         {
-          loading: "Adding date...", // Message shown during loading
-          success: "Date added successfully!", // Message shown on success
-          error: "Failed to add date.", // Message shown on error
+          loading: "Dodajanje datuma...", // Message shown during loading
+          success: "Datum uspešno dodan!", // Message shown on success
+          error: "Napaka pri dodajanju datuma.", // Message shown on error
         },
       )
       .then(() => getData());
@@ -120,9 +120,9 @@ function Home() {
       .promise(
         appendToSheet([[name]], settings.prisotnost.id), // The promise you are awaiting
         {
-          loading: "Adding user...", // Message shown during loading
-          success: "User added successfully!", // Message shown on success
-          error: "Failed to add user.", // Message shown on error
+          loading: "Dodajanje uporabnika...", // Message shown during loading
+          success: "Uporabnik uspešno dodan!", // Message shown on success
+          error: "Napaka pri dodajanju uporabnika.", // Message shown on error
         },
       )
       .then(() => {
@@ -152,9 +152,9 @@ function Home() {
           "ROWS",
         ), // The promise you are awaiting
         {
-          loading: "Editing name...", // Message shown during loading
-          success: "Name edited successfully!", // Message shown on success
-          error: "Failed to edit name.", // Message shown on error
+          loading: "Shranjevanje novega imena...", // Message shown during loading
+          success: "Ime uspešno shranjeno!", // Message shown on success
+          error: "Napaka pri shranjevanju imena.", // Message shown on error
         },
       )
       .then(() => {
@@ -167,9 +167,9 @@ function Home() {
               "ROWS",
             ), // The promise you are awaiting
             {
-              loading: "Editing vod...", // Message shown during loading
-              success: "Vod edited successfully!", // Message shown on success
-              error: "Failed to edit vod.", // Message shown on error
+              loading: "Urejanje voda...", // Message shown during loading
+              success: "Vod uspešno shranjen!", // Message shown on success
+              error: "Napaka pri shranjevanju voda.", // Message shown on error
             },
           )
           .then(() => getData());
@@ -184,9 +184,9 @@ function Home() {
       .promise(
         removeRow(settings.prisotnost.id, row_index), // The promise you are awaiting
         {
-          loading: "Removing user...", // Message shown during loading
-          success: "User removed successfully!", // Message shown on success
-          error: "Failed to remove user.", // Message shown on error
+          loading: "Odstranjevanje uporavnika...", // Message shown during loading
+          success: "Uporabnik uspešno odstranjen!", // Message shown on success
+          error: "Napaka pri odstranjevanju uporabnika.", // Message shown on error
         },
       )
       .then(() => getData());
@@ -274,9 +274,7 @@ function Home() {
                   >
                     {user.ime}
                   </h5>
-                  <p style={{ color: user.textColor }}>
-                    {user.vod}
-                  </p>
+                  <p style={{ color: user.textColor }}>{user.vod}</p>
                 </div>
                 <div className="flex flex-1 gap-1 items-center">
                   <IconButton
