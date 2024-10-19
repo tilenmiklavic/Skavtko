@@ -53,7 +53,7 @@ export default function LongPressCard(props: LongPressCardProps) {
         }}
         handleConfirm={() => {
           setOpenModal(!openModal);
-          props.onSave(props.data.Ime, editedUserName, editedUserVod);
+          props.onSave(props.data.ime, editedUserName, editedUserVod);
         }}
       >
         <div className="p-3">
@@ -80,7 +80,7 @@ export default function LongPressCard(props: LongPressCardProps) {
             placeholder={undefined}
             onClick={() => {
               setOpenModal(!openModal);
-              props.onRemove(props.data.Ime);
+              props.onRemove(props.data.ime);
             }}
           >
             <FontAwesomeIcon icon={faTrash} className="mr-1" />
