@@ -7,6 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   IconButton,
+  Typography,
 } from "@material-tailwind/react";
 
 interface DialogProps {
@@ -34,7 +35,12 @@ const LogoutDialog = (props: DialogProps) => {
           onClick={props.handleOpen}
         />
       </DialogHeader>
-      <DialogBody placeholder={undefined}>Se želiš odjaviti?</DialogBody>
+      <DialogBody placeholder={undefined}>
+        <Typography placeholder={undefined} className="mb-2">
+          Verzija: 0.1.1
+        </Typography>
+        Se želiš odjaviti?
+      </DialogBody>
       {props.children}
       <DialogFooter placeholder={undefined}>
         <Button

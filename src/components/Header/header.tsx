@@ -3,7 +3,7 @@
 import Title from "../Text/Title";
 import { useState } from "react";
 import { getProfile } from "../../services/settings";
-import { Avatar } from "@material-tailwind/react";
+import { Avatar, Typography } from "@material-tailwind/react";
 import LogoutDialog from "../Common/LogoutDialog";
 import { useNavigate } from "react-router-dom";
 
