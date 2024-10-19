@@ -19,17 +19,18 @@ function Napredovanje() {
   };
   const data = [
     {
-      label: "ON",
-      value: "on",
-      index: 0,
-      desc: <OsebnoNaprevanje />,
-    },
-    {
       label: "Skupine",
       value: "skupina",
-      index: 1,
+      index: 0,
       desc: <TekmovanjeSkupine />,
     },
+    {
+      label: "ON",
+      value: "on",
+      index: 1,
+      desc: <OsebnoNaprevanje />,
+    },
+    
   ];
   return (
     <div className="bg-blue flex flex-col flex-1" id="demo">
@@ -38,7 +39,8 @@ function Napredovanje() {
       </div>
       <div className=" flex-1 flex flex-col">
         <div className="flex-1 flex flex-col mt-6">
-          <Tabs value="on">
+          {/* <TekmovanjeSkupine /> */}
+          <Tabs value="skupina">
             <TabsHeader placeholder={undefined}>
               {data.map(({ label, value, index }) => (
                 <Tab
