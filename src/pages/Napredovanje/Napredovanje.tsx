@@ -38,7 +38,8 @@ function Napredovanje() {
       </div>
       <div className=" flex-1 flex flex-col">
         <div className="flex-1 flex flex-col mt-6">
-          <Tabs value="on">
+          <TekmovanjeSkupine />
+          {/* <Tabs value="on">
             <TabsHeader placeholder={undefined}>
               {data.map(({ label, value, index }) => (
                 <Tab
@@ -58,7 +59,7 @@ function Napredovanje() {
                 </TabPanel>
               ))}
             </TabsBody>
-          </Tabs>
+          </Tabs> */}
         </div>
       </div>
     </div>
