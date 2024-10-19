@@ -23,6 +23,10 @@ export function useLongPress(callback, options = {}) {
       } 
   
       const start = (event) => {
+        if (!event.touches) {
+          return;
+        }
+
         startY = event.touches[0].clientY;
         if (!isMouseEvent(event) && !isTouchEvent(event)) return;
   
@@ -59,6 +63,10 @@ export function useLongPress(callback, options = {}) {
       };
 
       const move = (event) => {
+        if (!event.touches) {
+          return
+        }
+
         if (!allowScroll && Math.abs(event.touches[0].clientY - startY) > scrollThreshold) {
           cancel(event)
         }
