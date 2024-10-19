@@ -37,7 +37,7 @@ const LogoutDialog = (props: DialogProps) => {
       </DialogHeader>
       <DialogBody placeholder={undefined}>
         <Typography placeholder={undefined} className="mb-2">
-          Verzija: 0.1.2
+          Verzija: 0.1.3
         </Typography>
         Se želiš odjaviti?
       </DialogBody>

@@ -14,6 +14,7 @@ import Statistics from "./pages/Statistics/Statistics";
 import FinanceManual from "./pages/Finance/FinanceManual";
 import Napredovanje from "./pages/Napredovanje/Napredovanje";
 import Privacy from "./pages/Privacy/Privacy";
+import Help from "./pages/Help/Help";
 
 function App() {
   return (
@@ -87,6 +88,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Napredovanje />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/help"
+                element={
+                  <ProtectedRoute>
+                    <Help />
                   </ProtectedRoute>
                 }
               />
