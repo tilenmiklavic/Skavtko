@@ -82,7 +82,7 @@ const NapredovanjeSettings = () => {
 
   return (
     <div>
-      <Subtitle title="Osebno napredovanje" />
+      {/* <Subtitle title="Osebno napredovanje" />
       <TextInputButton
         label="Spreadsheet link"
         placeholder="link"
@@ -101,7 +101,7 @@ const NapredovanjeSettings = () => {
       />
       <div className="mb-3">
         <Select
-          label="or select"
+          label="ali izberi"
           placeholder=""
           id="napredovanje_sheet_select"
           options={sheets}
@@ -114,9 +114,9 @@ const NapredovanjeSettings = () => {
         index={FormatedSheet.ON}
         sheet_id={settings?.napredovanje?.id}
         link={settings?.napredovanje?.link}
-      />
+      /> */}
 
-      <Horizontal />
+      {/* <Horizontal /> */}
 
       <Subtitle title="Tekmovanje med vodi" />
       <TextInputButton
@@ -137,7 +137,7 @@ const NapredovanjeSettings = () => {
       />
       <div className="mb-3">
         <Select
-          label="or select"
+          label="ali izberi"
           placeholder=""
           id="group_sheet_select"
           options={sheets}

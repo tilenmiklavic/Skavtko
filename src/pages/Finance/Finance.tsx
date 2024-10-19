@@ -12,7 +12,7 @@ import Header from "../../components/Header/header";
 export default function Finance() {
   const data = [
     {
-      label: "Racuni",
+      label: "Računi",
       value: "racuni",
       index: 0,
       desc: <Racuni />,

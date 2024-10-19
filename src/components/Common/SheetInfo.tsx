@@ -38,11 +38,11 @@ const SheetInfo = (props: SheetInfoProps) => {
       {props.link ? (
         <>
           <div className="flex gap-2 items-center">
-            {props.loading && <Chip color="amber" value={"Loading..."} />}
+            {props.loading && <Chip color="amber" value={"Nalaganje..."} />}
             {!props.loading && (
               <div className="flex flex-row w-screen justify-between">
                 <div className="flex flex-row items-center">
-                  <span className="mr-2">Current: </span>
+                  <span className="mr-2">Trenutna: </span>
                   <Chip color="green" value={props.title} />
                 </div>
                 {props.format && (

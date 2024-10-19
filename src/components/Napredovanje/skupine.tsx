@@ -7,7 +7,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Chip,
   IconButton,
   Typography,
 } from "@material-tailwind/react";
@@ -30,6 +29,9 @@ const TekmovanjeSkupine = () => {
     setGroupPoints(sheet2Object(response.data.values));
     setRawData(response.data.values);
     setLoading(false);
+
+    console.log(sheet2Object(response.data.values))
+    console.log(groupPoints)
   };
 
   const points = (team: string): number => {
@@ -43,20 +45,20 @@ const TekmovanjeSkupine = () => {
   };
 
   const labels = () => {
-    return groupPoints.map((team) => team?.Ime);
+    return groupPoints.map((team) => team?.ime);
   };
 
   const values = () => {
-    return groupPoints.map((team) => team?.Točke);
+    return groupPoints.map((team) => team?.točke);
   };
 
   const updatePoints = async (team: string, increase: boolean) => {
     let temp = [...groupPoints];
     temp.forEach((row) => {
-      if (row.Ime === team) {
-        row.Točke = increase
-          ? parseInt(row.Točke) + 1
-          : parseInt(row.Točke) - 1;
+      if (row.ime === team) {
+        row.točke = increase
+          ? parseInt(row.točke) + 1
+          : parseInt(row.točke) - 1;
       }
     });
 
@@ -83,11 +85,11 @@ const TekmovanjeSkupine = () => {
   const saveSheet = async () => {
     // Use map to transform each team into a promise by calling writeToSheet
     const promises = groupPoints.map(async (team) => {
-      let index = rawData.findIndex((row) => row[0] === team.Ime);
+      let index = rawData.findIndex((row) => row[0] === team.ime);
       // Await is not necessary here; just return the promise
       return writeToSheet(
         settings.group.id,
-        [[team.Točke.toString()]],
+        [[team.točke.toString()]],
         `B${index + 1}:B${index + 1}`,
         "ROWS",
       );
@@ -106,7 +108,7 @@ const TekmovanjeSkupine = () => {
     height: 240,
     series: [
       {
-        name: "Točke",
+        name: "Tocke",
         data: values(),
       },
     ],
@@ -178,7 +180,6 @@ const TekmovanjeSkupine = () => {
 
   if (loading) {
     return <LoadingEmpty settings={settings.group.id} tab={2} />;
-    return <Chip color="amber" size="lg" value={"Loading..."} />;
   }
 
   return (
@@ -205,16 +206,16 @@ const TekmovanjeSkupine = () => {
       {groupPoints?.map((user: any) => {
         return (
           <>
-            <Card placeholder={undefined} className="mt-3" key={user.Ime}>
+            <Card placeholder={undefined} className="mt-3" key={user.ime}>
               <div className="p-5 flex flex-row justify-between content-center">
                 <div>
-                  <h5 className="text-2xl font-semibold">{user.Ime}</h5>
+                  <h5 className="text-2xl font-semibold">{user.ime}</h5>
                 </div>
                 <div className="flex gap-2 items-center">
                   <IconButton
                     placeholder={undefined}
                     size="lg"
-                    onClick={() => updatePoints(user.Ime, false)}
+                    onClick={() => updatePoints(user.ime, false)}
                   >
                     {" "}
                     <FontAwesomeIcon
@@ -223,11 +224,11 @@ const TekmovanjeSkupine = () => {
                       icon={faMinus}
                     />
                   </IconButton>
-                  <p className="text-2xl font-bold">{user.Točke}</p>
+                  <p className="text-2xl font-bold">{user.točke}</p>
                   <IconButton
                     placeholder={undefined}
                     size="lg"
-                    onClick={() => updatePoints(user.Ime, true)}
+                    onClick={() => updatePoints(user.ime, true)}
                   >
                     {" "}
                     <FontAwesomeIcon className="icon" size="xl" icon={faPlus} />
