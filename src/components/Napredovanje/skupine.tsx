@@ -55,10 +55,10 @@ const TekmovanjeSkupine = () => {
   const updatePoints = async (team: string, increase: boolean) => {
     let temp = [...groupPoints];
     temp.forEach((row) => {
-      if (row.Ime === team) {
-        row.Točke = increase
-          ? parseInt(row.Točke) + 1
-          : parseInt(row.Točke) - 1;
+      if (row.ime === team) {
+        row.točke = increase
+          ? parseInt(row.točke) + 1
+          : parseInt(row.točke) - 1;
       }
     });
 
@@ -85,11 +85,11 @@ const TekmovanjeSkupine = () => {
   const saveSheet = async () => {
     // Use map to transform each team into a promise by calling writeToSheet
     const promises = groupPoints.map(async (team) => {
-      let index = rawData.findIndex((row) => row[0] === team.Ime);
+      let index = rawData.findIndex((row) => row[0] === team.ime);
       // Await is not necessary here; just return the promise
       return writeToSheet(
         settings.group.id,
-        [[team.Točke.toString()]],
+        [[team.točke.toString()]],
         `B${index + 1}:B${index + 1}`,
         "ROWS",
       );
