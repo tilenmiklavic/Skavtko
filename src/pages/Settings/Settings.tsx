@@ -20,7 +20,7 @@ import { useLocation } from "react-router-dom";
 
 export default function Settings() {
   const tabs = ["general", "finance", "napredovanje", "prisotnost"];
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(useLocation()?.state?.tab || 0);
   const [tab, setTab] = useState(tabs[useLocation()?.state?.tab || 0]);
 
   const saveLink = async (event: any) => {
