@@ -54,7 +54,7 @@ const Racuni = () => {
         reciept.Time,
         reciept.Name,
         reciept.InvoiceAmount,
-        reciept.InvoiceNumber,
+        reciept.InvoiceNumber.toString().replace('.', ','),
       ],
     ];
 
